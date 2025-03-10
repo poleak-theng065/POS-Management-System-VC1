@@ -19,6 +19,7 @@
                 <tr>
                     <th><input type="checkbox" class="form-check-input"></th>
                     <th>Categories</th>
+                    <th>QTY</th>
                     <th>Total Products</th>
                     <th>Total Earning</th>
                     <th>Actions</th>
@@ -32,11 +33,12 @@
                         <img src="https://www.zdnet.com/a/img/resize/9f3fcf92f17d47c88823e7f2c0f1454ecd3e5140/2024/09/19/8da68e24-08b1-467a-9062-a90a96c1d879/dsc02198.jpg?auto=webp&fit=crop&height=900&width=1200" class="category-image me-2" alt="Travel">
                         Travel<br><small>Choose from a wide range of travel accessories from popular brands</small>
                     </td>
+                    <td>4</td>
                     <td>4186</td>
                     <td>$7129.99</td>
                     <td>
-                        <button class="action-btn" onclick="editCategory('Travel')"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn" onclick="deleteCategory('Travel')"><i class="fas fa-trash"></i></button>
+                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
                     </td>
                 </tr>
                 <tr>
@@ -45,11 +47,12 @@
                         <img src="https://www.zdnet.com/a/img/resize/9f3fcf92f17d47c88823e7f2c0f1454ecd3e5140/2024/09/19/8da68e24-08b1-467a-9062-a90a96c1d879/dsc02198.jpg?auto=webp&fit=crop&height=900&width=1200" class="category-image me-2" alt="Travel">
                         Travel<br><small>Choose from a wide range of travel accessories from popular brands</small>
                     </td>
+                    <td>4</td>
                     <td>4186</td>
                     <td>$7129.99</td>
                     <td>
-                        <button class="action-btn" onclick="editCategory('Travel')"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn" onclick="deleteCategory('Travel')"><i class="fas fa-trash"></i></button>
+                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
                     </td>
                 </tr>
                 <tr>
@@ -58,11 +61,12 @@
                         <img src="https://www.zdnet.com/a/img/resize/9f3fcf92f17d47c88823e7f2c0f1454ecd3e5140/2024/09/19/8da68e24-08b1-467a-9062-a90a96c1d879/dsc02198.jpg?auto=webp&fit=crop&height=900&width=1200" class="category-image me-2" alt="Travel">
                         Travel<br><small>Choose from a wide range of travel accessories from popular brands</small>
                     </td>
+                    <td>4</td>
                     <td>4186</td>
                     <td>$7129.99</td>
                     <td>
-                        <button class="action-btn" onclick="editCategory('Travel')"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn" onclick="deleteCategory('Travel')"><i class="fas fa-trash"></i></button>
+                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
                     </td>
                 </tr>
                 <tr>
@@ -71,11 +75,12 @@
                         <img src="https://www.zdnet.com/a/img/resize/9f3fcf92f17d47c88823e7f2c0f1454ecd3e5140/2024/09/19/8da68e24-08b1-467a-9062-a90a96c1d879/dsc02198.jpg?auto=webp&fit=crop&height=900&width=1200" class="category-image me-2" alt="Travel">
                         Travel<br><small>Choose from a wide range of travel accessories from popular brands</small>
                     </td>
+                    <td>4</td>
                     <td>4186</td>
                     <td>$7129.99</td>
                     <td>
-                        <button class="action-btn" onclick="editCategory('Travel')"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn" onclick="deleteCategory('Travel')"><i class="fas fa-trash"></i></button>
+                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
                     </td>
                 </tr>
                 <!-- Additional rows can be added here -->

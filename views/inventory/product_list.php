@@ -1,6 +1,56 @@
+
 <div class="container mt-4">
+    <div class="row text-center">
+        <div class="col-md-3 mb-4">
+            <div class="card p-3"> <!-- Reduced padding -->
+                <div class="d-flex justify-content-between">
+                    <div class="icon-left"><i class="fas fa-store fa-lg"></i></div> <!-- Use fa-lg for smaller icons -->
+                    <div class="icon-right"><i class="fas fa-arrow-up fa-lg"></i></div>
+                </div>
+                <h5 class="h6">In-store Sales</h5> <!-- Use h6 for smaller heading -->
+                <div class="value" style="font-size: 1.5rem;">$3,345.43</div> <!-- Font size adjustment -->
+                <div class="orders" style="font-size: 0.9rem;">50 orders <span class="increase">+57%</span></div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card p-3">
+                <div class="d-flex justify-content-between">
+                    <div class="icon-left"><i class="fas fa-shopping-cart fa-lg"></i></div>
+                    <div class="icon-right"><i class="fas fa-arrow-up fa-lg"></i></div>
+                </div>
+                <h5 class="h6">Website Sales</h5>
+                <div class="value" style="font-size: 1.5rem;">$674,341.12</div>
+                <div class="orders" style="font-size: 0.9rem;">21 orders <span class="increase">+12%</span></div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card p-3">
+                <div class="d-flex justify-content-between">
+                    <div class="icon-left"><i class="fas fa-percent fa-lg"></i></div>
+                    <div class="icon-right"><i class="fas fa-arrow-down fa-lg"></i></div>
+                </div>
+                <h5 class="h6">Discount</h5>
+                <div class="value" style="font-size: 1.5rem;">$14,263.12</div>
+                <div class="orders" style="font-size: 0.9rem;">60 orders <span class="decrease">-3%</span></div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card p-3">
+                <div class="d-flex justify-content-between">
+                    <div class="icon-left"><i class="fas fa-user-friends fa-lg"></i></div>
+                    <div class="icon-right"><i class="fas fa-arrow-down fa-lg"></i></div>
+                </div>
+                <h5 class="h6">Affiliate</h5>
+                <div class="value" style="font-size: 1.5rem;">$8,345.23</div>
+                <div class="orders" style="font-size: 0.9rem;">150 orders <span class="decrease">-5%</span></div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Everything inside a single white card -->
-     <h1>Welcome to PHP</h1>
     <div class="card p-5 bg-white shadow-lg border-0">
         <!-- Filter Section -->
         <h5 class="mb-4 text-primary">Filter</h5>
@@ -53,17 +103,18 @@
                         <th>Product</th>
                         <th>Category</th>
                         <th>Stock</th>
-                        <th>Barcode</th>
+                        <th>SKU</th>
                         <th>Price</th>
                         <th>QTY</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="border-bottom">
                         <td><input type="checkbox" class="form-check-input"></td>
                         <td>
-                            <img src="https://www.zdnet.com/a/img/resize/9f3fcf92f17d47c88823e7f2c0f1454ecd3e5140/2024/09/19/8da68e24-08b1-467a-9062-a90a96c1d879/dsc02198.jpg?auto=webp&fit=crop&height=900&width=1200" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
+                            <img src="https://via.placeholder.com/40" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
                             Air Jordan
                         </td>
                         <td><span class="badge bg-danger">Shoes</span></td>
@@ -76,11 +127,15 @@
                         <td>$125</td>
                         <td>10</td>
                         <td><span class="badge bg-danger">Inactive</span></td>
+                        <td>
+                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
+                        </td>
                     </tr>
                     <tr class="border-bottom">
                         <td><input type="checkbox" class="form-check-input"></td>
                         <td>
-                            <img src="https://www.zdnet.com/a/img/resize/9f3fcf92f17d47c88823e7f2c0f1454ecd3e5140/2024/09/19/8da68e24-08b1-467a-9062-a90a96c1d879/dsc02198.jpg?auto=webp&fit=crop&height=900&width=1200" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
+                            <img src="https://via.placeholder.com/40" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
                             Amazon Fire TV
                         </td>
                         <td><span class="badge bg-danger">Electronics</span></td>
@@ -93,11 +148,15 @@
                         <td>$263.49</td>
                         <td>5</td>
                         <td><span class="badge bg-warning">Scheduled</span></td>
+                        <td>
+                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
+                        </td>
                     </tr>
                     <tr>
                         <td><input type="checkbox" class="form-check-input"></td>
                         <td>
-                            <img src="https://www.zdnet.com/a/img/resize/9f3fcf92f17d47c88823e7f2c0f1454ecd3e5140/2024/09/19/8da68e24-08b1-467a-9062-a90a96c1d879/dsc02198.jpg?auto=webp&fit=crop&height=900&width=1200" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
+                            <img src="https://via.placeholder.com/40" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
                             Apple iPad
                         </td>
                         <td><span class="badge bg-danger">Electronics</span></td>
@@ -110,9 +169,12 @@
                         <td>$248.39</td>
                         <td>20</td>
                         <td><span class="badge bg-success">Publish</span></td>
+                        <td>
+                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</div>

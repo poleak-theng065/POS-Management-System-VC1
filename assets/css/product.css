@@ -1,0 +1,42 @@
+body {
+    background-color: #f8f9fa; /* Light background */
+}
+.card {
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.increase {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    padding: 2px 6px;
+    border-radius: 5px;
+}
+.decrease {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #F44336;
+    padding: 2px 6px;
+    border-radius: 5px;
+}
+.orders {
+    font-size: 0.9rem;
+    color: gray;
+}
+.value {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.icon-left {
+    font-size: 1.5rem;
+    color: #007bff;
+}
+.icon-right {
+    font-size: 1.5rem;
+    color: #6c757d;
+    float: right;
+}

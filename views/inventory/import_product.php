@@ -59,19 +59,21 @@
             <!-- Inventory Section -->
             <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
                 <h5 class="mb-3">Inventory</h5>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="inventory" class="form-label">Stock</label>
+                
+                <button class="btn btn-primary mb-3">Restock</button>
+                
+                <div class="mb-3">
+                    <label for="inventory" class="form-label">Add to Stock</label>
+                    <div class="input-group">
                         <input type="number" class="form-control" id="inventory" placeholder="e.g. 100">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="delivery" class="form-label">Delivery Options</label>
-                        <select class="form-select" id="delivery">
-                            <option selected>Standard Delivery</option>
-                            <option>Express Delivery</option>
-                        </select>
+                        <button class="btn btn-outline-primary" type="button">Confirm</button>
                     </div>
                 </div>
+                
+                <p class="mb-0">Product in stock now: <strong>54</strong></p>
+                <p class="mb-0">Product in transit: <strong>390</strong></p>
+                <p class="mb-0">Last time restocked: <strong>24th June, 2023</strong></p>
+                <p class="mb-0">Total stock over lifetime: <strong>2430</strong></p>
             </div>
         </div>
 
@@ -97,15 +99,18 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label">In stock</label>
-                    <input type="checkbox" class="form-check-input" id="inStock" checked>
+                    <label for="inStock" class="form-label">In stock</label>
+                    <div class="form-check form-switch">
+                        <input type="checkbox" class="form-check-input" id="inStock" checked>
+                    </div>
                 </div>
             </div>
+
 
             <!-- Organization Section -->
             <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
                 <h5 class="mb-3">Organize</h5>
-                
+
                 <div class="mb-3">
                     <label for="vendor" class="form-label">Vendor</label>
                     <select class="form-select" id="vendor">
@@ -114,7 +119,7 @@
                         <option>Vendor B</option>
                     </select>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="category" class="form-label">Category</label>
                     <select class="form-select" id="category">
@@ -123,13 +128,15 @@
                         <option>Category B</option>
                     </select>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="collection" class="form-label">Collection</label>
-                    <input type="text" class="form-control" id="collection" placeholder="Collection">
-                    <button class="btn btn-outline-primary mt-2">+</button>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="collection" placeholder="Collection">
+                        <button class="btn btn-outline-primary ms-2" type="button">+</button> <!-- Added margin start -->
+                    </div>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select" id="status">
@@ -137,16 +144,15 @@
                         <option>Draft</option>
                     </select>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="tags" class="form-label">Tags</label>
-                    <input type="text" class="form-control" id="tags" placeholder="Normal, Standard, Premium">
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control me-2" id="tags" placeholder="Normal, Standard, Premium">
+                        <button class="btn btn-outline-secondary" type="button">Add</button>
+                    </div>
                 </div>
             </div>
 
-    <!-- Submit Button -->
-    <div class="text-center">
-        <button class="btn btn-primary btn-lg">Publish Product</button>
-    </div>
 </div>
 
