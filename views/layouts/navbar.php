@@ -61,7 +61,7 @@
                   </g>
                 </svg>
               </span>
-              <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
+              <span class="app-brand-text demo menu-text fw-bolder ms-2 fs-2 text-capitalize">heng heng</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -97,7 +97,7 @@
                 </li>
                 <li class="menu-item active">
                   <a href="/import_product" class="menu-link">
-                    <div data-i18n="Account">Import Products</div>
+                    <div data-i18n="Account">Import Product</div>
                   </a>
                 </li>
                 <li class="menu-item active">
