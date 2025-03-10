@@ -86,7 +86,7 @@
                     <option>50</option>
                 </select>
                 <button class="btn btn-outline-secondary me-3" disabled>Export</button>
-                <a href="/create" class="btn btn-primary rounded-3 d-inline-block">+ Add Product</a>
+                <a href="/import_product" class="btn btn-primary rounded-3 d-inline-block">+ Add Product</a>
             </div>
         </div>
 
