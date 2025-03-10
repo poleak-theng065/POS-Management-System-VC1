@@ -40,3 +40,18 @@ body {
     color: #6c757d;
     float: right;
 }
+
+
+/* Sort table */
+th.sortable {
+    cursor: pointer;
+}
+
+th.sortable:hover span {
+    visibility: visible; /* Show icon on hover */
+}
+
+th span {
+    visibility: hidden; /* Hide icon normally */
+    margin-left: 5px; /* Space between header text and icon */
+}

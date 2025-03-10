@@ -121,20 +121,27 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="category" class="form-label">Category</label>
+                    <label for="collection" class="form-label">Category</label>
+                    <div class="input-group">
+                        <select class="form-select" id="collection">
+                            <option selected>Select Category</option>
+                            <option value="collection1">Collection 1</option>
+                            <option value="collection2">Collection 2</option>
+                            <option value="collection3">Collection 3</option>
+                        </select>
+                        <button class="btn btn-outline-primary ms-2" type="button">+</button> <!-- Added margin start -->
+                    </div>
+                </div>
+
+
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Collection</label>
                     <select class="form-select" id="category">
-                        <option selected>Select Category</option>
+                        <option selected>Select Collection</option>
                         <option>Category A</option>
                         <option>Category B</option>
                     </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="collection" class="form-label">Collection</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="collection" placeholder="Collection">
-                        <button class="btn btn-outline-primary ms-2" type="button">+</button> <!-- Added margin start -->
-                    </div>
                 </div>
 
                 <div class="mb-3">

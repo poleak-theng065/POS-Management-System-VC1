@@ -129,11 +129,6 @@
                     <div data-i18n="Basic">Run Out Of Stock</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                    <div data-i18n="Basic">Return Product</div>
-                  </a>
-                </li>
               </ul>
             </li>
             <li class="menu-item">
@@ -142,6 +137,12 @@
                 <div data-i18n="Misc">Return Product</div>
               </a>
               <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
+                      <div data-i18n="Basic">Return Product</div>
+                    </a>
+                </li>
+                
                 <li class="menu-item">
                   <a href="pages-misc-error.html" class="menu-link">
                     <div data-i18n="Error">Restock Return</div>

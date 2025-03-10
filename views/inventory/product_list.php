@@ -1,18 +1,17 @@
-
 <div class="container mt-4">
     <div class="row text-center">
         <div class="col-md-3 mb-4">
-            <div class="card p-3"> <!-- Reduced padding -->
+            <div class="card p-3">
                 <div class="d-flex justify-content-between">
-                    <div class="icon-left"><i class="fas fa-store fa-lg"></i></div> <!-- Use fa-lg for smaller icons -->
+                    <div class="icon-left"><i class="fas fa-store fa-lg"></i></div>
                     <div class="icon-right"><i class="fas fa-arrow-up fa-lg"></i></div>
                 </div>
-                <h5 class="h6">In-store Sales</h5> <!-- Use h6 for smaller heading -->
-                <div class="value" style="font-size: 1.5rem;">$3,345.43</div> <!-- Font size adjustment -->
+                <h5 class="h6">In-store Sales</h5>
+                <div class="value" style="font-size: 1.5rem;">$3,345.43</div>
                 <div class="orders" style="font-size: 0.9rem;">50 orders <span class="increase">+57%</span></div>
             </div>
         </div>
-        
+
         <div class="col-md-3 mb-4">
             <div class="card p-3">
                 <div class="d-flex justify-content-between">
@@ -24,7 +23,7 @@
                 <div class="orders" style="font-size: 0.9rem;">21 orders <span class="increase">+12%</span></div>
             </div>
         </div>
-        
+
         <div class="col-md-3 mb-4">
             <div class="card p-3">
                 <div class="d-flex justify-content-between">
@@ -36,7 +35,7 @@
                 <div class="orders" style="font-size: 0.9rem;">60 orders <span class="decrease">-3%</span></div>
             </div>
         </div>
-        
+
         <div class="col-md-3 mb-4">
             <div class="card p-3">
                 <div class="d-flex justify-content-between">
@@ -49,10 +48,8 @@
             </div>
         </div>
     </div>
-    
-    <!-- Everything inside a single white card -->
+
     <div class="card p-5 bg-white shadow-lg border-0">
-        <!-- Filter Section -->
         <h5 class="mb-4 text-primary">Filter</h5>
         <div class="row g-4 mb-5">
             <div class="col-md-4">
@@ -80,7 +77,6 @@
             </div>
         </div>
 
-        <!-- Search and Actions -->
         <div class="d-flex justify-content-between align-items-center mb-4 pt-4 pb-4 border-top border-bottom border-light py-2">
             <input type="text" class="form-control w-25" placeholder="Search Product" style="border-radius: 10px;">
             <div class="d-flex align-items-center">
@@ -90,23 +86,22 @@
                     <option>50</option>
                 </select>
                 <button class="btn btn-outline-secondary me-3" disabled>Export</button>
-                <a href="/import_product" class="btn btn-primary rounded-3 d-inline-block">+ Add Product</a>
+                <a href="/create" class="btn btn-primary rounded-3 d-inline-block">+ Add Product</a>
             </div>
         </div>
 
-        <!-- Product Table -->
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
+            <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
                         <th><input type="checkbox" class="form-check-input"></th>
-                        <th>Product</th>
-                        <th>Category</th>
-                        <th>Stock</th>
-                        <th>SKU</th>
-                        <th>Price</th>
-                        <th>QTY</th>
-                        <th>Status</th>
+                        <th onclick="sortTable('product')" class="sortable">Product <span id="productSortIcon"></span></th>
+                        <th onclick="sortTable('category')" class="sortable">Category <span id="categorySortIcon"></span></th>
+                        <th onclick="sortTable('stock')" class="sortable">Stock <span id="stockSortIcon"></span></th>
+                        <th onclick="sortTable('sku')" class="sortable">SKU <span id="skuSortIcon"></span></th>
+                        <th onclick="sortTable('earning')" class="sortable">Earning <span id="earningSortIcon"></span></th>
+                        <th onclick="sortTable('qty')" class="sortable">QTY <span id="qtySortIcon"></span></th>
+                        <th onclick="sortTable('status')" class="sortable">Status <span id="statusSortIcon"></span></th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -114,8 +109,13 @@
                     <tr class="border-bottom">
                         <td><input type="checkbox" class="form-check-input"></td>
                         <td>
-                            <img src="https://via.placeholder.com/40" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
-                            Air Jordan
+                            <div style="display: flex; align-items: flex-start;">
+                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
+                                <div>
+                                    <strong style="display: block;">Travel</strong>
+                                    <small style="display: block;">popular</small>
+                                </div>
+                            </div>
                         </td>
                         <td><span class="badge bg-danger">Shoes</span></td>
                         <td>
@@ -124,8 +124,8 @@
                             </div>
                         </td>
                         <td>31063</td>
-                        <td>$125</td>
-                        <td>10</td>
+                        <td class="earning">$125</td>
+                        <td class="product-count">10</td>
                         <td><span class="badge bg-danger">Inactive</span></td>
                         <td>
                             <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
@@ -135,8 +135,13 @@
                     <tr class="border-bottom">
                         <td><input type="checkbox" class="form-check-input"></td>
                         <td>
-                            <img src="https://via.placeholder.com/40" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
-                            Amazon Fire TV
+                            <div style="display: flex; align-items: flex-start;">
+                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
+                                <div>
+                                    <strong style="display: block;">Travel</strong>
+                                    <small style="display: block;">popular</small>
+                                </div>
+                            </div>
                         </td>
                         <td><span class="badge bg-danger">Electronics</span></td>
                         <td>
@@ -145,8 +150,8 @@
                             </div>
                         </td>
                         <td>5829</td>
-                        <td>$263.49</td>
-                        <td>5</td>
+                        <td class="earning">$263.49</td>
+                        <td class="product-count">5</td>
                         <td><span class="badge bg-warning">Scheduled</span></td>
                         <td>
                             <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
@@ -156,8 +161,13 @@
                     <tr>
                         <td><input type="checkbox" class="form-check-input"></td>
                         <td>
-                            <img src="https://via.placeholder.com/40" class="me-2 rounded" alt="Product Image" style="width: 40px; height: 40px;">
-                            Apple iPad
+                            <div style="display: flex; align-items: flex-start;">
+                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
+                                <div>
+                                    <strong style="display: block;">Travel</strong>
+                                    <small style="display: block;">popular</small>
+                                </div>
+                            </div>
                         </td>
                         <td><span class="badge bg-danger">Electronics</span></td>
                         <td>
@@ -166,8 +176,8 @@
                             </div>
                         </td>
                         <td>4202</td>
-                        <td>$248.39</td>
-                        <td>20</td>
+                        <td class="earning">$248.39</td>
+                        <td class="product-count">20</td>
                         <td><span class="badge bg-success">Publish</span></td>
                         <td>
                             <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
@@ -177,4 +187,28 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div id="entryInfo">
+                Showing <span id="startEntry">1</span> to <span id="endEntry">3</span> of <span id="totalEntries">3</span> entries
+            </div>
+            <nav>
+                <ul class="pagination" id="pagination">
+                    <li class="page-item disabled" id="prevPage">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item active" id="page1">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item" id="nextPage">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
+</div>
