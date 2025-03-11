@@ -11,6 +11,13 @@ require_once "Controllers/inventory/LoginController.php";
 
 $route = new Router();
 
+
+require_once "Controllers/CategoryController.php";
+
+// category
+$route->get("/category", [CategoryController::class, 'index']);
+$route->get("/category/create", [CategoryController::class, 'create']);
+
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
 
