@@ -49,6 +49,7 @@
         </div>
     </div>
 
+    <h1>Product List</h1>
     <div class="card p-5 bg-white shadow-lg border-0">
         <h5 class="mb-4 text-primary">Filter</h5>
         <div class="row g-4 mb-5">

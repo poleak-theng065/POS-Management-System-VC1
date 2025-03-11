@@ -95,11 +95,7 @@
                     <div data-i18n="Account">Product List</div>
                   </a>
                 </li>
-                <li class="menu-item active">
-                  <a href="/import_product" class="menu-link">
-                    <div data-i18n="Account">Import Product</div>
-                  </a>
-                </li>
+                
                 <li class="menu-item active">
                   <a href="/category_list" class="menu-link">
                     <div data-i18n="Account">Category List</div>
@@ -108,48 +104,71 @@
                 
               </ul>
             </li>
-            <li class="menu-item">
+
+            <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-                <div data-i18n="Authentications">Sale Product</div>
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Account Settings">Import Product</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="auth-login-basic.html" class="menu-link" target="_blank">
-                    <div data-i18n="Basic">Sold Product</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="auth-register-basic.html" class="menu-link" target="_blank">
-                    <div data-i18n="Basic">Low Stock</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                    <div data-i18n="Basic">Run Out Of Stock</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Misc">Return Product</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                      <div data-i18n="Basic">Return Product</div>
+                <li class="menu-item active">
+                    <a href="/import_product" class="menu-link">
+                      <div data-i18n="Account">Import Product</div>
                     </a>
                 </li>
+                <li class="menu-item active">
+                  <a href="/import_new_product" class="menu-link">
+                    <div data-i18n="Account">New Import Product</div>
+                  </a>
+                </li>
+                <li class="menu-item active">
+                  <a href="/order_new_product" class="menu-link">
+                    <div data-i18n="Account">New Order Product</div>
+                  </a>
+                </li>
                 
-                <li class="menu-item">
-                  <a href="pages-misc-error.html" class="menu-link">
-                    <div data-i18n="Error">Restock Return</div>
+              </ul>
+            </li>
+
+            <li class="menu-item active open">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Account Settings">Sale Product</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item active">
+                  <a href="/sold_product" class="menu-link">
+                    <div data-i18n="Account">Sold Product</div>
+                  </a>
+                </li>
+                <li class="menu-item active">
+                  <a href="/low_stock_product" class="menu-link">
+                    <div data-i18n="Account">Low Stock</div>
+                  </a>
+                </li>
+                <li class="menu-item active">
+                  <a href="/run_out_of_stock" class="menu-link">
+                    <div data-i18n="Account">Run Out Of Stock</div>
                   </a>
                 </li>
               </ul>
             </li>
+
+            <li class="menu-item active open">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Account Settings">Return Product</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item active">
+                  <a href="/return_product" class="menu-link">
+                    <div data-i18n="Account">Return Product</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
             <!-- Cards -->
