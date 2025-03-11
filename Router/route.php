@@ -21,7 +21,8 @@ $route->get("/product_list", [ProductListController::class, 'product_list']);
 $route->get("/import_product", [ImportProductController::class, 'import_product']);
 
 // Category List
-$route->get("/category_list", [CategoryListController::class, 'category_list']);
+$route->get("/category_list", [CategoryListController::class, 'index']);
+$route->post("/category/delete_category", [CategoryListController::class, 'destroy']);
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
