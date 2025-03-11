@@ -11,12 +11,15 @@ require_once "Controllers/inventory/LoginController.php";
 
 $route = new Router();
 
-
-require_once "Controllers/CategoryController.php";
-
 // category
-$route->get("/category", [CategoryController::class, 'index']);
-$route->get("/category/create", [CategoryController::class, 'create']);
+$route->get("/category_list", [CategoryListController::class, 'index']);
+$route->get("/category/create", [CategoryListController::class, 'create']);
+$route->get('/category/edit/{id}', [CategoryListController::class, 'edit']);
+
+// $routes->post('/category_list/store',[CategoryListController::class, 'store']);
+// $routes->get('/category/edit',[CategoryListController::class, 'edit']);
+// $routes->put('/category_list/update',[CategoryListController::class, 'update']);
+// $routes->delete('/category/delete',[CategoryListController::class, 'destroy']);
 
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
@@ -26,9 +29,6 @@ $route->get("/product_list", [ProductListController::class, 'product_list']);
 
 // Import Product
 $route->get("/import_product", [ImportProductController::class, 'import_product']);
-
-// Category List
-$route->get("/category_list", [CategoryListController::class, 'category_list']);
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
