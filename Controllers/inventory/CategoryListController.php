@@ -4,36 +4,32 @@ require_once './Database/Database.php';
 
 class CategoryListController extends BaseController
 {
-    private $model;
+    private $categoryModel;
 
-    // Constructor to initialize the model
+    // Constructor to initialize the CategoryModel
     public function __construct()
     {
-        $this->model = new CategoryModel();  // Instantiate the model here
+        $this->categoryModel = new CategoryModel();
     }
 
-    // Show all categories
+    // Display a list of all categories
     public function index()
     {
-        $categories = $this->model->getCategories();
+        // Fetch all categories from the model
+        $categories = $this->categoryModel->getCategories();
+
+        // Pass the categories data to the view
         $this->view('category/category_list', ['categories' => $categories]);
     }
 
+    // Handle the deletion of a category
+    public function category_delete($id)
+    {
+        // Delete the category from the database
+        $this->categoryModel->deleteCategory($id);
 
-    // Delete a category from the database
-    // In CategoryListController.php
-    public function destroy()
-{
-    // Ensure the id is passed in the POST data
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-        $id = $_POST['id'];
-        $this->model->deleteCategory($id); // Delete category using model method
+        // Redirect to the category list page after deletion
+        header("Location: /category/category_list");
+        exit();
     }
-    
-    // After deletion, redirect to category list
-    $this->redirect('/category_list');
 }
-
-
-}
-
