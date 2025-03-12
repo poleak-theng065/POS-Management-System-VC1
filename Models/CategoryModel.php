@@ -7,34 +7,39 @@ class CategoryModel
 
     public function __construct()
     {
-
-        $host = "localhost";         
-        $dbname = "vc_db";      
-        $username = "root";          
-        $password = "";              
+        $host = "localhost";
+        $dbname = "vc_db";
+        $username = "root";
+        $password = "";
 
         $this->pdo = new Database($host, $dbname, $username, $password);
     }
 
-    public function getCategories()
+    public function get_categories()
     {
         $categories = $this->pdo->query("SELECT * FROM categories");
         $result = $categories->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
-    function createCategory($data)
+    function create_category($data)
     {
-        $stmt = $this->pdo->query('INSERT INTO categories (name, model, type, description) VALUES (:name, :model, :type, :description)', [
+        $sql = 'INSERT INTO categories (name, model, type, description) 
+                VALUES (:name, :model, :type, :description)';
+
+        $stmt = $this->pdo->query($sql, [
             'name' => $data['name'],
             'model' => $data['model'],
             'type' => $data['type'],
-            'description' => $data['description'],  
+            'description' => $data['description'],
         ]);
+
+        if ($stmt->errorCode() != '00000') {
+            print_r($stmt->errorInfo());
+        }
     }
 
-
-    function getCategory($id)
+    function get_category($id)
     {
         $stmt = $this->pdo->query(
             'SELECT * FROM categories WHERE id = :id',
@@ -44,21 +49,23 @@ class CategoryModel
         return $category;
     }
 
-    function updateCategory($id, $data)
+
+    function update_category($id, $data)
     {
-        $stmt = $this->pdo->query('UPDATE categories SET name = :name, model = :model, type = :type, description = :description WHERE id = :id', [
+        $sql = 'UPDATE categories 
+                SET name = :name, model = :model, type = :type, description = :description 
+                WHERE id = :id';
+
+        $stmt = $this->pdo->query($sql, [
+            'id' => $id,
             'name' => $data['name'],
             'model' => $data['model'],
             'type' => $data['type'],
-            'description' => $data['description'],
-            'id' => $id
+            'description' => $data['description']
         ]);
+
+        if ($stmt->rowCount() === 0) {
+            die('Error: No category was updated.');
+        }
     }
-
-
-    // function deleteCategory($id)
-    // {
-    //     $this->pdo->query('DELETE FROM categories WHERE id = :id', ['id' => $id]);
-    // }
-    
 }

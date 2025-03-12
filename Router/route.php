@@ -7,19 +7,22 @@ require_once "Controllers/inventory/DashboardController.php";
 require_once "Controllers/inventory/ImportProductController.php";
 require_once "Controllers/inventory/CategoryListController.php";
 require_once "Controllers/inventory/LoginController.php";
+require_once "Controllers/inventory/SoldProductController.php";
+require_once "Controllers/inventory/LowStockProductController.php";
+require_once "Controllers/inventory/RunOutOfStockController.php";
+require_once "Controllers/inventory/ReturnProductController.php";
+require_once "Controllers/inventory/ImportNewProductController.php";
+require_once "Controllers/inventory/OrderNewProductController.php";
 
 
 $route = new Router();
 
 // category
 $route->get("/category_list", [CategoryListController::class, 'index']);
-$route->get("/category/create", [CategoryListController::class, 'create']);
-$route->get('/category/edit/{id}', [CategoryListController::class, 'edit']);
-
-// $routes->post('/category_list/store',[CategoryListController::class, 'store']);
-// $routes->get('/category/edit',[CategoryListController::class, 'edit']);
-// $routes->put('/category_list/update',[CategoryListController::class, 'update']);
-// $routes->delete('/category/delete',[CategoryListController::class, 'destroy']);
+$route->get("/inventory/category_list/create", [CategoryListController::class, 'create']);
+$route->get('/inventory/category_list/edit/{id}', [CategoryListController::class, 'edit']);
+$route->post('/inventory/category_list/update', [CategoryListController::class, 'update']);
+$route->post('/inventory/category_list/store',[CategoryListController::class, 'store']);
 
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
@@ -33,6 +36,22 @@ $route->get("/import_product", [ImportProductController::class, 'import_product'
 // Login
 $route->get("/login", [LoginController::class, 'login']);
 
+// Sold Product
+$route->get("/sold_product", [SoldProductController::class, 'sold_product']);
 
+// Low Stock Product
+$route->get("/low_stock_product", [LowStockProductController::class, 'low_stock_product']);
+
+// Run Out Of Stock Product
+$route->get("/run_out_of_stock", [RunOutOfStockController::class, 'run_out_of_stock']);
+
+// Return Product
+$route->get("/return_product", [ReturnProductController::class, 'return_product']);
+
+// New Import Product
+$route->get("/import_new_product", [ImportNewProductController::class, 'import_new_product']);
+
+// Order New Product
+$route->get("/order_new_product", [OrderNewProductController::class, 'order_new_product']);
 
 $route->route();
