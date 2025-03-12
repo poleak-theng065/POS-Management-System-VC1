@@ -16,7 +16,7 @@ class CategoryListController extends BaseController
 
     public function index()
     {
-        $categories = $this->iteam->get_categories();
+        $categories = $this->iteam->getCategories();
         $this->view("inventory/category_list/category_list", ["categories" => $categories]);
     }
 
@@ -40,14 +40,14 @@ class CategoryListController extends BaseController
                 die('Error: Name, Model, and Type fields are required.');
             }
 
-            $this->iteam->create_category($data);
+            $this->iteam->createCategory($data);
             $this->redirect('/category_list');
         }
     }
 
     function edit($id)
     {
-        $category = $this->iteam->get_category($id);
+        $category = $this->iteam->getCategory($id);
         $this->view('inventory/category_list', ['category' => $category]);
     }
 
@@ -70,7 +70,7 @@ class CategoryListController extends BaseController
                 'description' => $_POST['description']
             ];
 
-            $this->iteam->update_category($id, $data);
+            $this->iteam->updateCategory($id, $data);
             $this->redirect('/category_list');
         }
     }

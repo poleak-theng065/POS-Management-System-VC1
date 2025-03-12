@@ -15,14 +15,14 @@ class CategoryModel
         $this->pdo = new Database($host, $dbname, $username, $password);
     }
 
-    public function get_categories()
+    public function getCategories()
     {
         $categories = $this->pdo->query("SELECT * FROM categories");
         $result = $categories->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
-    function create_category($data)
+    function createCategory($data)
     {
         $sql = 'INSERT INTO categories (name, model, type, description) 
                 VALUES (:name, :model, :type, :description)';
@@ -39,7 +39,7 @@ class CategoryModel
         }
     }
 
-    function get_category($id)
+    function getCategory($id)
     {
         $stmt = $this->pdo->query(
             'SELECT * FROM categories WHERE id = :id',
@@ -50,7 +50,7 @@ class CategoryModel
     }
 
 
-    function update_category($id, $data)
+    function updateCategory($id, $data)
     {
         $sql = 'UPDATE categories 
                 SET name = :name, model = :model, type = :type, description = :description 
