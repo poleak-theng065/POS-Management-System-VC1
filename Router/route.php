@@ -17,6 +17,13 @@ require_once "Controllers/inventory/OrderNewProductController.php";
 
 $route = new Router();
 
+// category
+$route->get("/category_list", [CategoryListController::class, 'index']);
+$route->get("/inventory/category_list/create", [CategoryListController::class, 'create']);
+$route->get('/inventory/category_list/edit/{id}', [CategoryListController::class, 'edit']);
+$route->post('/inventory/category_list/update', [CategoryListController::class, 'update']);
+$route->post('/inventory/category_list/store',[CategoryListController::class, 'store']);
+
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
 
@@ -25,9 +32,6 @@ $route->get("/product_list", [ProductListController::class, 'product_list']);
 
 // Import Product
 $route->get("/import_product", [ImportProductController::class, 'import_product']);
-
-// Category List
-$route->get("/category_list", [CategoryListController::class, 'category_list']);
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
