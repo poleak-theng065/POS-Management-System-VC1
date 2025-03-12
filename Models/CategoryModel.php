@@ -18,10 +18,15 @@ class CategoryModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    
     // Delete a category by ID
     public function deleteCategory($id)
     {
-        $this->db->query("DELETE FROM categories WHERE id = :id", ['id' => $id]);
+        // Assuming the database column is 'Category_ID' based on the modal
+        $sql = "DELETE FROM categories WHERE Category_ID = :id";
+        $params = ['id' => $id]; // Prepare the parameters for the query
+
+        $stmt = $this->db->query($sql, $params); // Execute the query with parameters
+
+        return $stmt !== false; // Return true if the query was successful, false otherwise
     }
 }

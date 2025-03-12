@@ -14,10 +14,9 @@ require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ImportNewProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
 
-
 $route = new Router();
 
-// Dachboard 
+// Dashboard
 $route->get("/", [DashboardController::class, 'dashboard']);
 
 // Product List
@@ -28,7 +27,7 @@ $route->get("/import_product", [ImportProductController::class, 'import_product'
 
 // Category List
 $route->get("/category_list", [CategoryListController::class, 'index']);
-// $route->get("/category/delete_category", [CategoryListController::class, 'destroy']);
+$route->post('/delete_category', [CategoryListController::class, 'destroy']);
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
