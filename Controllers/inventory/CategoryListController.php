@@ -25,19 +25,17 @@ class CategoryListController extends BaseController
         $this->view("inventory/category_list");
     }
 
-
     function store()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
-                'name' => !empty($_POST['name']) ? $_POST['name'] : null,
-                'model' => !empty($_POST['model']) ? $_POST['model'] : null,
-                'type' => !empty($_POST['type']) ? $_POST['type'] : null,
-                'description' => !empty($_POST['description']) ? $_POST['description'] : null,
+                'Category_Name' => !empty($_POST['Category_Name']) ? $_POST['Category_Name'] : null,
+                'Model_Product' => !empty($_POST['Model_Product']) ? $_POST['Model_Product'] : null,
+                'Type_Product' => !empty($_POST['Type_Product']) ? $_POST['Type_Product'] : null,
             ];
 
-            if (empty($data['name']) || empty($data['model']) || empty($data['type'])) {
-                die('Error: Name, Model, and Type fields are required.');
+            if (empty($data['Category_Name']) || empty($data['Model_Product']) || empty($data['Type_Product'])) {
+                die('Error: Category_Name, Model_Product, and Type_Product fields are required.');
             }
 
             $this->iteam->createCategory($data);
@@ -51,12 +49,11 @@ class CategoryListController extends BaseController
         $this->view('inventory/category_list', ['category' => $category]);
     }
 
-
     public function update($id = null)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($id === null && isset($_GET['id'])) {
-                $id = $_GET['id'];  
+            if ($id === null && isset($_POST['Category_ID'])) {
+                $id = $_POST['Category_ID'];
             }
 
             if (!$id) {
@@ -64,14 +61,14 @@ class CategoryListController extends BaseController
             }
 
             $data = [
-                'name' => $_POST['name'],
-                'model' => $_POST['model'],
-                'type' => $_POST['type'],
-                'description' => $_POST['description']
+                'Category_Name' => $_POST['Category_Name'] ?? null,
+                'Model_Product' => $_POST['Model_Product'] ?? null,
+                'Type_Product' => $_POST['Type_Product'] ?? null,
             ];
 
             $this->iteam->updateCategory($id, $data);
             $this->redirect('/category_list');
         }
     }
+
 }
