@@ -21,7 +21,6 @@
                     <th>Name</th>
                     <th>Model</th>
                     <th>Type</th>
-                    <th>Description</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -29,26 +28,25 @@
                 <?php foreach ($categories as $index => $category): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
-                        <td><?= $category['name'] ?></td>
-                        <td><?= $category['model'] ?></td>
-                        <td><?= $category['type'] ?></td>
-                        <td><?= $category['description'] ?></td>
+                        <td><?= $category['Category_Name'] ?></td>
+                        <td><?= $category['Model_Product'] ?></td>
+                        <td><?= $category['Type_Product'] ?></td>
                         <td>
-                            <button class="btn btn-warning editCategoryBtn"
-                                data-id="<?= $category['id'] ?>"
-                                data-name="<?= htmlspecialchars($category['name']) ?>"
-                                data-model="<?= htmlspecialchars($category['model']) ?>"
-                                data-type="<?= htmlspecialchars($category['type']) ?>"
-                                data-description="<?= htmlspecialchars($category['description']) ?>"
+                            <a class="text-warning me-2 editCategoryBtn"
+                                data-id="<?= $category['Category_ID'] ?>"
+                                data-name="<?= htmlspecialchars($category['Category_Name']) ?>"
+                                data-model="<?= htmlspecialchars($category['Model_Product']) ?>"
+                                data-type="<?= htmlspecialchars($category['Type_Product']) ?>"
                                 data-bs-toggle="modal" data-bs-target="#editCategoryModal">
-                                Edit
-                            </button>
+                                <i class="bi bi-pencil-square fs-4"></i>
+                            </a>
 
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#category<?= $category['id'] ?>">
-                                delete
-                            </button>
-                            <!-- Modal -->
-                            <?php require 'delete.php' ?>
+                            <a type="button" class="text-danger deleteCategoryBtn"
+                                data-id="<?= $category['Category_ID'] ?>"
+                                data-name="<?= htmlspecialchars($category['Category_Name']) ?>"
+                                data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
+                                <i class="bi bi-trash fs-4"></i>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach ?>
@@ -83,7 +81,6 @@
     </div>
 </div>
 
-
 <!-- Modal for Adding Category -->
 <form action="/inventory/category_list/store" method="POST">
     <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
@@ -97,19 +94,15 @@
                     <form id="addCategoryForm">
                         <div class="form-group">
                             <label for="name">Category Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter category name" required>
+                            <input type="text" class="form-control" id="name" name="Category_Name" placeholder="Enter category name" required>
                         </div>
                         <div class="form-group">
                             <label for="model">Category Model</label>
-                            <input type="text" class="form-control" id="model" name="model" placeholder="Enter category model" required>
+                            <input type="text" class="form-control" id="model" name="Model_Product" placeholder="Enter category model" required>
                         </div>
                         <div class="form-group">
                             <label for="type">Category Type</label>
-                            <input type="text" class="form-control" id="type" name="type" placeholder="Enter category type" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" id="description" name="description" placeholder="Write a comment..."></textarea>
+                            <input type="text" class="form-control" id="type" name="Type_Product" placeholder="Enter category type" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Add</button>
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
@@ -120,11 +113,8 @@
     </div>
 </form>
 
-
-
-
-<!-- Edit Category Modal -->
-<form action="/inventory/category_list/update?id=<?= $category['id'] ?>" method="POST">
+<!-- Modal for Editing Category -->
+<form action="/inventory/category_list/update?Category_ID=<?= $category['Category_ID'] ?>" method="POST">
     <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -133,21 +123,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Add hidden field for Category_ID -->
+                    <input type="hidden" name="Category_ID" id="category-id">
                     <div class="form-group">
                         <label for="edit-name">Category Name</label>
-                        <input type="text" class="form-control" id="edit-name" name="name" value="">
+                        <input type="text" class="form-control" id="edit-name" name="Category_Name" value="">
                     </div>
                     <div class="form-group">
                         <label for="edit-model">Category Model</label>
-                        <input type="text" class="form-control" id="edit-model" name="model" value="">
+                        <input type="text" class="form-control" id="edit-model" name="Model_Product" value="">
                     </div>
                     <div class="form-group">
                         <label for="edit-type">Category Type</label>
-                        <input type="text" class="form-control" id="edit-type" name="type" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-description">Description</label>
-                        <textarea class="form-control" id="edit-description" rows="3" name="description"></textarea>
+                        <input type="text" class="form-control" id="edit-type" name="Type_Product" value="">
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                     <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
@@ -157,7 +145,6 @@
     </div>
 </form>
 
-
 <script>
     document.querySelectorAll('.editCategoryBtn').forEach(button => {
         button.addEventListener('click', function() {
@@ -166,17 +153,19 @@
             const categoryName = this.getAttribute('data-name');
             const categoryModel = this.getAttribute('data-model');
             const categoryType = this.getAttribute('data-type');
-            const categoryDescription = this.getAttribute('data-description');
 
             // Set the values in the modal form fields
             document.getElementById('edit-name').value = categoryName;
             document.getElementById('edit-model').value = categoryModel;
             document.getElementById('edit-type').value = categoryType;
-            document.getElementById('edit-description').value = categoryDescription;
 
-            // You could also pass the category ID to the form action dynamically if needed
-            const formAction = '/inventory/category_list/update?id=' + categoryId;
+            // Set the hidden Category_ID field value
+            document.getElementById('category-id').value = categoryId;
+
+            // Update the form action dynamically with the category ID
+            const formAction = '/inventory/category_list/update?Category_ID=' + categoryId;
             document.querySelector('form[action^="/inventory/category_list/update"]').action = formAction;
         });
     });
 </script>
+

@@ -95,70 +95,31 @@
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" class="form-check-input"></th>
-                        <th onclick="sortTable('product')" class="sortable">Product <span id="productSortIcon"></span></th>
-                        <th onclick="sortTable('category')" class="sortable">Category <span id="categorySortIcon"></span></th>
-                        <th onclick="sortTable('stock')" class="sortable">Stock <span id="stockSortIcon"></span></th>
-                        <th onclick="sortTable('sku')" class="sortable">SKU <span id="skuSortIcon"></span></th>
-                        <th onclick="sortTable('earning')" class="sortable">Earning <span id="earningSortIcon"></span></th>
-                        <th onclick="sortTable('qty')" class="sortable">QTY <span id="qtySortIcon"></span></th>
-                        <th onclick="sortTable('status')" class="sortable">Status <span id="statusSortIcon"></span></th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Status</th>
+                        <!-- <th>Category</th>
+                        <th>Model</th> -->
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-bottom">
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>
-                            <div style="display: flex; align-items: flex-start;">
-                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                                <div>
-                                    <strong style="display: block;">Travel</strong>
-                                    <small style="display: block;">popular</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-danger">Shoes</span></td>
-                        <td>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" checked>
-                            </div>
-                        </td>
-                        <td>31063</td>
-                        <td class="earning">$125</td>
-                        <td class="product-count">10</td>
-                        <td><span class="badge bg-danger">Inactive</span></td>
-                        <td>
-                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                        </td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>
-                            <div style="display: flex; align-items: flex-start;">
-                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                                <div>
-                                    <strong style="display: block;">Travel</strong>
-                                    <small style="display: block;">popular</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-danger">Electronics</span></td>
-                        <td>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" checked>
-                            </div>
-                        </td>
-                        <td>5829</td>
-                        <td class="earning">$263.49</td>
-                        <td class="product-count">5</td>
-                        <td><span class="badge bg-warning">Scheduled</span></td>
-                        <td>
-                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                        </td>
-                    </tr>
+                    <?php foreach ($products as $index => $product): ?>
+                        <tr>
+                            <td><?= $index + 1 ?></td>
+                            <td><?= $product['name'] ?></td>
+                            <td><?= $product['code'] ?></td>
+                            <td><?= $product['status'] ?></td>
+                            <td>
+                                <a href="/product/edit?id=<?= $product['id'] ?>" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                                <a type="button" class="text-danger" data-bs-toggle="modal" data-bs-target="#product<?= $product['id'] ?>">
+                                    <i class="bi bi-trash fs-4"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
                     <tr>
                         <td><input type="checkbox" class="form-check-input"></td>
                         <td>
