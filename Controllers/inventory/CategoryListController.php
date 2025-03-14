@@ -78,40 +78,14 @@ class CategoryListController extends BaseController
     }
 
     public function destroy()
-{
-    // Ensure session is started
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    {
+        if (isset($_POST['Category_ID'])) {
+            $id = $_POST['Category_ID'];
+            $this->iteam->deleteCategory($id);
+            $this->redirect('/category_list');
+        } else {
+            die('Error: No category ID provided.');
+        }
     }
 
-    if ($_SERVER["REQUEST_METHOD"] !== "POST" || !isset($_POST['id'])) {
-        http_response_code(400);
-        exit("Invalid request method or missing ID.");
-    }
-
-    $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
-
-    // Debugging: Log the tokens for comparison
-    error_log("POST CSRF Token: " . ($_POST['csrf_token'] ?? 'Not set'));
-    error_log("Session CSRF Token: " . ($_SESSION['csrf_token'] ?? 'Not set'));
-
-    // Validate CSRF token
-    if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        http_response_code(403);
-        $errorMessage = "Invalid CSRF token.<br>";
-        $errorMessage .= "POST Token: " . htmlspecialchars($_POST['csrf_token'] ?? 'Not set') . "<br>";
-        $errorMessage .= "Session Token: " . htmlspecialchars($_SESSION['csrf_token'] ?? 'Not set');
-        exit($errorMessage);
-    }
-
-    // Attempt to delete the category
-    if ($this->categoryModel->deleteCategory($id)) {
-        header("Location: /category_list?success=1");
-        exit();
-    } else {
-        error_log("Failed to delete category with ID: $id");
-        header("Location: /category_list?error=1");
-        exit();
-    }
-}
 }

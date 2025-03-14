@@ -72,14 +72,14 @@ class CategoryModel
     }
 
     // Delete a category by ID
-    public function deleteCategory($id)
+    public function deleteCategory($categoryId)
     {
-        // Assuming the database column is 'Category_ID' based on the modal
-        $sql = "DELETE FROM categories WHERE Category_ID = :id";
-        $params = ['id' => $id]; // Prepare the parameters for the query
+        $sql = "DELETE FROM products WHERE Product_Category = :categoryId";
+        $this->pdo->query($sql, ['categoryId' => $categoryId]);
 
-        $stmt = $this->db->query($sql, $params); // Execute the query with parameters
-
-        return $stmt !== false; // Return true if the query was successful, false otherwise
+        $sql = "DELETE FROM categories WHERE Category_ID = :categoryId";
+        $this->pdo->query($sql, ['categoryId' => $categoryId]);
     }
+
 }
+
