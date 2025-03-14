@@ -81,5 +81,4 @@ class CategoryListController extends BaseController
             die('Error: No category ID provided.');
         }
     }
-
 }
