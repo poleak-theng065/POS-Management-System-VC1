@@ -19,7 +19,7 @@ class Database
         try {
             $this->db = new PDO($dsn, $username, $password);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "✅ Connected successfully!<br>";
+            echo "";
         } catch (PDOException $e) {
             die("❌ Connection failed: " . $e->getMessage());
         }

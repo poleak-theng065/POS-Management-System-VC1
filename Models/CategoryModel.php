@@ -24,15 +24,13 @@ class CategoryModel
 
     function createCategory($data)
     {
-        $sql = 'INSERT INTO categories (name, model, type, description) 
-                VALUES (:name, :model, :type, :description)';
+        $sql = 'INSERT INTO categories (Category_Name, Model_Product, Type_Product) 
+                VALUES (:Category_Name, :Model_Product, :Type_Product)';
 
         $stmt = $this->pdo->query($sql, [
             'Category_Name' => $data['Category_Name'],
-            'Quantity_Product' => $data['Quantity_Product'],
             'Model_Product' => $data['Model_Product'],
             'Type_Product' => $data['Type_Product'],
-            'Sell_Price' => $data['Sell_Price'],
         ]);
 
         if ($stmt->errorCode() != '00000') {
@@ -40,38 +38,41 @@ class CategoryModel
         }
     }
 
+
     function getCategory($id)
     {
         $stmt = $this->pdo->query(
-            'SELECT * FROM categories WHERE id = :id',
-            ['id' => $id]
+            'SELECT * FROM categories WHERE Category_ID = :Category_ID',
+            ['Category_ID' => $id]
         );
         $category = $stmt->fetch();
         return $category;
     }
 
-
     function updateCategory($id, $data)
     {
+        if (!$id) {
+            die('Error: No category ID provided.');
+        }
+
         $sql = 'UPDATE categories 
-                SET name = :name, model = :model, type = :type, description = :description 
-                WHERE id = :id';
+                SET Category_Name = :Category_Name, 
+                    Model_Product = :Model_Product, 
+                    Type_Product = :Type_Product 
+                WHERE Category_ID = :Category_ID';
 
         $stmt = $this->pdo->query($sql, [
-            'id' => $id,
-            'Category_Name' => $data['Category_Name'],
-            'Quantity_Product' => $data['Quantity_Productl'],
-            'Model_Product' => $data['Model_Product'],
-            'Type_Product' => $data['Type_Product'],
-            'Sell_Price' => $data['Sell_Price'],
+            ':Category_ID' => $id,
+            ':Category_Name' => $data['Category_Name'],
+            ':Model_Product' => $data['Model_Product'],
+            ':Type_Product' => $data['Type_Product'],
         ]);
 
         if ($stmt->rowCount() === 0) {
-            die('Error: No category was updated.');
+            echo 'Warning: No changes were made. The category may already have the same values.';
         }
     }
 
-    // Delete a category by ID
     public function deleteCategory($categoryId)
     {
         $sql = "DELETE FROM products WHERE Product_Category = :categoryId";
@@ -82,4 +83,3 @@ class CategoryModel
     }
 
 }
-

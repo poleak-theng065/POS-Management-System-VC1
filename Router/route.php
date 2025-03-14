@@ -14,6 +14,7 @@ require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ImportNewProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
 
+
 $route = new Router();
 
 // category
@@ -22,13 +23,14 @@ $route->get("/inventory/category_list/create", [CategoryListController::class, '
 $route->get('/inventory/category_list/edit/{id}', [CategoryListController::class, 'edit']);
 $route->post('/inventory/category_list/update', [CategoryListController::class, 'update']);
 $route->post('/inventory/category_list/store',[CategoryListController::class, 'store']);
-$route->post('/inventory/category_list/delete', [CategoryListController::class, 'destroy']);
+$route->post('/inventory/category_list/destroy/{id}', [CategoryListController::class, 'destroy']);
+
+// Product List
+$route->get("/product_list", [ProductListController::class, 'index']);
+$route->get("/inventory/category_list/create", [CategoryListController::class, 'create']);
 
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
-
-// Product List
-$route->get("/product_list", [ProductListController::class, 'product_list']);
 
 // Import Product
 $route->get("/import_product", [ImportProductController::class, 'import_product']);
