@@ -50,6 +50,11 @@ $route->get("/run_out_of_stock", [RunOutOfStockController::class, 'runOutOfStock
 
 // Return Product
 $route->get("/return_product", [ReturnProductController::class, 'returnProduct']);
+$route->get("/return_product/create", [ReturnProductController::class, 'create']);
+$route->get("/return_product/store", [ReturnProductController::class, 'store']);
+$route->get("/return_product/edit/{id}", [ReturnProductController::class, 'edit']);
+$route->get("/return_product/update/{id}", [ReturnProductController::class, 'update']);
+$route->get("/return_product/delete/{id}", [ReturnProductController::class, 'delete']);
 
 // New Import Product
 $route->get("/arrived_product", [ArrivedProductController::class, 'arrivedProduct']);
