@@ -333,113 +333,27 @@
 
     
 <script>
-  let currentPage = 1;
-  let rowsPerPage = 2;  // Default entries per page
-
-  // Event listener to handle entries per page change
-  document.getElementById("entriesPerPage").addEventListener("change", function() {
-      rowsPerPage = parseInt(this.value);
-      currentPage = 1; // Reset to the first page when changing the number of rows per page
-      updateTable();
-  });
-
-  // Function to update the table based on the current page and entries per page
-  function updateTable() {
-      const rows = document.querySelectorAll("#categoriesTable tr");
-      const totalRows = rows.length;
-      const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-      // Update entries info text
-      const startEntry = (currentPage - 1) * rowsPerPage + 1;
-      const endEntry = Math.min(currentPage * rowsPerPage, totalRows);
-      document.getElementById("entriesInfo").textContent = `Showing ${startEntry} to ${endEntry} of ${totalRows} entries`;
-
-      // Hide all rows
-      rows.forEach(row => row.style.display = "none");
-
-      // Show the rows for the current page
-      const start = (currentPage - 1) * rowsPerPage;
-      const end = start + rowsPerPage;
-      for (let i = start; i < end && i < rows.length; i++) {
-          rows[i].style.display = "";
-      }
-
-      // Update pagination
-      updatePagination(totalPages);
-  }
-
-  // Function to update pagination controls
-  function updatePagination(totalPages) {
-      const pagination = document.getElementById("pagination");
-      const prevPage = document.getElementById("prevPage");
-      const nextPage = document.getElementById("nextPage");
-
-      // Reset pagination
-      pagination.innerHTML = `
-          <li class="page-item ${currentPage === 1 ? 'disabled' : ''}" id="prevPage">
-              <a class="page-link" href="#">«</a>
-          </li>
-      `;
-
-      for (let i = 1; i <= totalPages; i++) {
-          const pageItem = document.createElement('li');
-          pageItem.classList.add('page-item');
-          pageItem.classList.toggle('active', i === currentPage);
-          pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-          pageItem.addEventListener('click', () => {
-              currentPage = i;
-              updateTable();
-          });
-          pagination.appendChild(pageItem);
-      }
-
-      pagination.innerHTML += `
-          <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}" id="nextPage">
-              <a class="page-link" href="#">»</a>
-          </li>
-      `;
-
-      // Handle prev/next page buttons
-      prevPage.addEventListener("click", () => {
-          if (currentPage > 1) {
-              currentPage--;
-              updateTable();
-          }
-      });
-
-      nextPage.addEventListener("click", () => {
-          if (currentPage < totalPages) {
-              currentPage++;
-              updateTable();
-          }
-      });
-  }
-
-  // Function for category search functionality
   function searchCategory() {
-      let query = document.getElementById("searchInput").value.toLowerCase().trim();
-      let tableRows = document.querySelectorAll("#categoriesTable tr");
-      let found = false;
+    let query = document.getElementById("searchInput").value.toLowerCase().trim(); // Get the search query
+    let tableRows = document.querySelectorAll("#categoriesTable tr"); // Get all table rows
+    let found = false; // Variable to track if any matching rows are found
 
-      tableRows.forEach(row => {
-          let categoryName = row.cells[1].textContent.toLowerCase(); // Get Category Name
-          let model = row.cells[2].textContent.toLowerCase(); // Get Model
-          let type = row.cells[3].textContent.toLowerCase(); // Get Type
+    tableRows.forEach(row => {
+        let categoryName = row.cells[1].textContent.toLowerCase(); // Get Category Name
+        let model = row.cells[2].textContent.toLowerCase(); // Get Model
+        let type = row.cells[3].textContent.toLowerCase(); // Get Type
 
-          if (categoryName.includes(query) || model.includes(query) || type.includes(query)) {
-              row.style.display = ""; // Show row
-              found = true;
-          } else {
-              row.style.display = "none"; // Hide row
-          }
-      });
+        // If any of the fields contains the query, show the row, else hide it
+        if (categoryName.includes(query) || model.includes(query) || type.includes(query)) {
+            row.style.display = ""; // Show row
+            found = true;
+        } else {
+            row.style.display = "none"; // Hide row
+        }
+    });
 
-      // Show "No categories found" if nothing matches
-      document.getElementById("noResults").style.display = found ? "none" : "block";
-  }
+    // Show "No categories found" if nothing matches
+    document.getElementById("noResults").style.display = found ? "none" : "block";
+}
 
-  // Initialize the table when the page loads
-  document.addEventListener('DOMContentLoaded', function() {
-      updateTable();
-  });
 </script>

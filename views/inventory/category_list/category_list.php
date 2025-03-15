@@ -29,22 +29,22 @@
                 <?php foreach ($categories as $index => $category): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
-                        <td><?= $category['Category_Name'] ?></td>
-                        <td><?= $category['Model_Product'] ?></td>
-                        <td><?= $category['Type_Product'] ?></td>
+                        <td><?= $category['category_id'] ?></td>
+                        <td><?= $category['name'] ?></td>
+                        <td><?= $category['description'] ?></td>
                         <td>
                             <a class="text-warning me-2 editCategoryBtn"
-                                data-id="<?= $category['Category_ID'] ?>"
-                                data-name="<?= htmlspecialchars($category['Category_Name']) ?>"
-                                data-model="<?= htmlspecialchars($category['Model_Product']) ?>"
-                                data-type="<?= htmlspecialchars($category['Type_Product']) ?>"
+                                data-id="<?= $category['category_id'] ?>"
+                                data-name="<?= htmlspecialchars($category['category_id']) ?>"
+                                data-model="<?= htmlspecialchars($category['name']) ?>"
+                                data-type="<?= htmlspecialchars($category['description']) ?>"
                                 data-bs-toggle="modal" data-bs-target="#editCategoryModal">
                                 <i class="bi bi-pencil-square fs-4"></i>
                             </a>
 
                             <a type="button" class="text-danger deleteCategoryBtn"
-                                data-id="<?= $category['Category_ID'] ?>"
-                                data-name="<?= htmlspecialchars($category['Category_Name']) ?>"
+                                data-id="<?= $category['category_id'] ?>"
+                                data-name="<?= htmlspecialchars($category['name']) ?>"
                                 data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
                                 <i class="bi bi-trash fs-4"></i>
                             </a>
@@ -117,7 +117,7 @@
 
 
 <!-- Modal for Editing Category -->
-<form action="/inventory/category_list/update?Category_ID=<?= $category['Category_ID'] ?>" method="POST">
+<form action="/inventory/category_list/update?category_id=<?= $category['category_id'] ?>" method="POST">
     <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -127,7 +127,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Add hidden field for Category_ID -->
-                    <input type="hidden" name="Category_ID" id="category-id">
+                    <input type="hidden" name="category_id" id="category-id">
                     <div class="form-group">
                         <label for="edit-name">Category Name</label>
                         <input type="text" class="form-control" id="edit-name" name="Category_Name" value="">
@@ -171,6 +171,8 @@
             document.querySelector('form[action^="/inventory/category_list/update"]').action = formAction;
         });
     });
+
+
 </script>
 <!-- Delete Modal (Single Modal for All Categories) -->
 <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
