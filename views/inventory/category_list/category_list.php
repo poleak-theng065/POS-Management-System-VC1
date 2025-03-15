@@ -2,7 +2,8 @@
     <h1>Product Cateory List</h1>
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <input type="text" class="form-control w-25" placeholder="Search Category">
+        <input type="text" id="searchInput" class="form-control w-25" placeholder="Search Category..." onkeyup="searchCategory()">
+        <p id="noResults" style="display: none; color: red;">No categories found.</p>
             <div class="d-flex align-items-center">
                 <select class="form-select w-auto me-2" id="entriesPerPage">
                     <option value="2">2</option>
@@ -114,6 +115,7 @@
     </div>
 </form>
 
+
 <!-- Modal for Editing Category -->
 <form action="/inventory/category_list/update?Category_ID=<?= $category['Category_ID'] ?>" method="POST">
     <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
@@ -199,4 +201,29 @@
             document.getElementById("deleteCategoryId").value = categoryId;
         });
     });
+</script>
+
+
+<script>
+function searchCategory() {
+    let query = document.getElementById("searchInput").value.toLowerCase().trim();
+    let tableRows = document.querySelectorAll("#categoriesTable tr");
+    let found = false;
+
+    tableRows.forEach(row => {
+        let categoryName = row.cells[1].textContent.toLowerCase(); // Get Category Name
+        let model = row.cells[2].textContent.toLowerCase(); // Get Model
+        let type = row.cells[3].textContent.toLowerCase(); // Get Type
+
+        if (categoryName.includes(query) || model.includes(query) || type.includes(query)) {
+            row.style.display = ""; // Show row
+            found = true;
+        } else {
+            row.style.display = "none"; // Hide row
+        }
+    });
+
+    // Show "No categories found" if nothing matches
+    document.getElementById("noResults").style.display = found ? "none" : "block";
+}
 </script>
