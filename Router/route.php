@@ -1,4 +1,5 @@
 <?php
+
 require_once "Router.php";
 require_once "Controllers/BaseController.php";
 require_once "Database/Database.php";
@@ -11,7 +12,7 @@ require_once "Controllers/inventory/SoldProductController.php";
 require_once "Controllers/inventory/LowStockProductController.php";
 require_once "Controllers/inventory/RunOutOfStockController.php";
 require_once "Controllers/inventory/ReturnProductController.php";
-require_once "Controllers/inventory/ImportNewProductController.php";
+require_once "Controllers/inventory/ArrivedProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
 
 
@@ -32,14 +33,8 @@ $route->get("/inventory/category_list/create", [CategoryListController::class, '
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
 
-// Product List
-// $route->get("/product_list", [ProductListController::class, 'productList']);
-
 // Import Product
 $route->get("/import_product", [ImportProductController::class, 'importProduct']);
-
-// Category List
-// $route->get("/category_list", [CategoryListController::class, 'categoryList']);
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
@@ -57,7 +52,10 @@ $route->get("/run_out_of_stock", [RunOutOfStockController::class, 'runOutOfStock
 $route->get("/return_product", [ReturnProductController::class, 'returnProduct']);
 
 // New Import Product
-$route->get("/import_new_product", [ImportNewProductController::class, 'importNewProduct']);
+$route->get("/arrived_product", [ArrivedProductController::class, 'arrivedProduct']);
+$route->get("/arrived_product/edit/{id}", [ArrivedProductController::class, 'edit']);
+$route->put("/arrived_product/update/{id}", [ArrivedProductController::class, 'update']);
+$route->get("/arrived_product/delete/{id}", [ArrivedProductController::class, 'delete']);
 
 // Order New Product
 $route->get("/order_new_product", [OrderNewProductController::class, 'orderNewProduct']);

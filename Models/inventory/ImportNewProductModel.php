@@ -4,7 +4,7 @@ class ImportNewProductModel {
     private $db;
 
     public function __construct() {
-        $this->db = new Database("localhost", "", "root", "");
+        $this->db = new Database("localhost", "inventorydb", "root", "");
     }
 
     public function getNewImportProduct() {
