@@ -1,15 +1,10 @@
 <?php
 require_once "Models/CategoryModel.php";
 
-<<<<<<< HEAD
-class CategoryListController extends BaseController {
-    public function categoryList() {
-=======
 class CategoryListController extends BaseController
 {
     public function category_list()
     {
->>>>>>> main
         $this->view('inventory/category_list/category_list');
     }
 
