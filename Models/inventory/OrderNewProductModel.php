@@ -4,7 +4,7 @@ class OrderNewProductModel {
     private $db;
 
     public function __construct() {
-        $this->db = new Database("localhost", "test_vc1", "root", "");
+        $this->db = new Database("localhost", "inventorydb", "root", "");
     }
 
     public function getOrderNewProduct() {
