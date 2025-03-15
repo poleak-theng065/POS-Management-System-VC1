@@ -1,4 +1,3 @@
-
 <div class="container mt-4">
     <h1>Product Cateory List</h1>
     <div class="card">
@@ -18,110 +17,39 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th><input type="checkbox" class="form-check-input"></th>
-                    <th>Categories</th>
-                    <th class="sortable" onclick="sortTable('products')">
-                        Total Products 
-                        <span id="productSortIcon" class="sort-icon"></span>
-                    </th>
-                    <th class="sortable" onclick="sortTable('earning')">
-                        Total Earning 
-                        <span id="earningSortIcon" class="sort-icon"></span>
-                    </th>
-                    <th>Actions</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Type</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody id="categoriesTable">
-                <tr>
-                    <td><input type="checkbox" class="form-check-input"></td>
-                    <td>
-                        <div style="display: flex; align-items: flex-start;">
-                            <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                            <div>
-                                <strong style="display: block;">Travel</strong>
-                                <small style="display: block;">popular</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="product-count">4186</td>
-                    <td class="earning">$7129.99</td>
-                    <td>
-                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" class="form-check-input"></td>
-                    <td>
-                        <div style="display: flex; align-items: flex-start;">
-                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                                <div>
-                                    <strong style="display: block;">Travel</strong>
-                                    <small style="display: block;">popular</small>
-                                </div>
-                        </div>
-                    </td>
-                    <td class="product-count">2500</td>
-                    <td class="earning">$9912.99</td>
-                    <td>
-                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" class="form-check-input"></td>
-                    <td>
-                        <div style="display: flex; align-items: flex-start;">
-                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                                <div>
-                                    <strong style="display: block;">Travel</strong>
-                                    <small style="display: block;">popular</small>
-                                </div>
-                        </div>
-                    </td>
-                    <td class="product-count">3000</td>
-                    <td class="earning">$15000.00</td>
-                    <td>
-                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" class="form-check-input"></td>
-                    <td>
-                        <div style="display: flex; align-items: flex-start;">
-                            <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                            <div>
-                                <strong style="display: block;">Travel</strong>
-                                <small style="display: block;">popular</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="product-count">1200</td>
-                    <td class="earning">$5000.00</td>
-                    <td>
-                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" class="form-check-input"></td>
-                    <td>
-                        <div style="display: flex; align-items: flex-start;">
-                            <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                            <div>
-                                <strong style="display: block;">Travel</strong>
-                                <small style="display: block;">popular</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="product-count">600</td>
-                    <td class="earning">$3000.00</td>
-                    <td>
-                        <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                        <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                    </td>
-                </tr>
+                <?php foreach ($categories as $index => $category): ?>
+                    <tr>
+                        <td><?= $index + 1 ?></td>
+                        <td><?= $category['Category_Name'] ?></td>
+                        <td><?= $category['Model_Product'] ?></td>
+                        <td><?= $category['Type_Product'] ?></td>
+                        <td>
+                            <a class="text-warning me-2 editCategoryBtn"
+                                data-id="<?= $category['Category_ID'] ?>"
+                                data-name="<?= htmlspecialchars($category['Category_Name']) ?>"
+                                data-model="<?= htmlspecialchars($category['Model_Product']) ?>"
+                                data-type="<?= htmlspecialchars($category['Type_Product']) ?>"
+                                data-bs-toggle="modal" data-bs-target="#editCategoryModal">
+                                <i class="bi bi-pencil-square fs-4"></i>
+                            </a>
+
+                            <a type="button" class="text-danger deleteCategoryBtn"
+                                data-id="<?= $category['Category_ID'] ?>"
+                                data-name="<?= htmlspecialchars($category['Category_Name']) ?>"
+                                data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
+                                <i class="bi bi-trash fs-4"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
             </tbody>
         </table>
 
@@ -155,58 +83,120 @@
 
 
 <!-- Modal for Adding Category -->
-<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<form action="/inventory/category_list/store" method="POST">
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCategoryForm">
+                        <div class="form-group">
+                            <label for="name">Category Name</label>
+                            <input type="text" class="form-control" id="name" name="Category_Name" placeholder="Enter category name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="model">Category Model</label>
+                            <input type="text" class="form-control" id="model" name="Model_Product" placeholder="Enter category model" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Category Type</label>
+                            <input type="text" class="form-control" id="type" name="Type_Product" placeholder="Enter category type" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Modal for Editing Category -->
+<form action="/inventory/category_list/update?Category_ID=<?= $category['Category_ID'] ?>" method="POST">
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add hidden field for Category_ID -->
+                    <input type="hidden" name="Category_ID" id="category-id">
+                    <div class="form-group">
+                        <label for="edit-name">Category Name</label>
+                        <input type="text" class="form-control" id="edit-name" name="Category_Name" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-model">Category Model</label>
+                        <input type="text" class="form-control" id="edit-model" name="Model_Product" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-type">Category Type</label>
+                        <input type="text" class="form-control" id="edit-type" name="Type_Product" value="">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    document.querySelectorAll('.editCategoryBtn').forEach(button => {
+        button.addEventListener('click', function() {
+            // Get data attributes from the button
+            const categoryId = this.getAttribute('data-id');
+            const categoryName = this.getAttribute('data-name');
+            const categoryModel = this.getAttribute('data-model');
+            const categoryType = this.getAttribute('data-type');
+
+            // Set the values in the modal form fields
+            document.getElementById('edit-name').value = categoryName;
+            document.getElementById('edit-model').value = categoryModel;
+            document.getElementById('edit-type').value = categoryType;
+
+            // Set the hidden Category_ID field value
+            document.getElementById('category-id').value = categoryId;
+
+            // Update the form action dynamically with the category ID
+            const formAction = '/inventory/category_list/update?Category_ID=' + categoryId;
+            document.querySelector('form[action^="/inventory/category_list/update"]').action = formAction;
+        });
+    });
+</script>
+<!-- Delete Modal (Single Modal for All Categories) -->
+<div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+                <h5 class="modal-title" id="deleteCategoryModalLabel">Delete Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addCategoryForm">
-                    <div class="form-group">
-                        <label for="categoryTitle">Title</label>
-                        <input type="text" class="form-control" id="categoryTitle" placeholder="Enter category title" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="categorySlug">Slug</label>
-                        <input type="text" class="form-control" id="categorySlug" placeholder="Enter slug" required>
-                        <small id="slugError" class="text-danger" style="display: none;">This slug already exists.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoryAttachment">Attachment</label>
-                        <div class="custom-file mb-3">
-                            <input type="file" class="custom-file-input" id="categoryAttachment" required>
-                            <label class="custom-file-label" for="categoryAttachment">Choose File</label>
-                        </div>
-                        <div id="fileName" class="text-muted">No file chosen</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="parentCategory">Parent category</label>
-                        <select class="form-control custom-select" id="parentCategory" required>
-                            <option value="" disabled selected>Select parent category</option>
-                            <option>Category 1</option>
-                            <option>Category 2</option>
-                            <option>Category 3</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoryDescription">Description</label>
-                        <textarea class="form-control" id="categoryDescription" rows="3" placeholder="Write a comment..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoryStatus">Select category status</label>
-                        <select class="form-control custom-select" id="categoryStatus" required>
-                            <option value="" disabled selected>Select category status</option>
-                            <option>Active</option>
-                            <option>Inactive</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                Are you sure you want to delete <strong id="deleteCategoryName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteCategoryForm" method="POST" action="/inventory/category_list/destroy/<?= $category['Category_ID'] ?>">
+                    <input type="hidden" name="Category_ID" id="deleteCategoryId">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    document.querySelectorAll(".deleteCategoryBtn").forEach(button => {
+        button.addEventListener("click", function() {
+            let categoryId = this.getAttribute("data-id");
+            document.getElementById("deleteCategoryId").value = categoryId;
+        });
+    });
+</script>
