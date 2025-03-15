@@ -16,7 +16,7 @@
                         <th>Order Date</th>
                         <th>Expected Delivery</th>
                         <th>Supplier</th>
-                        <th>Status</th> <!-- New Status Column -->
+                        <th>Status</th> 
                         <th>Action</th>
                     </tr>
                 </thead>

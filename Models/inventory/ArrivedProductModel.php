@@ -38,8 +38,8 @@ class ArrivedProductModel {
                     ':id' => $id,
                     ':product_name' => $productName,
                     ':quantity' => $quantity,
-                    ':order_date' => $orderDate,
-                    ':expected_delivery' => $expectedDelivery,
+                    ':order_date' => $order_date,
+                    ':expected_delivery' => $expected_delivery,
                     ':supplier' => $supplier,
                     ':status' => $status
                 ]

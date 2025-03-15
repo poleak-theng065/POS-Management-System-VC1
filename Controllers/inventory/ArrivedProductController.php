@@ -24,13 +24,13 @@ class ArrivedProductController extends BaseController {
 
     public function update($id)
     {
-        $productName = $_POST['productname'];
+        $product_name = $_POST['productname'];
         $quantity = $_POST['quantity'];
-        $orderDate = $_POST['orderdate'];
-        $expectedDelivery = $_POST['expecteddelivery'];
+        $order_date = $_POST['orderdate'];
+        $expected_delivery = $_POST['expecteddelivery'];
         $supplier = $_POST['supplier'];
         $status = $_POST['status'];
-        $this->arrivedProducts->updateArrivedProduct($id, $productName, $quantity, $order_date, $expected_delivery, $supplier, $status);
+        $this->arrivedProducts->updateArrivedProduct($id, $product_name, $quantity, $order_date, $expected_delivery, $supplier, $status);
         $this->redirect('/arrived_product');
     }
 

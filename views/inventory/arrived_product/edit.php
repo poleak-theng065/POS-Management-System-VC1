@@ -18,9 +18,9 @@
             <div class="mb-3">
                 <label for="expectedDelivery" class="form-label">Expected Delivery</label>
                 <select class="form-select" id="expectedDelivery" name="expecteddelivery">
-                    <option value="Order" <?= ($arrivedProduct['expected_delivery'] == "Order") ? 'selected' : '' ?>>Order</option>
-                    <option value="In Delivery" <?= ($arrivedProduct['expected_delivery'] == "In Delivery") ? 'selected' : '' ?>>In Delivery</option>
-                    <option value="Arrived" <?= ($arrivedProduct['expected_delivery'] == "Arrived") ? 'selected' : '' ?>>Arrived</option>
+                    <option value="Order" <?= ($arrivedProduct['expected_delivery'] === "Order") ? 'selected' : '' ?>>Order</option>
+                    <option value="In Delivery" <?= ($arrivedProduct['expected_delivery'] === "In Delivery") ? 'selected' : '' ?>>In Delivery</option>
+                    <option value="Arrived" <?= ($arrivedProduct['expected_delivery'] === "Arrived") ? 'selected' : '' ?>>Arrived</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -30,8 +30,8 @@
             <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
                 <select class="form-select" id="status" name="status">
-                    <option value="Ready" <?= ($arrivedProduct['status'] == "Ready") ? 'selected' : '' ?>>Ready</option>
-                    <option value="Pending" <?= ($arrivedProduct['status'] == "Pending") ? 'selected' : '' ?>>Pending</option>
+                    <option value="Ready" <?= ($arrivedProduct['status'] === "Ready") ? 'selected' : '' ?>>Ready</option>
+                    <option value="Pending" <?= ($arrivedProduct['status'] === "Pending") ? 'selected' : '' ?>>Pending</option>
                 </select>
             </div>
             <a href="javascript:history.back()" class="btn btn-secondary" style="margin-right: 10px;">Back</a>
