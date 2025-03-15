@@ -2,12 +2,8 @@
 require_once "Models/ProductModel.php";
 
 class ProductListController extends BaseController {
-<<<<<<< HEAD
-    public function productList() {
-=======
 
     public function product_list() {
->>>>>>> main
         $this->view('inventory/product_list/product_list');
     }
 

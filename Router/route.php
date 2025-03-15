@@ -32,21 +32,9 @@ $route->get("/inventory/category_list/create", [CategoryListController::class, '
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
 
-<<<<<<< HEAD
-// Product List
-$route->get("/product_list", [ProductListController::class, 'productList']);
-
-=======
->>>>>>> main
 // Import Product
 $route->get("/import_product", [ImportProductController::class, 'importProduct']);
 
-<<<<<<< HEAD
-// Category List
-$route->get("/category_list", [CategoryListController::class, 'categoryList']);
-
-=======
->>>>>>> main
 // Login
 $route->get("/login", [LoginController::class, 'login']);
 
