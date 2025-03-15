@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <div class="card p-4 bg-light shadow-sm border-0">
         <h3 class="card-title">Create New Order</h3>
-        <form id="returnForm" action="/returns/add" method="post">
+        <form id="returnForm" action="/return_product/store" method="post">
             <div class="mb-3">
                 <label for="productName" class="form-label">Product Name</label>
                 <input type="text" class="form-control" id="productName" name="product_name" required>

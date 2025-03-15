@@ -23,7 +23,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="orderTableBody">
                     <?php foreach($returnProducts as $returnProduct): ?>
                     <tr class="border-bottom">
                         <td><?= htmlspecialchars($returnProduct['return_id']) ?></td>
@@ -41,8 +41,10 @@
                         </td>
                         <td><?= htmlspecialchars($returnProduct['return_date']) ?></td>
                         <td>
-                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
+                            <a href="/return_product/edit/<?= $returnProduct['return_id'] ?>" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
+                            <a href="/return_product/delete/<?= $returnProduct['return_id'] ?>" class="text-danger" onclick="return confirm('Are you sure you want to delete this return?');">
+                                <i class="bi bi-trash fs-4"></i>
+                            </a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

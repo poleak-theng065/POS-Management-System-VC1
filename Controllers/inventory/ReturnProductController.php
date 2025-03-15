@@ -21,12 +21,12 @@ class ReturnProductController extends BaseController {
 
     public function store()
     {
-        $productName = $_POST['productname'];
+        $productName = $_POST['product_name'];
         $quantity = $_POST['quantity'];
-        $orderDate = $_POST['orderdate'];
-        $expectedDelivery = $_POST['expecteddelivery'];
-        $supplier = $_POST['supplier'];
-        $this->returnProducts->addNewReturnProduct($productName, $quantity, $orderDate, $expectedDelivery, $supplier);
+        $reason_return = $_POST['reason_for_return'];
+        $type_return = $_POST['type_of_return'];
+        $return_date = $_POST['return_date'];
+        $this->returnProducts->addNewReturnProduct($productName, $quantity, $reason_return, $type_return, $return_date);
         $this->redirect('/return_product');
     }
 
@@ -34,23 +34,23 @@ class ReturnProductController extends BaseController {
     public function edit($id) {
 
         $result = $this->returnProducts->getReturnProductById($id);
-        $this->view("inventory/return_product/edit", ['newOrder' => $result]);
+        $this->view("inventory/return_product/edit", ['returnProduct' => $result]);
     }
 
     public function update($id)
     {
-        $productName = $_POST['productname'];
+        $productName = $_POST['product_name'];
         $quantity = $_POST['quantity'];
-        $orderDate = $_POST['orderdate'];
-        $expectedDelivery = $_POST['expecteddelivery'];
-        $supplier = $_POST['supplier'];
-        $this->returnProducts->updateReturnProduct($productName, $quantity, $orderDate, $expectedDelivery, $supplier, $id);
+        $reason_return = $_POST['reason_for_return'];
+        $type_return = $_POST['type_of_return'];
+        $return_date = $_POST['return_date'];
+        $this->returnProducts->updateReturnProduct($id, $productName, $quantity, $reason_return, $type_return, $return_date);
         $this->redirect('/return_product');
     }
 
     public function delete($id)
     {
-        $this->newOrders->deleteReturnProduct($id);
+        $this->returnProducts->deleteReturnProduct($id);
         $this->redirect('/return_product');
     }
 

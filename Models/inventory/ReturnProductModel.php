@@ -4,7 +4,7 @@ class ReturnProductModel {
     private $db;
 
     public function __construct() {
-        $this->db = new Database("localhost", "test_vc1", "root", "");
+        $this->db = new Database("localhost", "inventorydb", "root", "");
     }
 
     public function getReturnProduct() {
@@ -13,18 +13,18 @@ class ReturnProductModel {
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addNewReturnProduct($productName, $quantity, $orderDate, $expectedDelivery, $supplier)
+    public function addNewReturnProduct($productName, $quantity, $reason_return, $type_return, $return_date)
     {
         try {
             $this->db->query(
-                "INSERT INTO new_orders (product_name, quantity, order_date, expected_delivery, supplier) 
-                VALUES (:product_name, :quantity, :order_date, :expected_delivery, :supplier)",
+                "INSERT INTO return_product (product_name, quantity, reason_for_return, type_of_return, return_date) 
+                VALUES (:product_name, :quantity, :reason_for_return, :type_of_return, :return_date)",
                 [
                     ':product_name' => $productName,
                     ':quantity' => $quantity,
-                    ':order_date' => $orderDate,
-                    ':expected_delivery' => $expectedDelivery,
-                    ':supplier' => $supplier
+                    ':reason_for_return' => $reason_return,
+                    ':type_of_return' => $type_return,
+                    ':return_date' => $return_date
                 ]
             );
         } catch (PDOException $e) {
@@ -34,29 +34,29 @@ class ReturnProductModel {
 
     public function getReturnProductById($id) {
 
-        $result = $this->db->query("SELECT * FROM new_orders WHERE id = :id", [':id' => $id]);
+        $result = $this->db->query("SELECT * FROM return_product WHERE return_id = :return_id", [':return_id' => $id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function updateReturnProduct($productName, $quantity, $orderDate, $expectedDelivery, $supplier, $id)
+    public function updateReturnProduct($id, $productName, $quantity, $reason_return, $type_return, $return_date)
     {
         try {
             $this->db->query(
-                "UPDATE new_orders  SET 
+                "UPDATE return_product  SET 
                 product_name = :product_name, 
                 quantity = :quantity, 
-                order_date = :order_date, 
-                expected_delivery = :expected_delivery, 
-                supplier = :supplier 
-                WHERE id = :id",
+                reason_for_return = :reason_for_return, 
+                type_of_return = :type_of_return, 
+                return_date = :return_date 
+                WHERE return_id = :return_id",
 
                 [
+                    ':return_id' => $id,
                     ':product_name' => $productName,
                     ':quantity' => $quantity,
-                    ':order_date' => $orderDate,
-                    ':expected_delivery' => $expectedDelivery,
-                    ':supplier' => $supplier,
-                    ':id' => $id
+                    ':reason_for_return' => $reason_return,
+                    ':type_of_return' => $type_return,
+                    ':return_date' => $return_date,
                 ]
             );
         } catch (PDOException $e) {
@@ -65,11 +65,10 @@ class ReturnProductModel {
     }
 
 
-
     public function deleteReturnProduct($id)
     {
         try {
-            $this->db->query("DELETE FROM new_orders WHERE id = :id", [':id' => $id]);
+            $this->db->query("DELETE FROM return_product WHERE return_id = :return_id", [':return_id' => $id]);
         } catch (PDOException $e) {
             echo "Error deleting product: " . $e->getMessage();
         }
