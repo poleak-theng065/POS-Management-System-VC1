@@ -21,6 +21,7 @@
                 <thead>
                     <tr class="border-0">
                         <th><input type="checkbox" class="form-check-input"></th>
+                        <th>ID</th>
                         <th>Product Name</th>
                         <th>Quantity</th>
                         <th>Import Date</th>
@@ -30,32 +31,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Sample imported product entries -->
+                    <?php foreach($new_imports as $new_import): ?>
                     <tr class="border-bottom">
                         <td><input type="checkbox" class="form-check-input"></td>
-                        <td>Product A</td>
-                        <td>50</td>
-                        <td>March 5, 2023</td>
-                        <td>Supplier X</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
+                        <td> <?= htmlspecialchars($new_import['id'])?> </td>
+                        <td> <?= htmlspecialchars($new_import['product_name'])?> </td>
+                        <td> <?= htmlspecialchars($new_import['quantity'])?> </td>
+                        <td> <?= htmlspecialchars($new_import['import_date'])?> </td>
+                        <td> <?= htmlspecialchars($new_import['supplier'])?> </td>
+                        <td><span class="badge bg-warning"><?= htmlspecialchars($new_import['status'])?></span></td>
                         <td>
                             <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
                             <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
                         </td>
                     </tr>
-                    <tr class="border-bottom">
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>Product B</td>
-                        <td>30</td>
-                        <td>March 8, 2023</td>
-                        <td>Supplier Y</td>
-                        <td><span class="badge bg-success">Ready</span></td>
-                        <td>
-                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                        </td>
-                    </tr>
-                    <!-- Additional rows can be added here -->
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

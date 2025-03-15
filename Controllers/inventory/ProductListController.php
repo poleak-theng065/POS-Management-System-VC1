@@ -1,7 +1,7 @@
 <?php
 
 class ProductListController extends BaseController {
-    public function product_list() {
+    public function productList() {
         $this->view('inventory/product_list/product_list');
     }
 

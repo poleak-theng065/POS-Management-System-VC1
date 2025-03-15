@@ -21,33 +21,38 @@ $route = new Router();
 $route->get("/", [DashboardController::class, 'dashboard']);
 
 // Product List
-$route->get("/product_list", [ProductListController::class, 'product_list']);
+$route->get("/product_list", [ProductListController::class, 'productList']);
 
 // Import Product
-$route->get("/import_product", [ImportProductController::class, 'import_product']);
+$route->get("/import_product", [ImportProductController::class, 'importProduct']);
 
 // Category List
-$route->get("/category_list", [CategoryListController::class, 'category_list']);
+$route->get("/category_list", [CategoryListController::class, 'categoryList']);
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
 
 // Sold Product
-$route->get("/sold_product", [SoldProductController::class, 'sold_product']);
+$route->get("/sold_product", [SoldProductController::class, 'soldProduct']);
 
 // Low Stock Product
-$route->get("/low_stock_product", [LowStockProductController::class, 'low_stock_product']);
+$route->get("/low_stock_product", [LowStockProductController::class, 'lowStockProduct']);
 
 // Run Out Of Stock Product
-$route->get("/run_out_of_stock", [RunOutOfStockController::class, 'run_out_of_stock']);
+$route->get("/run_out_of_stock", [RunOutOfStockController::class, 'runOutOfStock']);
 
 // Return Product
-$route->get("/return_product", [ReturnProductController::class, 'return_product']);
+$route->get("/return_product", [ReturnProductController::class, 'returnProduct']);
 
 // New Import Product
-$route->get("/import_new_product", [ImportNewProductController::class, 'import_new_product']);
+$route->get("/import_new_product", [ImportNewProductController::class, 'importNewProduct']);
 
 // Order New Product
-$route->get("/order_new_product", [OrderNewProductController::class, 'order_new_product']);
+$route->get("/order_new_product", [OrderNewProductController::class, 'orderNewProduct']);
+$route->get("/order_new_product/create", [OrderNewProductController::class, 'create']);
+$route->post("/order_new_product/store", [OrderNewProductController::class, 'store']);
+$route->get("/order_new_product/edit/{id}", [OrderNewProductController::class, 'edit']);
+$route->put("/order_new_product/update/{id}", [OrderNewProductController::class, 'update']);
+$route->get("/order_new_product/delete/{id}", [OrderNewProductController::class, 'delete']);
 
 $route->route();
