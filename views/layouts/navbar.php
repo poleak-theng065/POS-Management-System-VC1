@@ -117,13 +117,13 @@
                     </a>
                 </li>
                 <li class="menu-item active">
-                  <a href="/import_new_product" class="menu-link">
-                    <div data-i18n="Account">New Import Product</div>
+                  <a href="/arrived_product" class="menu-link">
+                    <div data-i18n="Account">Arrived Product</div>
                   </a>
                 </li>
                 <li class="menu-item active">
                   <a href="/order_new_product" class="menu-link">
-                    <div data-i18n="Account">New Order Product</div>
+                    <div data-i18n="Account">Order Product</div>
                   </a>
                 </li>
                 
