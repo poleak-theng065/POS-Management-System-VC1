@@ -63,3 +63,5 @@ let currentPage = 1;
         const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : 'No file chosen';
         fileNameDisplay.textContent = fileName;
     });
+
+    

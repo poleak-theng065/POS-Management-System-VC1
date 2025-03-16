@@ -20,7 +20,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="switchTableBody">
+                <tbody id=switchTableBody>
                     <?php foreach($arrivedProducts as $arrivedProduct): ?>
                         <?php if ($arrivedProduct['expected_delivery'] === 'Arrived'): ?>
                             <tr class="border-bottom">

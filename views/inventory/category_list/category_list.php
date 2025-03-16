@@ -2,7 +2,7 @@
     <h1>Product Cateory List</h1>
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <input type="text" class="form-control w-25" placeholder="Search Category">
+        <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
                 <select class="form-select w-auto me-2" id="entriesPerPage">
                     <option value="2">2</option>
@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <table class="table table-hover">
+        <table class="table table-hover" id= switchTableBody  >
             <thead>
                 <tr>
                     <th>ID</th>
@@ -114,6 +114,7 @@
     </div>
 </form>
 
+
 <!-- Modal for Editing Category -->
 <form action="/inventory/category_list/update" method="POST">
     <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
@@ -162,6 +163,8 @@
             document.querySelector('form[action^="/inventory/category_list/update"]').action = formAction;
         });
     });
+
+
 </script>
 
 <!-- Delete Modal (Single Modal for All Categories) -->
@@ -193,4 +196,38 @@
             document.getElementById("deleteCategoryId").value = categoryId;
         });
     });
+</script>
+
+
+<script>
+    function searchCategory() {
+        // Get the search input value
+        const input = document.getElementById("searchInput").value.toLowerCase();
+        const table = document.getElementById("categoriesTable");
+        const rows = table.getElementsByTagName("tr");
+        let found = false;
+
+        // Loop through all table rows
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName("td");
+            let rowMatch = false;
+
+            // Loop through all cells in the current row
+            for (let j = 0; j < cells.length; j++) {
+                const cellText = cells[j].textContent || cells[j].innerText;
+                // Check if the search term is in any cell of this row
+                if (cellText.toLowerCase().indexOf(input) > -1) {
+                    rowMatch = true;
+                    found = true;
+                    break; // No need to check other cells in this row
+                }
+            }
+
+            // Show or hide the row based on whether a match was found
+            rows[i].style.display = rowMatch ? "" : "none";
+        }
+
+        // Show/hide "No categories found" message
+        document.getElementById("noResults").style.display = found ? "none" : "block";
+    }
 </script>

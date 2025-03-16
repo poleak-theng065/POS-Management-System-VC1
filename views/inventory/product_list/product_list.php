@@ -79,7 +79,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4 pt-4 pb-4 border-top border-bottom border-light py-2">
-            <input type="text" class="form-control w-25" placeholder="Search Product" style="border-radius: 10px;">
+        <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
                 <select class="form-select w-auto me-3" style="border-radius: 10px;">
                     <option>10</option>
@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive" id=switchTableBody >
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
@@ -106,7 +106,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id= 'switchTableBody'>
                     <?php foreach ($products as $index => $product): ?>
                         <tr>
                             <td><?= $index + 1 ?></td>
@@ -353,3 +353,4 @@
         });
     });
 </script>
+
