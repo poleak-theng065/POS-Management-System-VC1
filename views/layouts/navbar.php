@@ -86,7 +86,7 @@
             </li>
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-cart"></i>
                 <div data-i18n="Account Settings">Products</div>
               </a>
               <ul class="menu-sub">
@@ -107,7 +107,7 @@
 
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-import"></i>
                 <div data-i18n="Account Settings">Import Product</div>
               </a>
               <ul class="menu-sub">
@@ -132,7 +132,7 @@
 
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-purchase-tag"></i>
                 <div data-i18n="Account Settings">Sale Product</div>
               </a>
               <ul class="menu-sub">
@@ -156,7 +156,7 @@
 
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-transfer"></i>
                 <div data-i18n="Account Settings">Return Product</div>
               </a>
               <ul class="menu-sub">
@@ -174,19 +174,19 @@
             <!-- Cards -->
             <li class="menu-item">
               <a href="/login" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <i class="menu-icon tf-icons bx bx-log-in-circle"></i>
                 <div data-i18n="Basic">Login</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
                 <div data-i18n="Basic">Logout</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div data-i18n="Basic">Setting</div>
               </a>
             </li>

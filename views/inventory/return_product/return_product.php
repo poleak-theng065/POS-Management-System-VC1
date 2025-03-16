@@ -31,7 +31,7 @@
                         <td>
                             <?php if ($returnProduct['type_of_return'] === 'Good Return'): ?>
                                 <span class="badge bg-success">Good Return</span>
-                            <?php elseif ($returnProduct['type_of_return'] === 'Damaged Return'): ?>
+                            <?php elseif ($returnProduct['type_of_return'] ===  'Damaged Return'): ?>
                                 <span class="badge bg-danger">Damaged Return</span>
                             <?php else: ?>
                                 <span class="badge bg-secondary"><?= htmlspecialchars($returnProduct['type_of_return']) ?></span>
