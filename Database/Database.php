@@ -14,13 +14,13 @@ class Database
      */
     public function __construct($host, $dbname, $username, $password)
     {
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=UTF8";
 
         try {
             $this->db = new PDO($dsn, $username, $password);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die("❌ Connection failed: " . $e->getMessage());
+            echo "Connection failed: " . $e->getMessage();
         }
     }
 
@@ -29,25 +29,14 @@ class Database
      *
      * @param string $sql The SQL query to execute.
      * @param array $params The parameters to bind to the query.
-     * @return PDOStatement|false The result of the executed query.
+     * @return PDOStatement The result of the executed query.
      */
     public function query($sql, $params = [])
     {
-        try {
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute($params);
-            return $stmt;
-        } catch (PDOException $e) {
-            echo "❌ Query error: " . $e->getMessage();
-            return false;
-        }
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
     }
+
+    
 }
-
-// Database credentials
-$host = "localhost"; // Change if using a remote server
-$dbname = "inventorydb"; // Replace with your database name
-$username = "root"; // Replace with your database username
-$password = ""; // Replace with your database password
-
-

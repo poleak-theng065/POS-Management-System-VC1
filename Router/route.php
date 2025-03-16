@@ -23,12 +23,16 @@ $route->get("/category_list", [CategoryListController::class, 'index']);
 $route->get("/inventory/category_list/create", [CategoryListController::class, 'create']);
 $route->get('/inventory/category_list/edit/{id}', [CategoryListController::class, 'edit']);
 $route->post('/inventory/category_list/update', [CategoryListController::class, 'update']);
-$route->post('/inventory/category_list/store',[CategoryListController::class, 'store']);
+$route->post('/inventory/category_list/store', [CategoryListController::class, 'store']);
 $route->post('/inventory/category_list/destroy/{id}', [CategoryListController::class, 'destroy']);
 
 // Product List
 $route->get("/product_list", [ProductListController::class, 'index']);
-$route->get("/inventory/category_list/create", [CategoryListController::class, 'create']);
+$route->get("/inventory/product_list/create", [ProductListController::class, 'create']);
+$route->get('/inventory/product_list/edit/{id}', [ProductListController::class, 'edit']);
+$route->post('/inventory/product_list/update', [ProductListController::class, 'update']);
+$route->post('/inventory/product_list/store', [ProductListController::class, 'store']);
+$route->post('/inventory/product_list/destroy/{id}', [ProductListController::class, 'destroy']);
 
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
