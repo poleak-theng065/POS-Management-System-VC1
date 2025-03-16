@@ -38,7 +38,7 @@ class OrderNewProductModel {
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function updateNewOrder($productName, $quantity, $orderDate, $expectedDelivery, $supplier, $id)
+    public function updateNewOrder($id, $productName, $quantity, $orderDate, $expectedDelivery, $supplier)
     {
         try {
             $this->db->query(
@@ -51,12 +51,12 @@ class OrderNewProductModel {
                 WHERE id = :id",
 
                 [
+                    ':id' => $id,
                     ':product_name' => $productName,
                     ':quantity' => $quantity,
                     ':order_date' => $orderDate,
                     ':expected_delivery' => $expectedDelivery,
                     ':supplier' => $supplier,
-                    ':id' => $id
                 ]
             );
         } catch (PDOException $e) {

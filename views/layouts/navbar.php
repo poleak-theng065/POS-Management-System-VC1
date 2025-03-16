@@ -333,27 +333,99 @@
 
     
 <script>
-  function searchCategory() {
-    let query = document.getElementById("searchInput").value.toLowerCase().trim(); // Get the search query
-    let tableRows = document.querySelectorAll("#categoriesTable tr"); // Get all table rows
-    let found = false; // Variable to track if any matching rows are found
+  document.addEventListener("DOMContentLoaded", function () {
+    let searchInput = document.querySelector("input[placeholder='Search... [CTRL + K]']");
+    let productTableBody = document.querySelector("#productTable tbody");
+    let categoryTableBody = document.querySelector("#categoriesTable");
 
-    tableRows.forEach(row => {
-        let categoryName = row.cells[1].textContent.toLowerCase(); // Get Category Name
-        let model = row.cells[2].textContent.toLowerCase(); // Get Model
-        let type = row.cells[3].textContent.toLowerCase(); // Get Type
+    searchInput.addEventListener("keyup", function () {
+        let searchValue = searchInput.value.trim();
 
-        // If any of the fields contains the query, show the row, else hide it
-        if (categoryName.includes(query) || model.includes(query) || type.includes(query)) {
-            row.style.display = ""; // Show row
-            found = true;
-        } else {
-            row.style.display = "none"; // Hide row
+        if (searchValue.length > 0) {
+            fetch(`search.php?query=${encodeURIComponent(searchValue)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update product table
+                    productTableBody.innerHTML = "";
+                    if (data.products.length > 0) {
+                        data.products.forEach((product, index) => {
+                            productTableBody.innerHTML += `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${product.name}</td>
+                                    <td>${product.barcode}</td>
+                                    <td>${product.brand}</td>
+                                    <td>${product.model}</td>
+                                    <td>${product.type}</td>
+                                    <td>${product.status}</td>
+                                    <td>${product.stock_quantity}</td>
+                                    <td>
+                                        <a class="text-warning me-2 editProductBtn"
+                                           data-id="${product.product_id}"
+                                           data-name="${product.name}"
+                                           data-barcode="${product.barcode}"
+                                           data-brand="${product.brand}"
+                                           data-model="${product.model}"
+                                           data-type="${product.type}"
+                                           data-status="${product.status}"
+                                           data-stock-quantity="${product.stock_quantity}"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#editProductModal">
+                                            <i class="bi bi-pencil-square fs-4"></i>
+                                        </a>
+                                        <a class="text-danger deleteProductBtn"
+                                           data-id="${product.product_id}"
+                                           data-name="${product.name}"
+                                           data-bs-toggle="modal" 
+                                           data-bs-target="#deleteProductModal">
+                                            <i class="bi bi-trash fs-4"></i>
+                                        </a>
+                                    </td>
+                                </tr>`;
+                        });
+                    } else {
+                        productTableBody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">No products found</td></tr>';
+                    }
+
+                    // Update category table
+                    categoryTableBody.innerHTML = "";
+                    if (data.categories.length > 0) {
+                        data.categories.forEach((category, index) => {
+                            categoryTableBody.innerHTML += `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${category.name}</td>
+                                    <td>${category.brand ? category.brand : 'No Brand'}</td>
+                                    <td>${category.model ? category.model : 'No Model'}</td>
+                                    <td>${category.type ? category.type : 'No Type'}</td>
+                                    <td>${category.description}</td>
+                                    <td>
+                                        <a class="text-warning me-2 editCategoryBtn"
+                                           data-id="${category.category_id}"
+                                           data-name="${category.name}"
+                                           data-description="${category.description}"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#editCategoryModal">
+                                            <i class="bi bi-pencil-square fs-4"></i>
+                                        </a>
+                                        <a class="text-danger deleteCategoryBtn"
+                                           data-id="${category.category_id}"
+                                           data-name="${category.name}"
+                                           data-bs-toggle="modal" 
+                                           data-bs-target="#deleteCategoryModal">
+                                            <i class="bi bi-trash fs-4"></i>
+                                        </a>
+                                    </td>
+                                </tr>`;
+                        });
+                    } else {
+                        categoryTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">No categories found</td></tr>';
+                    }
+                })
+                .catch(error => console.error("Error fetching data:", error));
         }
     });
+});
 
-    // Show "No categories found" if nothing matches
-    document.getElementById("noResults").style.display = found ? "none" : "block";
-}
 
 </script>

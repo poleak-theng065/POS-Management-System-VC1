@@ -1,9 +1,10 @@
 <div class="container mt-4">
     <h1>Order Details</h1>
     <div class="card p-5 bg-white shadow-lg border-0">
-
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <input type="text" class="form-control" placeholder="Search Order" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
+        <input type="text" id="searchInput" class="form-control w-25" placeholder="Search Order..." onkeyup="searchOrder()">
+        <p id="noResults" style="display: none; color: red;">No categories found.</p>
+            
             <a href="/order_new_product/create" class="btn btn-primary ms-2">
                 + Add New Order
             </a>
@@ -62,3 +63,43 @@
         </div>
     </div>
 </div>
+
+<script>
+function searchOrders() {
+    // Get the search input value
+    const input = document.getElementById("searchOrderInput").value.toLowerCase().trim();
+    const tableBody = document.getElementById("orderTableBody");
+    const rows = tableBody.getElementsByTagName("tr");
+    let found = false;
+
+    // Loop through all table rows
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        let rowMatch = false;
+
+        // Loop through all cells in the current row
+        for (let j = 0; j < cells.length; j++) {
+            // Get the text content of the cell
+            let cellText = cells[j].textContent || cells[j].innerText;
+            cellText = cellText.toLowerCase();
+
+            // Check if the search term is in this cell
+            if (cellText.includes(input)) {
+                rowMatch = true;
+                found = true;
+                break; // No need to check other cells in this row
+            }
+        }
+
+        // Show or hide the row based on whether a match was found
+        rows[i].style.display = rowMatch ? "" : "none";
+    }
+
+    // Optional: Add a "No results" message if needed
+    // You would need to add a div with id="noResults" in your HTML
+    const noResults = document.getElementById("noResults");
+    if (noResults) {
+        noResults.style.display = found ? "none" : "block";
+    }
+}
+</script>

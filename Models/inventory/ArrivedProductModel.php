@@ -21,7 +21,7 @@ class ArrivedProductModel {
     }
 
 
-    public function updateArrivedProduct($productName, $quantity, $orderDate, $expectedDelivery, $supplier, $id, $status)
+    public function updateArrivedProduct($id, $productName, $quantity, $order_date, $expected_delivery, $supplier, $status)
     {
         try {
             $this->db->query(
@@ -35,12 +35,12 @@ class ArrivedProductModel {
                 WHERE id = :id",
 
                 [
+                    ':id' => $id,
                     ':product_name' => $productName,
                     ':quantity' => $quantity,
-                    ':order_date' => $orderDate,
-                    ':expected_delivery' => $expectedDelivery,
+                    ':order_date' => $order_date,
+                    ':expected_delivery' => $expected_delivery,
                     ':supplier' => $supplier,
-                    ':id' => $id,
                     ':status' => $status
                 ]
             );

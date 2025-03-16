@@ -44,7 +44,7 @@ class OrderNewProductController extends BaseController {
         $orderDate = $_POST['orderdate'];
         $expectedDelivery = $_POST['expecteddelivery'];
         $supplier = $_POST['supplier'];
-        $this->newOrders->updateNewOrder($productName, $quantity, $orderDate, $expectedDelivery, $supplier, $id);
+        $this->newOrders->updateNewOrder($id, $productName, $quantity, $orderDate, $expectedDelivery, $supplier);
         $this->redirect('/order_new_product');
     }
 
