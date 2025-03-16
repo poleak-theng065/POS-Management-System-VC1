@@ -3,7 +3,7 @@
 function searchOrders() {
     const input = document.getElementById('searchOrderInput');
     const filter = input.value.toLowerCase();
-    const table = document.getElementById('orderTableBody');
+    const table = document.getElementById('switchTableBody');
     const rows = table.getElementsByTagName('tr');
 
     for (let i = 0; i < rows.length; i++) {

@@ -26,7 +26,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody id="categoriesTable">
+            <tbody id="switchTableBody">
                 <?php foreach ($categories as $index => $category): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
@@ -53,7 +53,6 @@
                         </td>
                     </tr>
                 <?php endforeach ?>
-
 
             </tbody>
         </table>

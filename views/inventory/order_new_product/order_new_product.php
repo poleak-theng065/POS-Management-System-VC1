@@ -27,7 +27,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="orderTableBody">
+                <tbody id="switchTableBody">
                     <?php foreach($newOrders as $newOrder): ?>
                     <tr class="border-bottom">
                         <td><?= htmlspecialchars($newOrder['id']) ?></td>
@@ -58,6 +58,34 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+            <!-- Pagination Component -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div id="entriesInfo" class="text-muted">
+                    Showing 1 to <?= count($newOrders) ?> of <?= count($newOrders) ?> entries
+                </div>
+                <nav>
+                    <ul class="pagination" id="pagination">
+                        <li class="page-item disabled" id="prevPage">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item active" aria-current="page" id="page1">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item" id="page2">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item" id="nextPage">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>
+
