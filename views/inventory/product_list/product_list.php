@@ -79,8 +79,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4 pt-4 pb-4 border-top border-bottom border-light py-2">
-            <input type="text" class="form-control w-25" placeholder="Search Product" style="border-radius: 10px;">
-            <p id="noResults" style="display: none; color: red;">No categories found.</p>
+        <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
                 <select class="form-select w-auto me-3" style="border-radius: 10px;">
                     <option>10</option>
@@ -92,7 +91,7 @@
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive" id=switchTableBody >
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
@@ -107,7 +106,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id= 'switchTableBody'>
                     <?php foreach ($products as $index => $product): ?>
                         <tr>
                             <td><?= $index + 1 ?></td>
@@ -355,40 +354,3 @@
     });
 </script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Get the search input field
-    let searchInput = document.querySelector("input[placeholder='Search Product']");
-    let noResultsMessage = document.getElementById("noResults");
-
-    // Add event listener for keyup event
-    searchInput.addEventListener("keyup", function() {
-        let searchValue = searchInput.value.toLowerCase().trim(); // Convert input to lowercase and trim spaces
-        let rows = document.querySelectorAll("#productTable tbody tr");
-        let found = false;
-
-        // Loop through each row in the table body
-        rows.forEach(row => {
-            let cells = row.getElementsByTagName("td");
-            let rowMatch = false;
-
-            // Loop through all cells in the current row
-            for (let i = 0; i < cells.length; i++) {
-                let cellText = cells[i].textContent.toLowerCase();
-                // Check if the search value is in any cell of this row
-                if (cellText.includes(searchValue)) {
-                    rowMatch = true;
-                    found = true;
-                    break; // No need to check other cells in this row
-                }
-            }
-
-            // Show or hide the row based on whether a match was found
-            row.style.display = rowMatch ? "" : "none";
-        });
-
-        // Show or hide "No results found" message based on search result
-        noResultsMessage.style.display = found ? "none" : "block";
-    });
-});
-</script>

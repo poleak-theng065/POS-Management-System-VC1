@@ -59,11 +59,14 @@
 
     <!-- Main JS -->
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/arrived_switch_page.js"></script>
 
     <!-- Page JS -->
     <script src="/assets/js/dashboards-analytics.js"></script>
     <script src="/assets/js/category.js"></script>
     <script src="/assets/js/search.js"></script>
+    
+    
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

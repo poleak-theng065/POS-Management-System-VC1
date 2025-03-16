@@ -211,11 +211,13 @@
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <!-- Search -->
                 <div class="navbar-nav align-items-center">
-                    <div class="nav-item d-flex align-items-center">
-                        <i class="bx bx-search fs-4 lh-0"></i>
-                        <input type="text" class="form-control border-0 shadow-none" placeholder="Search... [CTRL + K]" aria-label="Search..." />
-                    </div>
+                <div class="nav-item d-flex align-items-center position-relative">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                    <input type="text" class="form-control border-0 shadow-none" id="navbarSearchInput" placeholder="Search... [CTRL + K]" aria-label="Search..." />
+                    <div id="searchResults" class="position-absolute bg-white border shadow" style="display: none; width: 200px; max-height: 200px; overflow-y: auto;"></div>
                 </div>
+            </div>
+            <script src="/assets/js/search.js"></script>
                 <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-auto">

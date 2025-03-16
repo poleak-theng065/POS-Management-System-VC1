@@ -2,8 +2,7 @@
     <h1>Product Cateory List</h1>
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" id="searchInput" class="form-control w-25" placeholder="Search Category..." onkeyup="searchCategory()">
-        <p id="noResults" style="display: none; color: red;">No categories found.</p>
+        <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
                 <select class="form-select w-auto me-2" id="entriesPerPage">
                     <option value="2">2</option>
@@ -15,7 +14,7 @@
             </div>
         </div>
 
-        <table class="table table-hover">
+        <table class="table table-hover" id= switchTableBody  >
             <thead>
                 <tr>
                     <th>ID</th>
@@ -27,7 +26,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody id="categoriesTable">
+            <tbody id="switchTableBody">
                 <?php foreach ($categories as $index => $category): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
@@ -54,6 +53,7 @@
                         </td>
                     </tr>
                 <?php endforeach ?>
+
             </tbody>
         </table>
 

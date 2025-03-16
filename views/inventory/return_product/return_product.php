@@ -5,9 +5,7 @@
         
         <div class="d-flex justify-content-between align-items-center mb-4">
             <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
-            <a href="/return_product/create" class="btn btn-primary ms-2">
-                + Add Return
-            </a>
+            <a href="/return_product/create" class="btn btn-primary ms-2">+ Add Return</a>
         </div>
 
         <div class="table-responsive">
@@ -23,7 +21,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="orderTableBody">
+                <tbody id="switchTableBody">
                     <?php foreach($returnProducts as $returnProduct): ?>
                     <tr class="border-bottom">
                         <td><?= htmlspecialchars($returnProduct['return_id']) ?></td>
@@ -50,6 +48,37 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+            <!-- Pagination Component -->
+            <?php 
+            $currentPage = 1; // Replace with the actual current page number
+            ?>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div id="entriesInfo" class="text-muted">
+                    Showing 1 to <?= count($returnProducts) ?> of <?= count($returnProducts) ?> entries
+                </div>
+                <nav>
+                    <ul class="pagination" id="pagination">
+                        <li class="page-item <?= $currentPage === 1 ? 'disabled' : '' ?>" id="prevPage">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php for ($i = 1; $i <= ceil(count($returnProducts) / 5); $i++): ?>
+                        <li class="page-item <?= $currentPage === $i ? 'active' : '' ?>" id="page<?= $i ?>">
+                            <a class="page-link" href="#"><?= $i ?></a>
+                        </li>
+                        <?php endfor; ?>
+                        <li class="page-item <?= $currentPage === ceil(count($returnProducts) / 5) ? 'disabled' : '' ?>" id="nextPage">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>
+
