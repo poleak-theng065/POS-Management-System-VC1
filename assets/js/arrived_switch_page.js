@@ -1,5 +1,5 @@
 let currentPage = 1; // Start on the first page
-let entriesPerPage = 5; // Number of entries per page
+let entriesPerPage = 10; // Number of entries per page
 const entries = Array.from(document.querySelectorAll('#switchTableBody tr')); // Get all rows in the table body
 const totalEntries = entries.length;
 
