@@ -86,7 +86,7 @@
             </li>
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-cart"></i>
                 <div data-i18n="Account Settings">Products</div>
               </a>
               <ul class="menu-sub">
@@ -107,7 +107,7 @@
 
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-import"></i>
                 <div data-i18n="Account Settings">Import Product</div>
               </a>
               <ul class="menu-sub">
@@ -132,7 +132,7 @@
 
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-purchase-tag"></i>
                 <div data-i18n="Account Settings">Sale Product</div>
               </a>
               <ul class="menu-sub">
@@ -156,7 +156,7 @@
 
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-transfer"></i>
                 <div data-i18n="Account Settings">Return Product</div>
               </a>
               <ul class="menu-sub">
@@ -174,19 +174,19 @@
             <!-- Cards -->
             <li class="menu-item">
               <a href="/login" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <i class="menu-icon tf-icons bx bx-log-in-circle"></i>
                 <div data-i18n="Basic">Login</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
                 <div data-i18n="Basic">Logout</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div data-i18n="Basic">Setting</div>
               </a>
             </li>
@@ -211,11 +211,13 @@
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <!-- Search -->
                 <div class="navbar-nav align-items-center">
-                    <div class="nav-item d-flex align-items-center">
-                        <i class="bx bx-search fs-4 lh-0"></i>
-                        <input type="text" class="form-control border-0 shadow-none" placeholder="Search... [CTRL + K]" aria-label="Search..." />
-                    </div>
+                <div class="nav-item d-flex align-items-center position-relative">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                    <input type="text" class="form-control border-0 shadow-none" id="navbarSearchInput" placeholder="Search... [CTRL + K]" aria-label="Search..." />
+                    <div id="searchResults" class="position-absolute bg-white border shadow" style="display: none; width: 200px; max-height: 200px; overflow-y: auto;"></div>
                 </div>
+            </div>
+            <script src="/assets/js/search.js"></script>
                 <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -330,3 +332,102 @@
                 background-color: #ff3d3d; /* Red badge color */
             }
         </style>
+
+    
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let searchInput = document.querySelector("input[placeholder='Search... [CTRL + K]']");
+    let productTableBody = document.querySelector("#productTable tbody");
+    let categoryTableBody = document.querySelector("#categoriesTable");
+
+    searchInput.addEventListener("keyup", function () {
+        let searchValue = searchInput.value.trim();
+
+        if (searchValue.length > 0) {
+            fetch(`search.php?query=${encodeURIComponent(searchValue)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update product table
+                    productTableBody.innerHTML = "";
+                    if (data.products.length > 0) {
+                        data.products.forEach((product, index) => {
+                            productTableBody.innerHTML += `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${product.name}</td>
+                                    <td>${product.barcode}</td>
+                                    <td>${product.brand}</td>
+                                    <td>${product.model}</td>
+                                    <td>${product.type}</td>
+                                    <td>${product.status}</td>
+                                    <td>${product.stock_quantity}</td>
+                                    <td>
+                                        <a class="text-warning me-2 editProductBtn"
+                                           data-id="${product.product_id}"
+                                           data-name="${product.name}"
+                                           data-barcode="${product.barcode}"
+                                           data-brand="${product.brand}"
+                                           data-model="${product.model}"
+                                           data-type="${product.type}"
+                                           data-status="${product.status}"
+                                           data-stock-quantity="${product.stock_quantity}"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#editProductModal">
+                                            <i class="bi bi-pencil-square fs-4"></i>
+                                        </a>
+                                        <a class="text-danger deleteProductBtn"
+                                           data-id="${product.product_id}"
+                                           data-name="${product.name}"
+                                           data-bs-toggle="modal" 
+                                           data-bs-target="#deleteProductModal">
+                                            <i class="bi bi-trash fs-4"></i>
+                                        </a>
+                                    </td>
+                                </tr>`;
+                        });
+                    } else {
+                        productTableBody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">No products found</td></tr>';
+                    }
+
+                    // Update category table
+                    categoryTableBody.innerHTML = "";
+                    if (data.categories.length > 0) {
+                        data.categories.forEach((category, index) => {
+                            categoryTableBody.innerHTML += `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${category.name}</td>
+                                    <td>${category.brand ? category.brand : 'No Brand'}</td>
+                                    <td>${category.model ? category.model : 'No Model'}</td>
+                                    <td>${category.type ? category.type : 'No Type'}</td>
+                                    <td>${category.description}</td>
+                                    <td>
+                                        <a class="text-warning me-2 editCategoryBtn"
+                                           data-id="${category.category_id}"
+                                           data-name="${category.name}"
+                                           data-description="${category.description}"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#editCategoryModal">
+                                            <i class="bi bi-pencil-square fs-4"></i>
+                                        </a>
+                                        <a class="text-danger deleteCategoryBtn"
+                                           data-id="${category.category_id}"
+                                           data-name="${category.name}"
+                                           data-bs-toggle="modal" 
+                                           data-bs-target="#deleteCategoryModal">
+                                            <i class="bi bi-trash fs-4"></i>
+                                        </a>
+                                    </td>
+                                </tr>`;
+                        });
+                    } else {
+                        categoryTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">No categories found</td></tr>';
+                    }
+                })
+                .catch(error => console.error("Error fetching data:", error));
+        }
+    });
+});
+
+
+</script>
