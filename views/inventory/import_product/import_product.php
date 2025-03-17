@@ -27,7 +27,7 @@
             </div>
 
             <!-- Product Image Section -->
-            <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
+            <!-- <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
                 <h5 class="mb-3">Product Image</h5>
                 <div class="drag-area mb-3 p-4 border rounded bg-light text-center">
                     <p>Drag and drop your image here</p>
@@ -51,7 +51,72 @@
                         reader.readAsDataURL(file);
                     }
                 });
+            </script> -->
+
+            <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
+                <h5 class="mb-3">Product Image</h5>
+                <div class="drag-area mb-3 p-4 border rounded bg-light text-center">
+                    <p>Drag and drop your image here</p>
+                    <p>or</p>
+                    <label for="imageUpload" class="btn btn-outline-primary">Browse image</label>
+                    <input type="file" class="form-control" id="imageUpload" accept="image/*" style="display: none;">
+                </div>
+                <img id="previewImage" src="" alt="Image Preview" class="img-fluid mt-3 d-none" style="max-width: 200px; border-radius: 8px;">
+            </div>
+
+            <script>
+                document.getElementById("imageUpload").addEventListener("change", function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const preview = document.getElementById("previewImage");
+                            preview.src = e.target.result;
+                            preview.classList.remove("d-none"); // Show image
+                        };
+                        reader.readAsDataURL(file);
+
+                        // Upload image to the server
+                        const formData = new FormData();
+                        formData.append("image", file);
+
+                        fetch("upload.php", {
+                                method: "POST",
+                                body: formData
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log("Image stored at:", data.filepath);
+                                } else {
+                                    console.error("Error storing image:", data.error);
+                                }
+                            })
+                            .catch(error => console.error("Error uploading file:", error));
+                    }
+                });
             </script>
+
+            <!-- PHP Script (upload.php) -->
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
+                $targetDir = "uploads/";
+                if (!is_dir($targetDir)) {
+                    mkdir($targetDir, 0777, true);
+                }
+                $fileName = uniqid() . "_" . basename($_FILES["image"]["name"]);
+                $targetFile = $targetDir . $fileName;
+
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+                    echo json_encode(["success" => true, "filepath" => $targetFile]);
+                } else {
+                    echo json_encode(["success" => false, "error" => "Error uploading image."]);
+                }
+            } else {
+                echo json_encode(["success" => false, "error" => "No image received."]);
+            }
+            ?>
+
             <!-- Variants Section -->
             <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
                 <h5 class="mb-3">Variants</h5>
@@ -176,4 +241,3 @@
             </div>
 
         </div>
-        
