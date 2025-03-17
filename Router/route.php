@@ -27,12 +27,12 @@ $route->post('/inventory/category_list/store', [CategoryListController::class, '
 $route->post('/inventory/category_list/destroy/{id}', [CategoryListController::class, 'destroy']);
 
 // Product List
-$route->get("/product_list", [ProductListController::class, 'index']);
-$route->get("/inventory/product_list/create", [ProductListController::class, 'create']);
-$route->get('/inventory/product_list/edit/{id}', [ProductListController::class, 'edit']);
-$route->post('/inventory/product_list/update', [ProductListController::class, 'update']);
-$route->post('/inventory/product_list/store', [ProductListController::class, 'store']);
-$route->post('/inventory/product_list/destroy/{id}', [ProductListController::class, 'destroy']);
+$route->get("/product_list", [ProductListController::class, 'index']); // This should be the main route for displaying products
+$route->get("/inventory/product_list/create", [ProductListController::class, 'create']); // Route to create a new product
+$route->get('/inventory/product_list/edit/{id}', [ProductListController::class, 'edit']); // Route to edit a specific product
+$route->post('/inventory/product_list/update/{id}', [ProductListController::class, 'update']);
+$route->post('/inventory/product_list/store', [ProductListController::class, 'store']); // Route to store a new product
+$route->post('/inventory/product_list/destroy/{id}', [ProductListController::class, 'destroy']); // Route to delete a product
 
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
