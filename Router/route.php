@@ -48,7 +48,7 @@ $route->get("/login", [LoginController::class, 'login']);
 $route->get("/sold_product", [SoldProductController::class, 'soldProduct']);
 
 // Low Stock Product
-$route->get("/low_stock_product", [LowStockProductController::class, 'lowStockProduct']);
+$route->get("/low_stock_product", [LowStockProductController::class, 'index']);
 
 // Run Out Of Stock Product
 $route->get("/run_out_of_stock", [RunOutOfStockController::class, 'runOutOfStock']);
