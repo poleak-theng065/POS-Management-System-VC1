@@ -95,11 +95,9 @@
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Name</th>
                         <th>Barcode</th>
+                        <th>Name</th>
                         <th>Brand</th>
-                        <th>Model</th>
                         <th>Type</th>
                         <th>Status</th>
                         <th>Quantity</th>
@@ -110,11 +108,9 @@
                 <tbody id='switchTableBody'>
                     <?php foreach ($products as $index => $product): ?>
                         <tr>
-                            <td><?= $index + 1 ?></td>
-                            <td><?= $product['name'] ?></td>
                             <td><?= $product['barcode'] ?></td>
+                            <td><?= $product['name'] ?></td>
                             <td><?= $product['brand'] ?></td>
-                            <td><?= $product['model'] ?></td>
                             <td><?= $product['type'] ?></td>
                             <td><?= $product['status'] ?></td>
                             <td><?= $product['stock_quantity'] ?></td>
@@ -236,8 +232,6 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
-
-
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description (Optional)</label>
