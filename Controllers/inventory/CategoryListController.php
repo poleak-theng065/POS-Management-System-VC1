@@ -26,22 +26,52 @@ class CategoryListController extends BaseController
         $this->view("inventory/category_list");
     }
 
-    function store()
-    {
+    public function store(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $data = [
-                'name' => !empty($_POST['name']) ? $_POST['name'] : null,
-                'description' => !empty($_POST['description']) ? $_POST['description'] : null,
-            ];
-
-            if (empty($data['name']) || empty($data['description'])) {
-                die('Error: name fields are required.');
+            // Sanitize inputs
+            $name = htmlspecialchars($_POST['name']);
+            $description = htmlspecialchars($_POST['description']);
+    
+            // Validate required fields
+            if (empty($name) || empty($description)) {
+                echo "<script>
+                        console.log('Setting status: fail');
+                        localStorage.setItem('formStatus', 'fail');
+                        window.location.href = '/category_list';
+                    </script>";
+                exit;
             }
-
-            $this->iteam->createCategory($data);
-            $this->redirect('/category_list');
+    
+            // Attempt to create category
+            $result = $this->iteam->createCategory([
+                'name' => $name,
+                'description' => $description
+            ]);
+    
+            // Handle response
+            if ($result === true) {
+                echo "<script>
+                        console.log('Setting status: success');
+                        localStorage.setItem('formStatus', 'success');
+                        window.location.href = '/category_list';
+                    </script>";
+            } elseif ($result === 'Error: Duplicate entry.') {
+                echo "<script>
+                        console.log('Setting status: duplicate');
+                        localStorage.setItem('formStatus', 'duplicate');
+                        window.location.href = '/category_list';
+                    </script>";
+            } else {
+                echo "<script>
+                        console.log('Setting status: fail');
+                        localStorage.setItem('formStatus', 'fail');
+                        window.location.href = '/category_list';
+                    </script>";
+            }
+            exit;
         }
     }
+    
 
     function edit($id)
     {
