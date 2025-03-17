@@ -91,15 +91,13 @@
             </div>
         </div>
 
-        <div class="table-responsive" id=switchTableBody>
+        <div class="table-responsive">
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Name</th>
                         <th>Barcode</th>
+                        <th>Name</th>
                         <th>Brand</th>
-                        <th>Model</th>
                         <th>Type</th>
                         <th>Status</th>
                         <th>Quantity</th>
@@ -110,11 +108,9 @@
                 <tbody id='switchTableBody'>
                     <?php foreach ($products as $index => $product): ?>
                         <tr>
-                            <td><?= $index + 1 ?></td>
-                            <td><?= $product['name'] ?></td>
                             <td><?= $product['barcode'] ?></td>
+                            <td><?= $product['name'] ?></td>
                             <td><?= $product['brand'] ?></td>
-                            <td><?= $product['model'] ?></td>
                             <td><?= $product['type'] ?></td>
                             <td><?= $product['status'] ?></td>
                             <td><?= $product['stock_quantity'] ?></td>
@@ -151,8 +147,8 @@
             </table>
         </div>
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <div id="entryInfo">
-                Showing <span id="startEntry">1</span> to <span id="endEntry">3</span> of <span id="totalEntries">3</span> entries
+            <div id="entriesInfo" class="text-muted">
+                    Showing 1 to <?= count($products) ?> of <?= count($products) ?> entries
             </div>
             <nav>
                 <ul class="pagination" id="pagination">
@@ -236,8 +232,6 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
-
-
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description (Optional)</label>
