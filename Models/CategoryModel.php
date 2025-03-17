@@ -21,7 +21,8 @@ class CategoryModel
             SELECT categories.*, 
                    IFNULL(products.brand, 'No Brand') AS brand,
                    IFNULL(products.model, 'No Model') AS model,
-                   IFNULL(products.type, 'No Type') AS type
+                   IFNULL(products.type, 'No Type') AS type,
+                   IFNULL(products.stock_quantity, 0) AS stock_quantity
             FROM categories
             LEFT JOIN products ON categories.category_id = products.category_id
             ORDER BY categories.category_id DESC
@@ -30,6 +31,7 @@ class CategoryModel
         $result = $categories->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
 
     public function getProducts()
     {

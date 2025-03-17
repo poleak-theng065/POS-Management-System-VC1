@@ -17,7 +17,8 @@ class CategoryListController extends BaseController
     public function index()
     {
         $categories = $this->iteam->getCategories();
-        $this->view("inventory/category_list/category_list", ["categories" => $categories]);
+        $products = $this->iteam->getProducts();
+        $this->view("inventory/category_list/category_list", ["categories" => $categories, "products" => $products]);
     }
 
     public function create()

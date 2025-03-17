@@ -22,6 +22,7 @@
                     <th>Brand</th>
                     <th>Model</th>
                     <th>Type</th>
+                    <th>Quantity</th>
                     <th>Description</th>
                     <th>Action</th>
                 </tr>
@@ -34,6 +35,7 @@
                         <td><?= !empty($category['brand']) ? $category['brand'] : 'No Brand' ?></td>
                         <td><?= !empty($category['model']) ? $category['model'] : 'No Model' ?></td>
                         <td><?= !empty($category['type']) ? $category['type'] : 'No Type' ?></td>
+                        <td><?= !empty($category['stock_quantity']) ? $category['stock_quantity'] : 'No Quantity' ?></td>
                         <td><?= $category['description'] ?></td>
                         <td>
                             <a class="text-warning me-2 editCategoryBtn"
