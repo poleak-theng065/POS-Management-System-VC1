@@ -56,8 +56,8 @@
         </table>
 
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <div id="entriesInfo">
-                Showing 1 to 2 of 5 entries
+            <div id="entriesInfo" class="text-muted">
+                    Showing 1 to <?= count($categories) ?> of <?= count($categories) ?> entries
             </div>
             <nav>
                 <ul class="pagination" id="pagination">
