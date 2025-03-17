@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <div class="table-responsive" id=switchTableBody>
+        <div class="table-responsive">
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
