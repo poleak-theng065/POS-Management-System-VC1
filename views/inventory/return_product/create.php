@@ -26,6 +26,7 @@
                 <label for="returnDate" class="form-label">Return Date</label>
                 <input type="date" class="form-control" id="returnDate" name="return_date" required>
             </div>
+            <a href="javascript:history.back()" class="btn btn-secondary" style="margin-right: 10px;">Back</a>
             <button type="submit" class="btn btn-primary">Submit Return</button>
         </form>
     </div>

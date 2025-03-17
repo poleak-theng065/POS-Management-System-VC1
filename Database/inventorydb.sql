@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2025 at 10:26 AM
+-- Generation Time: Mar 16, 2025 at 06:05 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,8 +38,11 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`category_id`, `name`, `description`) VALUES
-(1, 'Smartphones', 'All types of mobile phones'),
-(2, 'Accessories', 'Phone chargers, cases, and headphones');
+(1, 'Mouse', 'Devices used for navigating a computer screen'),
+(2, 'Speaker', 'Audio devices that output sound'),
+(3, 'Camera', 'Devices used for capturing photos and videos'),
+(4, 'Kettle', 'Kitchen appliances for boiling water'),
+(5, 'Light Bulb', 'Electrical devices used to produce light');
 
 -- --------------------------------------------------------
 
@@ -99,14 +102,6 @@ CREATE TABLE `import_items` (
   `cost_price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `import_items`
---
-
-INSERT INTO `import_items` (`import_item_id`, `import_id`, `product_id`, `quantity`, `cost_price`) VALUES
-(1, 1, 1, 5, 850.00),
-(2, 1, 2, 5, 780.00);
-
 -- --------------------------------------------------------
 
 --
@@ -122,16 +117,6 @@ CREATE TABLE `inventory_movements` (
   `movement_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `note` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `inventory_movements`
---
-
-INSERT INTO `inventory_movements` (`movement_id`, `product_id`, `movement_type`, `quantity`, `related_id`, `movement_date`, `note`) VALUES
-(1, 1, 'sale', -1, 1, '2025-03-15 07:33:13', 'Sold iPhone 13'),
-(2, 3, 'sale', -1, 1, '2025-03-15 07:33:13', 'Sold Phone Case'),
-(3, 2, 'sale', -1, 2, '2025-03-15 07:33:13', 'Sold Samsung Galaxy S22'),
-(4, 4, 'sale', -1, 2, '2025-03-15 07:33:13', 'Sold USB Charger');
 
 -- --------------------------------------------------------
 
@@ -154,10 +139,8 @@ CREATE TABLE `new_orders` (
 --
 
 INSERT INTO `new_orders` (`id`, `product_name`, `quantity`, `order_date`, `expected_delivery`, `supplier`, `status`) VALUES
-(1, 'moon', 4343, '2025-03-28', 'Order', 'csda', 'Pending'),
-(2, 'moon', 443, '2025-03-02', 'In Delivery', 'tfid', 'Pending'),
-(3, 'moon', 4545, '2025-03-20', 'Arrived', 'trt', 'Ready'),
-(4, 'didi', 454, '2025-03-27', 'Arrived', 'ghg', 'Ready');
+(1, 'Laptop', 10, '2025-03-17', 'Order', 'ASUS', 'Pending'),
+(7, 'moon', 434, '2025-03-13', 'Arrived', 'fdf', 'Ready');
 
 -- --------------------------------------------------------
 
@@ -174,13 +157,6 @@ CREATE TABLE `preorders` (
   `quantity` int(11) NOT NULL CHECK (`quantity` > 0),
   `status` enum('ordered','fulfilled','canceled') NOT NULL DEFAULT 'ordered'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `preorders`
---
-
-INSERT INTO `preorders` (`preorder_id`, `product_id`, `customer_id`, `order_date`, `expected_arrival_date`, `quantity`, `status`) VALUES
-(1, 1, 2, '2025-03-15 07:33:13', '2025-03-22', 1, 'ordered');
 
 -- --------------------------------------------------------
 
@@ -199,18 +175,18 @@ CREATE TABLE `products` (
   `stock_quantity` int(11) NOT NULL DEFAULT 0,
   `low_stock_threshold` int(11) NOT NULL DEFAULT 5,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` enum('new','first-hand','second-hand') NOT NULL DEFAULT 'new'
+  `status` enum('new','first-hand','second-hand') NOT NULL DEFAULT 'new',
+  `brand` varchar(255) DEFAULT NULL,
+  `model` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `name`, `description`, `barcode`, `category_id`, `unit_price`, `cost_price`, `stock_quantity`, `low_stock_threshold`, `created_at`, `status`) VALUES
-(1, 'iPhone 13', 'Apple iPhone 13 - 128GB', '1234567890123', 1, 999.99, 850.00, 10, 2, '2025-03-15 07:33:13', 'new'),
-(2, 'Samsung Galaxy S22', 'Samsung S22 Ultra - 256GB', '2234567890123', 1, 899.99, 780.00, 5, 2, '2025-03-15 07:33:13', 'new'),
-(3, 'Phone Case', 'Universal phone case', '3234567890123', 2, 19.99, 5.00, 50, 10, '2025-03-15 07:33:13', 'new'),
-(4, 'USB Charger', 'Fast Charging Adapter', '4234567890123', 2, 24.99, 8.00, 30, 5, '2025-03-15 07:33:13', 'new');
+INSERT INTO `products` (`product_id`, `name`, `description`, `barcode`, `category_id`, `unit_price`, `cost_price`, `stock_quantity`, `low_stock_threshold`, `created_at`, `status`, `brand`, `model`, `type`) VALUES
+(19, 'Noelani Logan', 'Wi-Fi-enabled smart light bulb with adjustable brightness and color temperature.', 'Velit ipsam sunt err', 5, 0.00, 0.00, 80, 50, '2025-03-11 04:15:00', 'first-hand', 'Possimus numquam co', 'Omnis nulla reiciend', 'Nulla fugiat dolore sds');
 
 -- --------------------------------------------------------
 
@@ -228,13 +204,6 @@ CREATE TABLE `repairs` (
   `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `repairs`
---
-
-INSERT INTO `repairs` (`repair_id`, `product_id`, `return_id`, `repair_cost`, `status`, `repair_date`, `notes`) VALUES
-(1, 1, 1, 50.00, 'repairing', '2025-03-15 07:33:13', 'Screen replaced');
-
 -- --------------------------------------------------------
 
 --
@@ -251,12 +220,28 @@ CREATE TABLE `returns` (
   `status` enum('restocked','damaged','repaired','refunded') NOT NULL DEFAULT 'restocked'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `returns`
+-- Table structure for table `return_product`
 --
 
-INSERT INTO `returns` (`return_id`, `sale_id`, `product_id`, `quantity`, `return_reason`, `return_date`, `status`) VALUES
-(1, 1, 3, 1, 'customer_dissatisfaction', '2025-03-15 07:33:13', 'restocked');
+CREATE TABLE `return_product` (
+  `return_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `reason_for_return` text NOT NULL,
+  `type_of_return` enum('Good Return','Damaged Return') NOT NULL,
+  `return_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `return_product`
+--
+
+INSERT INTO `return_product` (`return_id`, `product_name`, `quantity`, `reason_for_return`, `type_of_return`, `return_date`) VALUES
+(1, 'Phone', 20, 'It slow', 'Good Return', '2025-03-17'),
+(2, 'Laptop', 1, 'Battery Problem', 'Damaged Return', '2025-03-12');
 
 -- --------------------------------------------------------
 
@@ -296,16 +281,6 @@ CREATE TABLE `sale_items` (
   `unit_price` decimal(10,2) NOT NULL,
   `total_price` decimal(10,2) GENERATED ALWAYS AS (`quantity` * `unit_price`) STORED
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `sale_items`
---
-
-INSERT INTO `sale_items` (`sale_item_id`, `sale_id`, `product_id`, `quantity`, `unit_price`) VALUES
-(1, 1, 1, 1, 999.99),
-(2, 1, 3, 1, 19.99),
-(3, 2, 2, 1, 899.99),
-(4, 2, 4, 1, 24.99);
 
 -- --------------------------------------------------------
 
@@ -393,12 +368,6 @@ ALTER TABLE `inventory_movements`
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexes for table `new_orders`
---
-ALTER TABLE `new_orders`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `preorders`
 --
 ALTER TABLE `preorders`
@@ -468,7 +437,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `customers`
@@ -495,12 +464,6 @@ ALTER TABLE `inventory_movements`
   MODIFY `movement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `new_orders`
---
-ALTER TABLE `new_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
 -- AUTO_INCREMENT for table `preorders`
 --
 ALTER TABLE `preorders`
@@ -510,7 +473,7 @@ ALTER TABLE `preorders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `repairs`
