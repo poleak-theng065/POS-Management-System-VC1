@@ -35,7 +35,7 @@
                         <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
                         <td><?= htmlspecialchars($newOrder['order_date']) ?></td>
                         <td>
-                            <?php if ($newOrder['expected_delivery'] === 'In Delivery'): ?>
+                            <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
                                 <span class="badge bg-info">In Delivery</span>
                             <?php elseif ($newOrder['expected_delivery'] === 'Arrived'): ?>
                                 <span class="badge bg-success">Arrived</span>
@@ -88,4 +88,6 @@
         </div>
     </div>
 </div>
+
+<script src="/assets/js/search.js"></script>
 
