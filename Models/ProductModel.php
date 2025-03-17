@@ -25,7 +25,6 @@ class ProductModel
         }
     }
       
-    
     function getProducts()
     {
         $products = $this->pdo->query("
@@ -59,9 +58,6 @@ class ProductModel
         return $stmt ? true : false;
     }
     
-
-
-
     function getProduct($id)
     {
         $stmt = $this->pdo->query(
@@ -114,17 +110,15 @@ class ProductModel
 
     public function show($id)
     {
-        // SQL query with a placeholder for the product_id
+
         $sql = "SELECT products.product_id, products.name, products.barcode, products.brand, products.description, 
                 products.model, products.type, categories.name AS category_name
                 FROM products  
                 LEFT JOIN categories ON products.category_id = categories.category_id
                 WHERE products.product_id = :product_id";
 
-        // Use the existing query() function to execute the statement with parameter binding
         $stmt = $this->pdo->query($sql, [':product_id' => $id]);
-
-        // Fetch and return the result as an associative array
+        
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

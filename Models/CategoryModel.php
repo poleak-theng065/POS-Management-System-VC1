@@ -32,7 +32,6 @@ class CategoryModel
         return $result;
     }
 
-
     public function getProducts()
     {
         $categories = $this->pdo->query("SELECT * FROM products");
@@ -54,7 +53,6 @@ class CategoryModel
             print_r($stmt->errorInfo());
         }
     }
-
 
     function getCategory($id)
     {
@@ -87,7 +85,6 @@ class CategoryModel
             echo 'Warning: No changes were made. The category may already have the same values.';
         }
     }
-
 
     public function deleteCategory($categoryId)
     {

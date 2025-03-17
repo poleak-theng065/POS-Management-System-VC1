@@ -14,18 +14,12 @@ class ProductListController extends BaseController
         $this->iteam = new ProductModel();
     }
 
-
-
-
-    public function index() {
+    public function index()
+    {
         $products = $this->iteam->getProducts();
         $categories = $this->iteam->getCategories();
         $this->view("inventory/product_list/product_list", ["products" => $products, "categories" => $categories]);
     }
-    
-
-
-    
 
     public function store()
     {
@@ -43,29 +37,24 @@ class ProductListController extends BaseController
                 'category_id' => $_POST['category_id'] ?? null,
                 'description' => $_POST['description'] ?? null,
             ];
-    
-            // Validate required fields
+
             foreach ($data as $key => $value) {
-                if ($value === null && $key !== 'description') { 
+                if ($value === null && $key !== 'description') {
                     $_SESSION['error'] = "Error: All required fields must be filled.";
-                    $this->redirect('/product_list'); // Redirect to product list page
+                    $this->redirect('/product_list'); 
                     return;
                 }
             }
-    
-            // Insert product into the database
+
             if ($this->iteam->createProduct($data)) {
                 $_SESSION['success'] = "Product added successfully!";
             } else {
                 $_SESSION['error'] = "Error: Unable to add product.";
             }
-    
-            $this->redirect('/product_list'); // Redirect after successful insert
+
+            $this->redirect('/product_list'); 
         }
     }
-    
-    
-
 
     function edit($id)
     {
@@ -76,19 +65,17 @@ class ProductListController extends BaseController
     public function update($id = null)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // If the ID is not provided in the URL, get it from the POST data
+
             if ($id === null && isset($_POST['product_id'])) {
                 $id = intval($_POST['product_id']);
             }
-    
-            // If the ID is not valid, return an error and redirect
+
             if (!$id) {
                 $_SESSION['error'] = "Error: No product ID provided.";
                 $this->redirect('/inventory/product_list');
                 return;
             }
-    
-            // Sanitize & Validate Input Data (Ensure all fields are populated and valid)
+
             $data = [
                 'name' => isset($_POST['name']) ? trim(htmlspecialchars($_POST['name'])) : null,
                 'barcode' => isset($_POST['barcode']) ? trim(htmlspecialchars($_POST['barcode'])) : null,
@@ -100,29 +87,24 @@ class ProductListController extends BaseController
                 'category_id' => isset($_POST['category_id']) ? intval($_POST['category_id']) : null,
                 'description' => isset($_POST['description']) ? trim(htmlspecialchars($_POST['description'])) : null,
             ];
-    
-            // Validate Required Fields (Ensure no required fields are null)
+
             foreach ($data as $key => $value) {
-                if ($value === null && $key !== 'description') { // 'description' is optional
+                if ($value === null && $key !== 'description') {
                     $_SESSION['error'] = "Error: All required fields must be filled.";
                     $this->redirect('/inventory/product_list');
                     return;
                 }
             }
-    
-            // Update Product
+
             if ($this->iteam->updateProduct($id, $data)) {
                 $_SESSION['success'] = "Product updated successfully!";
             } else {
                 $_SESSION['error'] = "Error: Unable to update product.";
             }
-    
-            // Redirect to the product list page
+
             $this->redirect('/product_list');
         }
     }
-    
-    
 
     public function destroy()
     {
