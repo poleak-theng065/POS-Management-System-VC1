@@ -21,7 +21,7 @@
 
                     <option value="Expected Delivery">Expected Delivery</option>
                     <option value="Order">Order</option>
-                    <option value="In Delivery">Delivery</option>
+                    <option value="Delivery">Delivery</option>
                     <option value="Arrived">Arrived</option>
                     
                 </select>
