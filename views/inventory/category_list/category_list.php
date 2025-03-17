@@ -30,8 +30,8 @@
                     <tr>
                         <td><?= $index + 1 ?></td>
                         <td><?= $category['name'] ?></td>
-                        <td><?= !empty($category['total_brands']) ? $category['total_brands'] : 'No Brand' ?></td>
-                        <td><?= !empty($category['total_stock_quantity']) ? $category['total_stock_quantity'] : 'No Quantity' ?></td>
+                        <td><?= !empty($category['total_brands']) ? $category['total_brands'] : 0 ?></td>
+                        <td><?= !empty($category['total_stock_quantity']) ? $category['total_stock_quantity'] : 0 ?></td>
                         <td><?= $category['description'] ?></td>
                         <td>
                             <a class="text-warning me-2 editCategoryBtn"
@@ -180,7 +180,7 @@
 </div>
 
 <!-- Alert Session -->
-<div id="formAlertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1050; width: 300px;"></div>
+<div id="formAlertContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050; width: 300px;"></div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

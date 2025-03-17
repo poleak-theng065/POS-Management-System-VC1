@@ -41,6 +41,18 @@ class CategoryModel
 
     function createCategory($data)
     {
+        // Check for duplicate name
+        $checkSql = 'SELECT COUNT(*) FROM categories WHERE name = :name';
+        $checkStmt = $this->pdo->query($checkSql, [
+            'name' => $data['name']
+        ]);
+
+        if ($checkStmt->fetchColumn() > 0) {
+            echo 'Error: A category with the same name already exists.';
+            return "Error: Duplicate entry.";
+        }
+
+        // Insert new category
         $sql = 'INSERT INTO categories (name, description) 
                 VALUES (:name, :description)';
 
@@ -51,7 +63,10 @@ class CategoryModel
 
         if ($stmt->errorCode() != '00000') {
             print_r($stmt->errorInfo());
+            return false;
         }
+
+        return true;
     }
 
     function getCategory($id)
