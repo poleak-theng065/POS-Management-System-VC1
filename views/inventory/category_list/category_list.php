@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <table class="table table-hover" id=switchTableBody>
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
