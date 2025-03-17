@@ -18,18 +18,17 @@ class CategoryModel
     public function getCategories()
     {
         $categories = $this->pdo->query("
-            SELECT categories.*, 
-                   IFNULL(products.brand, 'No Brand') AS brand,
-                   IFNULL(products.model, 'No Model') AS model,
-                   IFNULL(products.type, 'No Type') AS type,
-                   IFNULL(products.stock_quantity, 0) AS stock_quantity
+            SELECT 
+                categories.*, 
+                COUNT(DISTINCT products.brand) AS total_brands, 
+                SUM(products.stock_quantity) AS total_stock_quantity
             FROM categories
             LEFT JOIN products ON categories.category_id = products.category_id
+            GROUP BY categories.category_id
             ORDER BY categories.category_id DESC
         ");
 
-        $result = $categories->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        return $categories->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -54,7 +53,6 @@ class CategoryModel
             print_r($stmt->errorInfo());
         }
     }
-
 
     function getCategory($id)
     {
@@ -87,7 +85,6 @@ class CategoryModel
             echo 'Warning: No changes were made. The category may already have the same values.';
         }
     }
-
 
     public function deleteCategory($categoryId)
     {

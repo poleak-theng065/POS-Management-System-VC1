@@ -79,7 +79,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4 pt-4 pb-4 border-top border-bottom border-light py-2">
-        <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
+            <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
                 <select class="form-select w-auto me-3" style="border-radius: 10px;">
                     <option>10</option>
@@ -91,15 +91,13 @@
             </div>
         </div>
 
-        <div class="table-responsive" id=switchTableBody >
+        <div class="table-responsive">
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Name</th>
                         <th>Barcode</th>
+                        <th>Name</th>
                         <th>Brand</th>
-                        <th>Model</th>
                         <th>Type</th>
                         <th>Status</th>
                         <th>Quantity</th>
@@ -107,14 +105,12 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id= 'switchTableBody'>
+                <tbody id='switchTableBody'>
                     <?php foreach ($products as $index => $product): ?>
                         <tr>
-                            <td><?= $index + 1 ?></td>
-                            <td><?= $product['name'] ?></td>
                             <td><?= $product['barcode'] ?></td>
+                            <td><?= $product['name'] ?></td>
                             <td><?= $product['brand'] ?></td>
-                            <td><?= $product['model'] ?></td>
                             <td><?= $product['type'] ?></td>
                             <td><?= $product['status'] ?></td>
                             <td><?= $product['stock_quantity'] ?></td>
@@ -136,6 +132,8 @@
                                     data-bs-target="#editProductModal">
                                     <i class="bi bi-pencil-square fs-4"></i>
                                 </a>
+
+                                <!-- Delete Button-->
                                 <a type="button" class="text-danger deleteProductBtn"
                                     data-id="<?= $product['product_id'] ?>"
                                     data-name="<?= htmlspecialchars($product['name']) ?>"
@@ -172,7 +170,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal for Adding Product -->
 <form action="/inventory/product_list/store" method="POST">
@@ -228,15 +225,13 @@
                     <div class="form-group">
                         <label for="category_id" class="form-label">Category</label>
                         <select name="category_id" class="form-control" required>
-    <option value="">Select a Category</option>
-    <?php foreach ($categories as $category): ?>
-        <option value="<?= htmlspecialchars($category['category_id']) ?>">
-            <?= htmlspecialchars($category['name']) ?>
-        </option>
-    <?php endforeach; ?>
-</select>
-
-
+                            <option value="">Select a Category</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= htmlspecialchars($category['category_id']) ?>">
+                                    <?= htmlspecialchars($category['name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description (Optional)</label>
@@ -251,8 +246,6 @@
         </div>
     </div>
 </form>
-
-
 
 <!-- Modal for Editing Product -->
 <form action="/inventory/product_list/update" method="POST">
@@ -321,32 +314,29 @@
     </div>
 </form>
 
+<!-- Modal for Editing Product -->
 <script>
-document.querySelectorAll('.editProductBtn').forEach(button => {
-    button.addEventListener('click', function() {
-        // Get data attributes from the button
-        const productId = this.getAttribute('data-id');
-        
-        // Set the values in the modal form fields
-        document.getElementById('edit-name').value = this.getAttribute('data-name');
-        document.getElementById('edit-barcode').value = this.getAttribute('data-barcode');
-        document.getElementById('edit-brand').value = this.getAttribute('data-brand');
-        document.getElementById('edit-model').value = this.getAttribute('data-model');
-        document.getElementById('edit-type').value = this.getAttribute('data-type');
-        document.getElementById('edit-status').value = this.getAttribute('data-status');
-        document.getElementById('edit-stock-quantity').value = this.getAttribute('data-stock-quantity');
-        document.getElementById('edit-category').value = this.getAttribute('data-category');
-        document.getElementById('edit-description').value = this.getAttribute('data-description');
+    document.querySelectorAll('.editProductBtn').forEach(button => {
+        button.addEventListener('click', function() {
 
-        // Set the hidden product_id field value
-        document.getElementById('product_id').value = productId;
+            const productId = this.getAttribute('data-id');
 
-        // Update the form action dynamically with the product ID
-        const form = document.querySelector('form[action^="/inventory/product_list/update"]');
-        form.action = `/inventory/product_list/update/${productId}`;
+            document.getElementById('edit-name').value = this.getAttribute('data-name');
+            document.getElementById('edit-barcode').value = this.getAttribute('data-barcode');
+            document.getElementById('edit-brand').value = this.getAttribute('data-brand');
+            document.getElementById('edit-model').value = this.getAttribute('data-model');
+            document.getElementById('edit-type').value = this.getAttribute('data-type');
+            document.getElementById('edit-status').value = this.getAttribute('data-status');
+            document.getElementById('edit-stock-quantity').value = this.getAttribute('data-stock-quantity');
+            document.getElementById('edit-category').value = this.getAttribute('data-category');
+            document.getElementById('edit-description').value = this.getAttribute('data-description');
+
+            document.getElementById('product_id').value = productId;
+
+            const form = document.querySelector('form[action^="/inventory/product_list/update"]');
+            form.action = `/inventory/product_list/update/${productId}`;
+        });
     });
-});
-
 </script>
 
 
@@ -373,6 +363,7 @@ document.querySelectorAll('.editProductBtn').forEach(button => {
     </div>
 </div>
 
+<!-- Delete Modal (Single Modal for All Product) -->
 <script>
     document.querySelectorAll(".deleteProductBtn").forEach(button => {
         button.addEventListener("click", function() {
@@ -381,4 +372,3 @@ document.querySelectorAll('.editProductBtn').forEach(button => {
         });
     });
 </script>
-

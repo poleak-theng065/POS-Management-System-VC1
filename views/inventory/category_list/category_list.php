@@ -2,7 +2,7 @@
     <h1>Product Cateory List</h1>
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
+            <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
                 <select class="form-select w-auto me-2" id="entriesPerPage">
                     <option value="2">2</option>
@@ -14,14 +14,12 @@
             </div>
         </div>
 
-        <table class="table table-hover" id= switchTableBody  >
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Brand</th>
-                    <th>Model</th>
-                    <th>Type</th>
                     <th>Quantity</th>
                     <th>Description</th>
                     <th>Action</th>
@@ -32,10 +30,8 @@
                     <tr>
                         <td><?= $index + 1 ?></td>
                         <td><?= $category['name'] ?></td>
-                        <td><?= !empty($category['brand']) ? $category['brand'] : 'No Brand' ?></td>
-                        <td><?= !empty($category['model']) ? $category['model'] : 'No Model' ?></td>
-                        <td><?= !empty($category['type']) ? $category['type'] : 'No Type' ?></td>
-                        <td><?= !empty($category['stock_quantity']) ? $category['stock_quantity'] : 'No Quantity' ?></td>
+                        <td><?= !empty($category['total_brands']) ? $category['total_brands'] : 'No Brand' ?></td>
+                        <td><?= !empty($category['total_stock_quantity']) ? $category['total_stock_quantity'] : 'No Quantity' ?></td>
                         <td><?= $category['description'] ?></td>
                         <td>
                             <a class="text-warning me-2 editCategoryBtn"
@@ -87,7 +83,6 @@
     </div>
 </div>
 
-
 <!-- Modal for Adding Category -->
 <form action="/inventory/category_list/store" method="POST">
     <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
@@ -116,7 +111,6 @@
     </div>
 </form>
 
-
 <!-- Modal for Editing Category -->
 <form action="/inventory/category_list/update" method="POST">
     <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
@@ -127,8 +121,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Add hidden field for Category_ID -->
-                    <input type="hidden" name="category_id" id="category-id"> <!-- Changed to category_id -->
+                    <input type="hidden" name="category_id" id="category-id">
                     <div class="form-group">
                         <label for="edit-name">Category Name</label>
                         <input type="text" class="form-control" id="edit-name" name="name" value="">
@@ -145,28 +138,23 @@
     </div>
 </form>
 
+<!-- Modal for Editing Category -->
 <script>
     document.querySelectorAll('.editCategoryBtn').forEach(button => {
         button.addEventListener('click', function() {
-            // Get data attributes from the button
             const categoryId = this.getAttribute('data-id');
             const categoryName = this.getAttribute('data-name');
             const categoryDescription = this.getAttribute('data-description');
 
-            // Set the values in the modal form fields
             document.getElementById('edit-name').value = categoryName;
             document.getElementById('edit-description').value = categoryDescription;
 
-            // Set the hidden Category_ID field value
             document.getElementById('category-id').value = categoryId;
 
-            // Update the form action dynamically with the category ID
-            const formAction = '/inventory/category_list/update'; // No need to include ID here since it's a POST request
+            const formAction = '/inventory/category_list/update';
             document.querySelector('form[action^="/inventory/category_list/update"]').action = formAction;
         });
     });
-
-
 </script>
 
 <!-- Delete Modal (Single Modal for All Categories) -->
@@ -191,6 +179,7 @@
     </div>
 </div>
 
+<!-- Delete Modal (Single Modal for All Categories) -->
 <script>
     document.querySelectorAll(".deleteCategoryBtn").forEach(button => {
         button.addEventListener("click", function() {
@@ -199,7 +188,6 @@
         });
     });
 </script>
-
 
 <script>
     function searchCategory() {
