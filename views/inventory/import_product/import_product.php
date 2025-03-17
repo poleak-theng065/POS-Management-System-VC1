@@ -33,11 +33,25 @@
                     <p>Drag and drop your image here</p>
                     <p>or</p>
                     <label for="imageUpload" class="btn btn-outline-primary">Browse image</label>
-                    <input type="file" class="form-control" id="imageUpload" style="display: none;">
+                    <input type="file" class="form-control" id="imageUpload" accept="image/*" style="display: none;">
                 </div>
-                <a href="#" class="text-primary">Add media from URL</a>
+                <img id="previewImage" src="" alt="Image Preview" class="img-fluid mt-3 d-none" style="max-width: 200px; border-radius: 8px;">
             </div>
 
+            <script>
+                document.getElementById("imageUpload").addEventListener("change", function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const preview = document.getElementById("previewImage");
+                            preview.src = e.target.result;
+                            preview.classList.remove("d-none"); // Show image
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            </script>
             <!-- Variants Section -->
             <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
                 <h5 class="mb-3">Variants</h5>
@@ -59,9 +73,9 @@
             <!-- Inventory Section -->
             <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
                 <h5 class="mb-3">Inventory</h5>
-                
+
                 <button class="btn btn-primary mb-3">Restock</button>
-                
+
                 <div class="mb-3">
                     <label for="inventory" class="form-label">Add to Stock</label>
                     <div class="input-group">
@@ -69,7 +83,7 @@
                         <button class="btn btn-outline-primary" type="button">Confirm</button>
                     </div>
                 </div>
-                
+
                 <p class="mb-0">Product in stock now: <strong>54</strong></p>
                 <p class="mb-0">Product in transit: <strong>390</strong></p>
                 <p class="mb-0">Last time restocked: <strong>24th June, 2023</strong></p>
@@ -82,22 +96,22 @@
             <!-- Pricing Section -->
             <div class="form-section mb-4 p-4 border rounded bg-white shadow-sm">
                 <h5 class="mb-3">Pricing</h5>
-                
+
                 <div class="mb-3">
                     <label for="basePrice" class="form-label">Base Price</label>
                     <input type="text" class="form-control" id="basePrice" placeholder="Price">
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="discountedPrice" class="form-label">Discounted Price</label>
                     <input type="text" class="form-control" id="discountedPrice" placeholder="Discounted Price">
                 </div>
-                
+
                 <div class="form-check mb-3">
                     <input type="checkbox" class="form-check-input" id="chargeTax">
                     <label class="form-check-label" for="chargeTax">Charge tax on this product</label>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="inStock" class="form-label">In stock</label>
                     <div class="form-check form-switch">
@@ -161,5 +175,5 @@
                 </div>
             </div>
 
-</div>
-
+        </div>
+        
