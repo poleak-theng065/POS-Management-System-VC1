@@ -19,7 +19,7 @@
                 <label for="expectedDelivery" class="form-label">Expected Delivery</label>
                 <select class="form-select" id="expectedDelivery" name="expecteddelivery">
                     <option value="Order" <?= ($newOrder['expected_delivery'] == "Order") ? 'selected' : '' ?>>Order</option>
-                    <option value="In Delivery" <?= ($newOrder['expected_delivery'] == "In Delivery") ? 'selected' : '' ?>>In Delivery</option>
+                    <option value="In Delivery" <?= ($newOrder['expected_delivery'] == "Delivery") ? 'selected' : '' ?>>Delivery</option>
                     <option value="Arrived" <?= ($newOrder['expected_delivery'] == "Arrived") ? 'selected' : '' ?>>Arrived</option>
                 </select>
             </div>
