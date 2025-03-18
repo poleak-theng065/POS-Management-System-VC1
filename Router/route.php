@@ -30,10 +30,11 @@ $route->post('/category_list/destroy/{id}', [CategoryListController::class, 'des
 // Product List
 $route->get("/product_list", [ProductListController::class, 'index']); 
 $route->get("/product_list/create", [ProductListController::class, 'create']); 
-$route->get('/product_list/edit/{id}', [ProductListController::class, 'edit']); 
-$route->post('/product_list/update/{id}', [ProductListController::class, 'update']);
-$route->post('/product_list/store', [ProductListController::class, 'store']); 
-$route->get('/product_list/destroy/{id}', [ProductListController::class, 'destroy']);
+$route->get("/product_list/edit/{id}", [ProductListController::class, 'edit']); 
+$route->post("/product_list/update/{id}", [ProductListController::class, 'update']);
+$route->post("/product_list/store", [ProductListController::class, 'store']); 
+$route->get("/product_list/destroy/{id}", [ProductListController::class, 'destroy']);
+
 
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
@@ -51,7 +52,7 @@ $route->get("/sold_product", [SoldProductController::class, 'soldProduct']);
 $route->get("/low_stock_product", [LowStockProductController::class, 'index']);
 
 // Run Out Of Stock Product
-$route->get("/run_out_of_stock", [RunOutOfStockController::class, 'runOutOfStock']);
+$route->get("/run_out_of_stock", [RunOutOfStockController::class, 'index']);
 
 // Return Product
 $route->get("/return_product", [ReturnProductController::class, 'returnProduct']);

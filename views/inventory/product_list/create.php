@@ -74,7 +74,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Add Product</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                <a href="/product_list" type="button" class="btn btn-secondary">Discard</a>
             </div>
         </form>
     </div>
