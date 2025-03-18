@@ -74,7 +74,7 @@ class CategoryListController extends BaseController
     function edit($id)
     {
         $category = $this->iteam->getCategory($id);
-        $this->view('inventory/category_list/edit', ['category' => $category]);
+        $this->view('inventory/category_list/create', ['category' => $category]);
     }
 
     public function update($id = null)

@@ -14,6 +14,7 @@ require_once "Controllers/inventory/RunOutOfStockController.php";
 require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ArrivedProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
+require_once "Controllers/inventory/SaleFormController.php";
 
 
 $route = new Router();
@@ -22,7 +23,7 @@ $route = new Router();
 $route->get("/category_list", [CategoryListController::class, 'index']);
 $route->get("/category_list/create", [CategoryListController::class, 'create']);
 $route->get('/category_list/edit/{id}', [CategoryListController::class, 'edit']);
-$route->post('/category_list/update/{id}', [CategoryListController::class, 'update']);
+$route->post('/category_list/update', [CategoryListController::class, 'update']);
 $route->post('/category_list/store', [CategoryListController::class, 'store']);
 $route->post('/category_list/destroy/{id}', [CategoryListController::class, 'destroy']);
 
@@ -74,5 +75,9 @@ $route->post("/order_new_product/store", [OrderNewProductController::class, 'sto
 $route->get("/order_new_product/edit/{id}", [OrderNewProductController::class, 'edit']);
 $route->put("/order_new_product/update/{id}", [OrderNewProductController::class, 'update']);
 $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::class, 'delete']);
+
+
+// Sale form
+$route->get("/sale_form", [SaleFormController::class, 'saleForm']);
 
 $route->route();
