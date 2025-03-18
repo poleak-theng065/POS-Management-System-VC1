@@ -1,5 +1,5 @@
 <?php
-require_once "Models/LowStockProductModel.php";
+require_once ("Models/inventory/LowStockProductModel.php");
 
 class LowStockProductController extends BaseController
 {

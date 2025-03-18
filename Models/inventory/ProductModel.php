@@ -24,7 +24,7 @@ class ProductModel
             return [];
         }
     }
-      
+
     function getProducts()
     {
         $products = $this->pdo->query("
@@ -41,7 +41,7 @@ class ProductModel
     {
         $sql = 'INSERT INTO products (name, barcode, brand, model, type, status, stock_quantity, unit_price, cost_price, category_id) 
                 VALUES (:name, :barcode, :brand, :model, :type, :status, :stock_quantity, :unit_price, :cost_price, :category_id)';
-    
+
         $stmt = $this->pdo->query($sql, [
             ':name' => $data['name'],
             ':barcode' => $data['barcode'],
@@ -54,10 +54,10 @@ class ProductModel
             ':cost_price' => $data['cost_price'],
             ':category_id' => $data['category_id'],
         ]);
-    
+
         return $stmt ? true : false;
     }
-    
+
     function getProduct($id)
     {
         $stmt = $this->pdo->query(
@@ -98,7 +98,7 @@ class ProductModel
             ':stock_quantity' => $data['stock_quantity'],
             ':unit_price' => $data['unit_price'],
             ':cost_price' => $data['cost_price'],
-            ':category_id' => $data['category_id'], // Include category_id
+            ':category_id' => $data['category_id'],
         ]);
     }
 
@@ -118,7 +118,7 @@ class ProductModel
                 WHERE products.product_id = :product_id";
 
         $stmt = $this->pdo->query($sql, [':product_id' => $id]);
-        
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
