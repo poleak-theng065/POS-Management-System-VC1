@@ -41,6 +41,18 @@ class CategoryModel
 
     function createCategory($data)
     {
+        // Check for duplicate name
+        $checkSql = 'SELECT COUNT(*) FROM categories WHERE name = :name';
+        $checkStmt = $this->pdo->query($checkSql, [
+            'name' => $data['name']
+        ]);
+
+        if ($checkStmt->fetchColumn() > 0) {
+            echo 'Error: A category with the same name already exists.';
+            return "Error: Duplicate entry.";
+        }
+
+        // Insert new category
         $sql = 'INSERT INTO categories (name, description) 
                 VALUES (:name, :description)';
 
@@ -51,7 +63,10 @@ class CategoryModel
 
         if ($stmt->errorCode() != '00000') {
             print_r($stmt->errorInfo());
+            return false;
         }
+
+        return true;
     }
 
     function getCategory($id)
@@ -67,9 +82,22 @@ class CategoryModel
     function updateCategory($id, $data)
     {
         if (!$id) {
-            die('Error: No category ID provided.');
+            return false; // No category ID provided
         }
 
+        // Check for duplicate name
+        $checkSql = 'SELECT COUNT(*) FROM categories WHERE name = :name AND category_id != :category_id';
+        $checkStmt = $this->pdo->query($checkSql, [
+            ':name' => $data['name'],
+            ':category_id' => $id
+        ]);
+
+        if ($checkStmt->fetchColumn() > 0) {
+            echo 'Error: A category with the same name already exists.';
+            return "Error: Duplicate entry.";
+        }
+
+        // Update category
         $sql = 'UPDATE categories 
             SET name = :name, 
                 description = :description 
@@ -81,17 +109,25 @@ class CategoryModel
             ':description' => $data['description'],
         ]);
 
-        if ($stmt->rowCount() === 0) {
-            echo 'Warning: No changes were made. The category may already have the same values.';
+        if ($stmt->rowCount() > 0) {
+            return true; // Update successful
+        } else {
+            return false; // No changes were made
         }
     }
 
     public function deleteCategory($categoryId)
-    {
+    {   
         $sql = "DELETE FROM categories WHERE category_id = :category_id";
-        $this->pdo->query($sql, ['category_id' => $categoryId]);
+        $stmt = $this->pdo->query($sql, ['category_id' => $categoryId]);
 
-        $sql = "DELETE FROM categories WHERE category_id = :category_id";
-        $this->pdo->query($sql, ['category_id' => $categoryId]);
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+        // $sql = "DELETE FROM categories WHERE category_id = :category_id";
+        // $this->pdo->query($sql, ['category_id' => $categoryId]);
     }
 }
