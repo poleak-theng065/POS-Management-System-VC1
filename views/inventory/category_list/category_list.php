@@ -10,7 +10,7 @@
                     <option value="10">10</option>
                     <option value="25">25</option>
                 </select>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">+ Add Category</button>
+                <a href="/category_list/create" class="btn btn-primary ms-2">+ Add Category</a>
             </div>
         </div>
 
@@ -34,20 +34,26 @@
                         <td><?= !empty($category['total_stock_quantity']) ? $category['total_stock_quantity'] : 0 ?></td>
                         <td><?= $category['description'] ?></td>
                         <td>
-                            <a class="text-warning me-2 editCategoryBtn"
-                                data-id="<?= $category['category_id'] ?>"
-                                data-name="<?= htmlspecialchars($category['name']) ?>"
-                                data-description="<?= htmlspecialchars($category['description']) ?>"
-                                data-bs-toggle="modal" data-bs-target="#editCategoryModal">
-                                <i class="bi bi-pencil-square fs-4"></i>
-                            </a>
-
-                            <a type="button" class="text-danger deleteCategoryBtn"
-                                data-id="<?= $category['category_id'] ?>"
-                                data-name="<?= htmlspecialchars($category['name']) ?>"
-                                data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
-                                <i class="bi bi-trash fs-4"></i>
-                            </a>
+                            <div class="dropdown">
+                                <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical fs-5"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a href="/category_list/edit/<?= $category['category_id'] ?>" class="dropdown-item text-warning">
+                                            <i class="bi bi-pencil-square fs-4"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a type="button" class="dropdown-item text-danger deleteCategoryBtn"
+                                            data-id="<?= $category['category_id'] ?>"
+                                            data-name="<?= htmlspecialchars($category['name']) ?>"
+                                            data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
+                                            <i class="bi bi-trash fs-4"></i> Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach ?>
@@ -57,7 +63,7 @@
 
         <div class="d-flex justify-content-between align-items-center mt-3">
             <div id="entriesInfo" class="text-muted">
-                    Showing 1 to <?= count($categories) ?> of <?= count($categories) ?> entries
+                Showing 1 to <?= count($categories) ?> of <?= count($categories) ?> entries
             </div>
             <nav>
                 <ul class="pagination" id="pagination">
@@ -83,79 +89,6 @@
     </div>
 </div>
 
-<!-- Modal for Adding Category -->
-<form action="/inventory/category_list/store" method="POST">
-    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addCategoryForm">
-                        <div class="form-group">
-                            <label for="name">Category Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter category name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <input type="text" class="form-control" id="description" name="description" placeholder="Enter category description" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add</button>
-                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
-<!-- Modal for Editing Category -->
-<form action="/inventory/category_list/update" method="POST">
-    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="category_id" id="category-id">
-                    <div class="form-group">
-                        <label for="edit-name">Category Name</label>
-                        <input type="text" class="form-control" id="edit-name" name="name" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-description">Category Description</label>
-                        <input type="text" class="form-control" id="edit-description" name="description" value="">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
-<!-- Modal for Editing Category -->
-<script>
-    document.querySelectorAll('.editCategoryBtn').forEach(button => {
-        button.addEventListener('click', function() {
-            const categoryId = this.getAttribute('data-id');
-            const categoryName = this.getAttribute('data-name');
-            const categoryDescription = this.getAttribute('data-description');
-
-            document.getElementById('edit-name').value = categoryName;
-            document.getElementById('edit-description').value = categoryDescription;
-
-            document.getElementById('category-id').value = categoryId;
-
-            const formAction = '/inventory/category_list/update';
-            document.querySelector('form[action^="/inventory/category_list/update"]').action = formAction;
-        });
-    });
-</script>
 
 <!-- Delete Modal (Single Modal for All Categories) -->
 <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
@@ -169,7 +102,7 @@
                 Are you sure you want to delete <strong id="deleteCategoryName"></strong>?
             </div>
             <div class="modal-footer">
-                <form id="deleteCategoryForm" method="POST" action="/inventory/category_list/destroy/<?= $category['category_id'] ?>">
+                <form id="deleteCategoryForm" method="POST" action="/category_list/destroy/<?= $category['category_id'] ?>">
                     <input type="hidden" name="category_id" id="deleteCategoryId">
                     <button type="submit" class="btn btn-danger">Delete</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -179,35 +112,45 @@
     </div>
 </div>
 
+<!-- Delete Modal (Single Modal for All Categories) -->
+<script>
+    document.querySelectorAll(".deleteCategoryBtn").forEach(button => {
+        button.addEventListener("click", function() {
+            let categoryId = this.getAttribute("data-id");
+            document.getElementById("deleteCategoryId").value = categoryId;
+        });
+    });
+</script>
+
 <!-- Alert Create Session -->
 <div id="formAlertContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050; width: 300px;"></div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const status = localStorage.getItem('formStatus');
+    document.addEventListener("DOMContentLoaded", function() {
+        const status = localStorage.getItem('formStatus');
 
-    console.log("Retrieved formStatus:", status); // Debugging log
+        console.log("Retrieved formStatus:", status); // Debugging log
 
-    if (status) {
-        let alertHTML = '';
-        let alertType = '';
-        let alertMessage = '';
+        if (status) {
+            let alertHTML = '';
+            let alertType = '';
+            let alertMessage = '';
 
-        if (status === 'success') {
-            alertType = 'success';
-            alertMessage = '<strong>Success!</strong> Category added successfully.';
-        } else if (status === 'duplicate') {
-            alertType = 'warning';
-            alertMessage = '<strong>Warning!</strong> Category already exists.';
-        } else if (status === 'fail') {
-            alertType = 'danger';
-            alertMessage = '<strong>Error!</strong> Please fill in all required fields.';
-        } else {
-            console.log("Unexpected status value:", status); // Log unexpected values
-        }
+            if (status === 'success') {
+                alertType = 'success';
+                alertMessage = '<strong>Success!</strong> Category added successfully.';
+            } else if (status === 'duplicate') {
+                alertType = 'warning';
+                alertMessage = '<strong>Warning!</strong> Category already exists.';
+            } else if (status === 'fail') {
+                alertType = 'danger';
+                alertMessage = '<strong>Error!</strong> Please fill in all required fields.';
+            } else {
+                console.log("Unexpected status value:", status); // Log unexpected values
+            }
 
-        if (alertMessage) {
-            alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+            if (alertMessage) {
+                alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
                             ${alertMessage}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -217,38 +160,26 @@
                             </div>
                         </div>`;
 
-            document.getElementById('formAlertContainer').innerHTML = alertHTML;
+                document.getElementById('formAlertContainer').innerHTML = alertHTML;
 
-            // Start progress bar countdown
-            let duration = 5;
-            let current = duration;
-            const progressBar = document.getElementById('progressBar');
-            const interval = setInterval(() => {
-                current -= 0.1;
-                let percent = (current / duration) * 100;
-                progressBar.style.width = percent + '%';
-                if (current <= 0) {
-                    clearInterval(interval);
-                    progressBar.closest('.alert').remove();
-                }
-            }, 100);
+                // Start progress bar countdown
+                let duration = 5;
+                let current = duration;
+                const progressBar = document.getElementById('progressBar');
+                const interval = setInterval(() => {
+                    current -= 0.1;
+                    let percent = (current / duration) * 100;
+                    progressBar.style.width = percent + '%';
+                    if (current <= 0) {
+                        clearInterval(interval);
+                        progressBar.closest('.alert').remove();
+                    }
+                }, 100);
 
-            // Remove status from localStorage after displaying
-            localStorage.removeItem('formStatus');
+                // Remove status from localStorage after displaying
+                localStorage.removeItem('formStatus');
+            }
         }
-    }
-});
-
-</script>
-
-
-<!-- Delete Modal (Single Modal for All Categories) -->
-<script>
-    document.querySelectorAll(".deleteCategoryBtn").forEach(button => {
-        button.addEventListener("click", function() {
-            let categoryId = this.getAttribute("data-id");
-            document.getElementById("deleteCategoryId").value = categoryId;
-        });
     });
 </script>
 
@@ -287,28 +218,28 @@
 
 <!-- Delete Alert -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const status = localStorage.getItem('deleteStatus');
+    document.addEventListener("DOMContentLoaded", function() {
+        const status = localStorage.getItem('deleteStatus');
 
-    console.log("Retrieved deleteStatus:", status); // Debugging log
+        console.log("Retrieved deleteStatus:", status); // Debugging log
 
-    if (status) {
-        let alertHTML = '';
-        let alertType = '';
-        let alertMessage = '';
+        if (status) {
+            let alertHTML = '';
+            let alertType = '';
+            let alertMessage = '';
 
-        if (status === 'success') {
-            alertType = 'success';
-            alertMessage = '<strong>Success!</strong> Category deleted successfully.';
-        } else if (status === 'fail') {
-            alertType = 'danger';
-            alertMessage = '<strong>Error!</strong> Failed to delete category.';
-        } else {
-            console.log("Unexpected status value:", status); // Log unexpected values
-        }
+            if (status === 'success') {
+                alertType = 'success';
+                alertMessage = '<strong>Success!</strong> Category deleted successfully.';
+            } else if (status === 'fail') {
+                alertType = 'danger';
+                alertMessage = '<strong>Error!</strong> Failed to delete category.';
+            } else {
+                console.log("Unexpected status value:", status); // Log unexpected values
+            }
 
-        if (alertMessage) {
-            alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+            if (alertMessage) {
+                alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
                             ${alertMessage}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -318,56 +249,55 @@
                             </div>
                         </div>`;
 
-            document.getElementById('formAlertContainer').innerHTML = alertHTML;
+                document.getElementById('formAlertContainer').innerHTML = alertHTML;
 
-            // Start progress bar countdown
-            let duration = 5;
-            let current = duration;
-            const progressBar = document.getElementById('progressBar');
-            const interval = setInterval(() => {
-                current -= 0.1;
-                let percent = (current / duration) * 100;
-                progressBar.style.width = percent + '%';
-                if (current <= 0) {
-                    clearInterval(interval);
-                    progressBar.closest('.alert').remove();
-                }
-            }, 100);
+                // Start progress bar countdown
+                let duration = 5;
+                let current = duration;
+                const progressBar = document.getElementById('progressBar');
+                const interval = setInterval(() => {
+                    current -= 0.1;
+                    let percent = (current / duration) * 100;
+                    progressBar.style.width = percent + '%';
+                    if (current <= 0) {
+                        clearInterval(interval);
+                        progressBar.closest('.alert').remove();
+                    }
+                }, 100);
 
-            // Remove status from localStorage after displaying
-            localStorage.removeItem('deleteStatus');
+                // Remove status from localStorage after displaying
+                localStorage.removeItem('deleteStatus');
+            }
         }
-    }
-});
-
+    });
 </script>
 <!-- Update Alert -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const status = localStorage.getItem('updateStatus');
+    document.addEventListener("DOMContentLoaded", function() {
+        const status = localStorage.getItem('updateStatus');
 
-    console.log("Retrieved updateStatus:", status); // Debugging log
+        console.log("Retrieved updateStatus:", status); // Debugging log
 
-    if (status) {
-        let alertHTML = '';
-        let alertType = '';
-        let alertMessage = '';
+        if (status) {
+            let alertHTML = '';
+            let alertType = '';
+            let alertMessage = '';
 
-        if (status === 'success') {
-            alertType = 'success';
-            alertMessage = '<strong>Success!</strong> Category updated successfully.';
-        } else if (status === 'duplicate') {
-            alertType = 'warning';
-            alertMessage = '<strong>Warning!</strong> Category already exists.';
-        } else if (status === 'fail') {
-            alertType = 'danger';
-            alertMessage = '<strong>Error!</strong> Failed to update category.';
-        } else {
-            console.log("Unexpected status value:", status); // Log unexpected values
-        }
+            if (status === 'success') {
+                alertType = 'success';
+                alertMessage = '<strong>Success!</strong> Category updated successfully.';
+            } else if (status === 'duplicate') {
+                alertType = 'warning';
+                alertMessage = '<strong>Warning!</strong> Category already exists.';
+            } else if (status === 'fail') {
+                alertType = 'danger';
+                alertMessage = '<strong>Error!</strong> Failed to update category.';
+            } else {
+                console.log("Unexpected status value:", status); // Log unexpected values
+            }
 
-        if (alertMessage) {
-            alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+            if (alertMessage) {
+                alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
                             ${alertMessage}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -377,26 +307,25 @@
                             </div>
                         </div>`;
 
-            document.getElementById('formAlertContainer').innerHTML = alertHTML;
+                document.getElementById('formAlertContainer').innerHTML = alertHTML;
 
-            // Start progress bar countdown
-            let duration = 5;
-            let current = duration;
-            const progressBar = document.getElementById('progressBar');
-            const interval = setInterval(() => {
-                current -= 0.1;
-                let percent = (current / duration) * 100;
-                progressBar.style.width = percent + '%';
-                if (current <= 0) {
-                    clearInterval(interval);
-                    progressBar.closest('.alert').remove();
-                }
-            }, 100);
+                // Start progress bar countdown
+                let duration = 5;
+                let current = duration;
+                const progressBar = document.getElementById('progressBar');
+                const interval = setInterval(() => {
+                    current -= 0.1;
+                    let percent = (current / duration) * 100;
+                    progressBar.style.width = percent + '%';
+                    if (current <= 0) {
+                        clearInterval(interval);
+                        progressBar.closest('.alert').remove();
+                    }
+                }, 100);
 
-            // Remove status from localStorage after displaying
-            localStorage.removeItem('updateStatus');
+                // Remove status from localStorage after displaying
+                localStorage.removeItem('updateStatus');
+            }
         }
-    }
-});
-
+    });
 </script>

@@ -86,7 +86,7 @@ class ProductListController extends BaseController
 
             if (!$id) {
                 $_SESSION['error'] = "Error: No product ID provided.";
-                $this->redirect('/inventory/product_list');
+                $this->redirect('/product_list');
                 return;
             }
 
@@ -105,7 +105,7 @@ class ProductListController extends BaseController
             foreach ($data as $key => $value) {
                 if ($value === null && $key !== 'description') {
                     $_SESSION['error'] = "Error: All required fields must be filled.";
-                    $this->redirect('/inventory/product_list');
+                    $this->redirect('/product_list');
                     return;
                 }
             }

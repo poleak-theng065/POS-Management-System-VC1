@@ -67,7 +67,7 @@
 
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Update Product</button>
-                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                <a href="/product_list" type="button" class="btn btn-secondary">Discard</a>
             </div>
         </form>
     </div>

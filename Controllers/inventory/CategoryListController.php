@@ -22,7 +22,7 @@ class CategoryListController extends BaseController
 
     public function create()
     {
-        $this->view("inventory/category_list");
+        $this->view("inventory/category_list/create");
     }
 
     public function store(){
@@ -71,11 +71,10 @@ class CategoryListController extends BaseController
         }
     }
     
-
     function edit($id)
     {
         $category = $this->iteam->getCategory($id);
-        $this->view('inventory/category_list', ['category' => $category]);
+        $this->view('inventory/category_list/edit', ['category' => $category]);
     }
 
     public function update($id = null)
