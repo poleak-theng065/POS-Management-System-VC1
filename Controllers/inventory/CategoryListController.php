@@ -1,6 +1,5 @@
 <?php
-require_once "Models/CategoryModel.php";
-
+require_once ("Models/inventory/CategoryModel.php");
 class CategoryListController extends BaseController
 {
     public function category_list()
