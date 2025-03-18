@@ -8,7 +8,7 @@
 
         <div class="table-responsive">
             <table class="table table-hover align-middle" id="orderTable">
-                <thead class="table-primary">
+                <thead>
                     <tr>
                         <th>ID</th>
                         <th>Product Name</th>
