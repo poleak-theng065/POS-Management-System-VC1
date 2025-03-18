@@ -34,16 +34,26 @@
                         <td><?= !empty($category['total_stock_quantity']) ? $category['total_stock_quantity'] : 0 ?></td>
                         <td><?= $category['description'] ?></td>
                         <td>
-                            <a href="/category_list/edit/<?= $category['category_id'] ?>" class="text-warning">
-                                <i class="bi bi-pencil-square fs-4"></i>
-                            </a>
-
-                            <a type="button" class="text-danger deleteCategoryBtn"
-                                data-id="<?= $category['category_id'] ?>"
-                                data-name="<?= htmlspecialchars($category['name']) ?>"
-                                data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
-                                <i class="bi bi-trash fs-4"></i>
-                            </a>
+                            <div class="dropdown">
+                                <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical fs-5"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a href="/category_list/edit/<?= $category['category_id'] ?>" class="dropdown-item text-warning">
+                                            <i class="bi bi-pencil-square fs-4"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a type="button" class="dropdown-item text-danger deleteCategoryBtn"
+                                            data-id="<?= $category['category_id'] ?>"
+                                            data-name="<?= htmlspecialchars($category['name']) ?>"
+                                            data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
+                                            <i class="bi bi-trash fs-4"></i> Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach ?>
