@@ -31,6 +31,11 @@
                     <div data-i18n="Account">Dashboard</div>
                   </a>
                 </li>
+                <li class="menu-item active">
+                  <a href="/sale_form" class="menu-link">
+                    <div data-i18n="Account">Sale</div>
+                  </a>
+                </li>
               </ul>
             </li>
 
