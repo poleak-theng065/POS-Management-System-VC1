@@ -48,8 +48,6 @@ class OrderNewProductController extends BaseController {
         $this->redirect('/order_new_product');
     }
 
-
-
     public function delete($id)
     {
         $this->newOrders->deleteOrderNew($id);

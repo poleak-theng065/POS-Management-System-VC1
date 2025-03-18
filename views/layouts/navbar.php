@@ -47,6 +47,7 @@
                           <g id="Path-4" mask="url(#mask-2)">
                             <use fill="#696cff" xlink:href="#path-4"></use>
                             <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
+                            
                           </g>
                         </g>
                         <g
@@ -128,6 +129,7 @@
                 
               </ul>
             </li>
+            
 
             <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -194,6 +196,51 @@
           </ul>
         </aside>
         <!-- / Menu -->
+         <script>
+          // Get the current URL path
+          var currentPage = window.location.pathname;
+
+          // Get all menu links
+          var menuLinks = document.querySelectorAll('.menu-link');
+
+          // Loop through each menu link
+          menuLinks.forEach(function(link) {
+            // Check if the href of the link matches the current page's URL path
+            if (link.getAttribute('href') === currentPage) {
+              // Add the 'active' class to the link
+              link.classList.add('active');
+
+              // Find the closest menu item and mark it as 'active' and 'open'
+              var menuItem = link.closest('.menu-item');
+              menuItem.classList.add('active');
+              menuItem.classList.add('open');
+
+              // If the link is inside a submenu, ensure the parent item is also 'active' and 'open'
+              var parentMenu = menuItem.closest('.menu-sub');
+              if (parentMenu) {
+                var parentMenuItem = parentMenu.closest('.menu-item');
+                parentMenuItem.classList.add('active', 'open');
+              }
+            } else {
+              // Remove the 'active' class from links that don't match the current page
+              link.classList.remove('active');
+            }
+          });
+
+          // Ensure that the main menu item stays active if one of its sub-links is active
+          document.querySelectorAll('.menu-item').forEach(function(item) {
+            const subMenuLinks = item.querySelectorAll('.menu-sub .menu-link');
+            const isAnySubActive = Array.from(subMenuLinks).some(subLink => subLink.classList.contains('active'));
+            
+            // If a sub-link is active, mark the parent as 'active' and 'open'
+            if (isAnySubActive) {
+              item.classList.add('active', 'open');
+            } else {
+              item.classList.remove('active', 'open');
+            }
+          });
+
+        </script>
 
         <!-- Layout container -->
         <div class="layout-page">
@@ -289,48 +336,7 @@
         </nav>
         <!-- / Navbar -->
 
-        <!-- Light/Dark Mode Script -->
-        <!-- Light/Dark Mode Script -->
-        <script>
-            const themeToggle = document.getElementById("theme-toggle");
-            const themeIcon = document.getElementById("theme-icon");
 
-            themeToggle.addEventListener("click", () => {
-                document.body.classList.toggle("dark-mode");
-                
-                // Toggle the icon
-                const isDark = document.body.classList.contains("dark-mode");
-                themeIcon.className = isDark ? 'bx bx-sun fs-4' : 'bx bx-moon fs-4'; // Change icon dynamically
-            });
-        </script>
-
-        <!-- Add CSS for Light and Dark Mode -->
-        <style>
-            /* Default light mode styles */
-            .bg-navbar-theme {
-                background-color: #f8f9fa; /* Default background for the navbar */
-            }
-
-            /* Dark mode styles */
-            body.dark-mode {
-                background-color: #121212;
-                color: white;
-            }
-
-            .bg-navbar-theme.dark-mode {
-                background-color: #333; /* Darker background for the navbar in dark mode */
-            }
-
-            /* Additional dark mode specific styles can be added here */
-            .navbar-nav .nav-link {
-                color: #fff; /* Change link color in dark mode */
-            }
-
-            /* Adjust badge color in dark mode */
-            .badge-notifications {
-                background-color: #ff3d3d; /* Red badge color */
-            }
-        </style>
 
     
 <script>
