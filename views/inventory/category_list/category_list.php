@@ -30,8 +30,8 @@
                     <tr>
                         <td><?= $index + 1 ?></td>
                         <td><?= $category['name'] ?></td>
-                        <td><?= !empty($category['total_brands']) ? $category['total_brands'] : 'No Brand' ?></td>
-                        <td><?= !empty($category['total_stock_quantity']) ? $category['total_stock_quantity'] : 'No Quantity' ?></td>
+                        <td><?= !empty($category['total_brands']) ? $category['total_brands'] : 0 ?></td>
+                        <td><?= !empty($category['total_stock_quantity']) ? $category['total_stock_quantity'] : 0 ?></td>
                         <td><?= $category['description'] ?></td>
                         <td>
                             <a class="text-warning me-2 editCategoryBtn"
@@ -56,8 +56,8 @@
         </table>
 
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <div id="entriesInfo">
-                Showing 1 to 2 of 5 entries
+            <div id="entriesInfo" class="text-muted">
+                    Showing 1 to <?= count($categories) ?> of <?= count($categories) ?> entries
             </div>
             <nav>
                 <ul class="pagination" id="pagination">
@@ -179,6 +179,69 @@
     </div>
 </div>
 
+<!-- Alert Create Session -->
+<div id="formAlertContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050; width: 300px;"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const status = localStorage.getItem('formStatus');
+
+    console.log("Retrieved formStatus:", status); // Debugging log
+
+    if (status) {
+        let alertHTML = '';
+        let alertType = '';
+        let alertMessage = '';
+
+        if (status === 'success') {
+            alertType = 'success';
+            alertMessage = '<strong>Success!</strong> Category added successfully.';
+        } else if (status === 'duplicate') {
+            alertType = 'warning';
+            alertMessage = '<strong>Warning!</strong> Category already exists.';
+        } else if (status === 'fail') {
+            alertType = 'danger';
+            alertMessage = '<strong>Error!</strong> Please fill in all required fields.';
+        } else {
+            console.log("Unexpected status value:", status); // Log unexpected values
+        }
+
+        if (alertMessage) {
+            alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+                            ${alertMessage}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="progress mt-2">
+                                <div id="progressBar" class="progress-bar bg-${alertType}" style="width: 100%; transition: width 0.1s linear;"></div>
+                            </div>
+                        </div>`;
+
+            document.getElementById('formAlertContainer').innerHTML = alertHTML;
+
+            // Start progress bar countdown
+            let duration = 5;
+            let current = duration;
+            const progressBar = document.getElementById('progressBar');
+            const interval = setInterval(() => {
+                current -= 0.1;
+                let percent = (current / duration) * 100;
+                progressBar.style.width = percent + '%';
+                if (current <= 0) {
+                    clearInterval(interval);
+                    progressBar.closest('.alert').remove();
+                }
+            }, 100);
+
+            // Remove status from localStorage after displaying
+            localStorage.removeItem('formStatus');
+        }
+    }
+});
+
+</script>
+
+
 <!-- Delete Modal (Single Modal for All Categories) -->
 <script>
     document.querySelectorAll(".deleteCategoryBtn").forEach(button => {
@@ -220,4 +283,120 @@
         // Show/hide "No categories found" message
         document.getElementById("noResults").style.display = found ? "none" : "block";
     }
+</script>
+
+<!-- Delete Alert -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const status = localStorage.getItem('deleteStatus');
+
+    console.log("Retrieved deleteStatus:", status); // Debugging log
+
+    if (status) {
+        let alertHTML = '';
+        let alertType = '';
+        let alertMessage = '';
+
+        if (status === 'success') {
+            alertType = 'success';
+            alertMessage = '<strong>Success!</strong> Category deleted successfully.';
+        } else if (status === 'fail') {
+            alertType = 'danger';
+            alertMessage = '<strong>Error!</strong> Failed to delete category.';
+        } else {
+            console.log("Unexpected status value:", status); // Log unexpected values
+        }
+
+        if (alertMessage) {
+            alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+                            ${alertMessage}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="progress mt-2">
+                                <div id="progressBar" class="progress-bar bg-${alertType}" style="width: 100%; transition: width 0.1s linear;"></div>
+                            </div>
+                        </div>`;
+
+            document.getElementById('formAlertContainer').innerHTML = alertHTML;
+
+            // Start progress bar countdown
+            let duration = 5;
+            let current = duration;
+            const progressBar = document.getElementById('progressBar');
+            const interval = setInterval(() => {
+                current -= 0.1;
+                let percent = (current / duration) * 100;
+                progressBar.style.width = percent + '%';
+                if (current <= 0) {
+                    clearInterval(interval);
+                    progressBar.closest('.alert').remove();
+                }
+            }, 100);
+
+            // Remove status from localStorage after displaying
+            localStorage.removeItem('deleteStatus');
+        }
+    }
+});
+
+</script>
+<!-- Update Alert -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const status = localStorage.getItem('updateStatus');
+
+    console.log("Retrieved updateStatus:", status); // Debugging log
+
+    if (status) {
+        let alertHTML = '';
+        let alertType = '';
+        let alertMessage = '';
+
+        if (status === 'success') {
+            alertType = 'success';
+            alertMessage = '<strong>Success!</strong> Category updated successfully.';
+        } else if (status === 'duplicate') {
+            alertType = 'warning';
+            alertMessage = '<strong>Warning!</strong> Category already exists.';
+        } else if (status === 'fail') {
+            alertType = 'danger';
+            alertMessage = '<strong>Error!</strong> Failed to update category.';
+        } else {
+            console.log("Unexpected status value:", status); // Log unexpected values
+        }
+
+        if (alertMessage) {
+            alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+                            ${alertMessage}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="progress mt-2">
+                                <div id="progressBar" class="progress-bar bg-${alertType}" style="width: 100%; transition: width 0.1s linear;"></div>
+                            </div>
+                        </div>`;
+
+            document.getElementById('formAlertContainer').innerHTML = alertHTML;
+
+            // Start progress bar countdown
+            let duration = 5;
+            let current = duration;
+            const progressBar = document.getElementById('progressBar');
+            const interval = setInterval(() => {
+                current -= 0.1;
+                let percent = (current / duration) * 100;
+                progressBar.style.width = percent + '%';
+                if (current <= 0) {
+                    clearInterval(interval);
+                    progressBar.closest('.alert').remove();
+                }
+            }, 100);
+
+            // Remove status from localStorage after displaying
+            localStorage.removeItem('updateStatus');
+        }
+    }
+});
+
 </script>

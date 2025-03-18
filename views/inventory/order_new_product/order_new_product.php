@@ -47,12 +47,23 @@
                         </td>
                         <td><?= htmlspecialchars($newOrder['supplier']) ?></td>
                         <td>
-                            <a href="/order_new_product/edit/<?= $newOrder['id'] ?>" class="text-warning me-2">
-                                <i class="bi bi-pencil-square fs-4"></i>
-                            </a>
-                            <a href="/order_new_product/delete/<?= $newOrder['id'] ?>" class="text-danger" onclick="return confirm('Are you sure you want to delete this order?');">
-                                <i class="bi bi-trash fs-4"></i>
-                            </a>
+                            <div class="dropdown">
+                                <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical fs-5"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a class="dropdown-item text-warning" href="/order_new_product/edit/<?= $newOrder['id'] ?>">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="/order_new_product/delete/<?= $newOrder['id'] ?>" onclick="return confirm('Are you sure you want to delete this order?');">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     <?php endforeach; ?>

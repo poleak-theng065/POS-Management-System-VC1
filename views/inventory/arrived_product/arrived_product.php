@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h1>Order Details</h1>
+    <h1>Arrived Products</h1>
     <div class="card p-5 bg-white shadow-lg border-0">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -40,12 +40,23 @@
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <a href="/arrived_product/edit/<?= $arrivedProduct['id'] ?>" class="text-warning me-2">
-                                        <i class="bi bi-pencil-square fs-4"></i>
-                                    </a>
-                                    <a href="/arrived_product/delete/<?= $arrivedProduct['id'] ?>" class="text-danger" onclick="return confirm('Are you sure you want to delete this order?');">
-                                        <i class="bi bi-trash fs-4"></i>
-                                    </a>
+                                    <div class="dropdown">
+                                        <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical fs-5"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a class="dropdown-item text-warning" href="/arrived_product/edit/<?= $arrivedProduct['id'] ?>">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="/arrived_product/delete/<?= $arrivedProduct['id'] ?>" onclick="return confirm('Are you sure you want to delete this order?');">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -56,7 +67,7 @@
             <!-- Pagination Component -->
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <div id="entriesInfo" class="text-muted">
-                    Showing 1 to 5 of <?= count($arrivedProducts) ?> entries
+                    Showing 1 to <?= count($arrivedProducts) ?> of <?= count($arrivedProducts) ?> entries
                 </div>
                 <nav>
                     <ul class="pagination" id="pagination">

@@ -32,7 +32,7 @@ class LowStockProductModel
                    IFNULL(categories.name, '') AS category_name
             FROM products
             LEFT JOIN categories ON products.category_id = categories.category_id
-            WHERE products.stock_quantity <= 5
+            WHERE products.stock_quantity > 0 AND products.stock_quantity <= 5
             ORDER BY products.product_id DESC
         ");
 

@@ -147,8 +147,8 @@
             </table>
         </div>
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <div id="entryInfo">
-                Showing <span id="startEntry">1</span> to <span id="endEntry">3</span> of <span id="totalEntries">3</span> entries
+            <div id="entriesInfo" class="text-muted">
+                    Showing 1 to <?= count($products) ?> of <?= count($products) ?> entries
             </div>
             <nav>
                 <ul class="pagination" id="pagination">
