@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h1>Order Details</h1>
+    <h1>Arrived Products</h1>
     <div class="card p-5 bg-white shadow-lg border-0">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -56,7 +56,7 @@
             <!-- Pagination Component -->
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <div id="entriesInfo" class="text-muted">
-                    Showing 1 to 5 of <?= count($arrivedProducts) ?> entries
+                    Showing 1 to <?= count($arrivedProducts) ?> of <?= count($arrivedProducts) ?> entries
                 </div>
                 <nav>
                     <ul class="pagination" id="pagination">

@@ -28,13 +28,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const searchResults = document.getElementById("searchResults");
 
     const searchData = [
-        {"title": "Category List", "url": "/views/inventory/category_list/category_list.php"},
-        {"title": "Product List", "url": "/views/inventory/product_list/product_list.php"},
-        {"title": "Order New Product", "url": "/views/inventory/order_new_product/order_new_product.php"},
-        {"title": "Arrived Product", "url": "/views/inventory/arrived_product/arrived_product.php"},
-        {"title": "Low Stock Product", "url": "/views/inventory/low_stock_product/"},
-        {"title": "Import Product", "url": "/views/inventory/import_product/"},
-        {"title": "Dashboard", "url": "/views/inventory/dashboard/"}
+        {"title": "Category_List", "url": "/category_list"},
+        {"title": "Product_List", "url": "/product_list"},
+        {"title": "Order_New_Product", "url": "/order_new_product"},
+        {"title": "Arrived_Product", "url": "/arrived_product"},
+        {"title": "Low_Stock_Product", "url": "/low_stock_product"},
+        {"title": "Import_Product", "url": "/import_product"},
+        {"title": "Dashboard", "url": "/"}
     ];
 
     function debounce(func, wait) {

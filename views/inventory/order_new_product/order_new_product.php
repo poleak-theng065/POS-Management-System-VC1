@@ -89,3 +89,5 @@
     </div>
 </div>
 
+<script src="/assets/js/search.js"></script>
+
