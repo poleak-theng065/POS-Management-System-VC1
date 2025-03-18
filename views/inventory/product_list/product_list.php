@@ -116,18 +116,26 @@
                             <td><?= $product['stock_quantity'] ?></td>
                             <td><?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?></td>
                             <td>
-                            <td>
-                                <a href="/product_list/edit/<?= $product['product_id'] ?>" class="text-warning me-2">
-                                    <i class="bi bi-pencil-square fs-4"></i>
-                                </a>
-                                
-                                <!-- Delete Button-->
-                                <a type="button" class="text-danger deleteProductBtn"
-                                    data-id="<?= $product['product_id'] ?>"
-                                    data-name="<?= htmlspecialchars($product['name']) ?>"
-                                    data-bs-toggle="modal" data-bs-target="#deleteProductModal">
-                                    <i class="bi bi-trash fs-4"></i>
-                                </a>
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical fs-5"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a href="/product_list/edit/<?= $product['product_id'] ?>" class="dropdown-item text-warning">
+                                                <i class="bi bi-pencil-square fs-4"></i> Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a type="button" class="dropdown-item text-danger deleteProductBtn"
+                                                data-id="<?= $product['product_id'] ?>"
+                                                data-name="<?= htmlspecialchars($product['name']) ?>"
+                                                data-bs-toggle="modal" data-bs-target="#deleteProductModal">
+                                                <i class="bi bi-trash fs-4"></i> Delete
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach ?>
