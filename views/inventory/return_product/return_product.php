@@ -39,10 +39,23 @@
                         </td>
                         <td><?= htmlspecialchars($returnProduct['return_date']) ?></td>
                         <td>
-                            <a href="/return_product/edit/<?= $returnProduct['return_id'] ?>" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                            <a href="/return_product/delete/<?= $returnProduct['return_id'] ?>" class="text-danger" onclick="return confirm('Are you sure you want to delete this return?');">
-                                <i class="bi bi-trash fs-4"></i>
-                            </a>
+                            <div class="dropdown">
+                                    <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical fs-5"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a class="dropdown-item text-warning" href="/return_product/edit/<?= $returnProduct['return_id'] ?>">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="/return_product/delete/<?= $returnProduct['return_id'] ?>" onclick="return confirm('Are you sure you want to delete this order?');">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     <?php endforeach; ?>
