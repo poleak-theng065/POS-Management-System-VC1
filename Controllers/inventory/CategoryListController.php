@@ -1,6 +1,5 @@
 <?php
-require_once "Models/CategoryModel.php";
-
+require_once ("Models/inventory/CategoryModel.php");
 class CategoryListController extends BaseController
 {
     public function category_list()
@@ -23,7 +22,7 @@ class CategoryListController extends BaseController
 
     public function create()
     {
-        $this->view("inventory/category_list");
+        $this->view("inventory/category_list/create");
     }
 
     public function store(){
@@ -72,11 +71,10 @@ class CategoryListController extends BaseController
         }
     }
     
-
     function edit($id)
     {
         $category = $this->iteam->getCategory($id);
-        $this->view('inventory/category_list', ['category' => $category]);
+        $this->view('inventory/category_list/create', ['category' => $category]);
     }
 
     public function update($id = null)

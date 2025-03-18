@@ -1,5 +1,5 @@
 <?php
-require_once "Models/ProductModel.php";
+require_once ("Models/inventory/ProductModel.php");
 
 class ProductListController extends BaseController
 {
@@ -19,6 +19,12 @@ class ProductListController extends BaseController
         $products = $this->iteam->getProducts();
         $categories = $this->iteam->getCategories();
         $this->view("inventory/product_list/product_list", ["products" => $products, "categories" => $categories]);
+    }
+
+    public function create()
+    {
+        $categories = $this->iteam->getCategories(); 
+        $this->view("inventory/product_list/create", ["categories" => $categories]); 
     }
 
     public function store()
@@ -41,7 +47,7 @@ class ProductListController extends BaseController
             foreach ($data as $key => $value) {
                 if ($value === null && $key !== 'description') {
                     $_SESSION['error'] = "Error: All required fields must be filled.";
-                    $this->redirect('/product_list'); 
+                    $this->redirect('/product_list');
                     return;
                 }
             }
@@ -52,14 +58,22 @@ class ProductListController extends BaseController
                 $_SESSION['error'] = "Error: Unable to add product.";
             }
 
-            $this->redirect('/product_list'); 
+            $this->redirect('/product_list');
         }
     }
 
-    function edit($id)
+    public function edit($id)
     {
-        $category = $this->iteam->getProduct($id);
-        $this->view('inventory/product_list', ['products' => $category]);
+        $product = $this->iteam->getProduct($id);
+
+        if (!$product) {
+            $_SESSION['error'] = "Product not found!";
+            $this->redirect('/product_list');
+            return;
+        }
+
+        $categories = $this->iteam->getCategories(); 
+        $this->view('inventory/product_list/edit', ['product' => $product, 'categories' => $categories]);
     }
 
     public function update($id = null)

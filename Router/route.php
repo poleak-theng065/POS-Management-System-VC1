@@ -20,26 +20,25 @@ $route = new Router();
 
 // category
 $route->get("/category_list", [CategoryListController::class, 'index']);
-$route->get("/inventory/category_list/create", [CategoryListController::class, 'create']);
-$route->get('/inventory/category_list/edit/{id}', [CategoryListController::class, 'edit']);
-$route->post('/inventory/category_list/update', [CategoryListController::class, 'update']);
-$route->post('/inventory/category_list/store', [CategoryListController::class, 'store']);
-$route->post('/inventory/category_list/destroy/{id}', [CategoryListController::class, 'destroy']);
+$route->get("/category_list/create", [CategoryListController::class, 'create']);
+$route->get('/category_list/edit/{id}', [CategoryListController::class, 'edit']);
+$route->post('/category_list/update', [CategoryListController::class, 'update']);
+$route->post('/category_list/store', [CategoryListController::class, 'store']);
+$route->post('/category_list/destroy/{id}', [CategoryListController::class, 'destroy']);
 
 // Product List
-$route->get("/product_list", [ProductListController::class, 'index']); // This should be the main route for displaying products
-$route->get("/inventory/product_list/create", [ProductListController::class, 'create']); // Route to create a new product
-$route->get('/inventory/product_list/edit/{id}', [ProductListController::class, 'edit']); // Route to edit a specific product
-$route->post('/inventory/product_list/update/{id}', [ProductListController::class, 'update']);
-$route->post('/inventory/product_list/store', [ProductListController::class, 'store']); // Route to store a new product
-$route->post('/inventory/product_list/destroy/{id}', [ProductListController::class, 'destroy']); // Route to delete a product
+$route->get("/product_list", [ProductListController::class, 'index']); 
+$route->get("/product_list/create", [ProductListController::class, 'create']); 
+$route->get('/product_list/edit/{id}', [ProductListController::class, 'edit']); 
+$route->post('/product_list/update/{id}', [ProductListController::class, 'update']);
+$route->post('/product_list/store', [ProductListController::class, 'store']); 
+$route->get('/product_list/destroy/{id}', [ProductListController::class, 'destroy']);
 
 // Dachboard 
 $route->get("/", [DashboardController::class, 'dashboard']);
 
 // Import Product
-$route->get("/import_product", [ImportProductController::class, 'create']);
-$route->post("/import_product/store", [ImportProductController::class, 'store']);
+$route->get("/import_product", [ImportProductController::class, 'ImportProduct']);
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
