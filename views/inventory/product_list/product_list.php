@@ -87,7 +87,7 @@
                     <option>50</option>
                 </select>
                 <button class="btn btn-outline-secondary me-3" disabled>Export</button>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">+ Add Product</button>
+                <a href="/product_list/create" class="btn btn-primary ms-2">+ Add Product</a>
             </div>
         </div>
 
@@ -116,23 +116,11 @@
                             <td><?= $product['stock_quantity'] ?></td>
                             <td><?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?></td>
                             <td>
-                                <!-- Edit Button with Correct Data Attributes -->
-                                <a class="text-warning me-2 editProductBtn"
-                                    data-id="<?= $product['product_id'] ?>"
-                                    data-name="<?= htmlspecialchars($product['name']) ?>"
-                                    data-barcode="<?= htmlspecialchars($product['barcode']) ?>"
-                                    data-brand="<?= htmlspecialchars($product['brand']) ?>"
-                                    data-model="<?= htmlspecialchars($product['model']) ?>"
-                                    data-type="<?= htmlspecialchars($product['type']) ?>"
-                                    data-status="<?= htmlspecialchars($product['status']) ?>"
-                                    data-stock-quantity="<?= htmlspecialchars($product['stock_quantity']) ?>"
-                                    data-category="<?= htmlspecialchars($product['category_id']) ?>"
-                                    data-description="<?= htmlspecialchars($product['description']) ?>"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editProductModal">
+                            <td>
+                                <a href="/product_list/edit/<?= $product['product_id'] ?>" class="text-warning me-2">
                                     <i class="bi bi-pencil-square fs-4"></i>
                                 </a>
-
+                                
                                 <!-- Delete Button-->
                                 <a type="button" class="text-danger deleteProductBtn"
                                     data-id="<?= $product['product_id'] ?>"
@@ -148,7 +136,7 @@
         </div>
         <div class="d-flex justify-content-between align-items-center mt-3">
             <div id="entriesInfo" class="text-muted">
-                    Showing 1 to <?= count($products) ?> of <?= count($products) ?> entries
+                Showing 1 to <?= count($products) ?> of <?= count($products) ?> entries
             </div>
             <nav>
                 <ul class="pagination" id="pagination">
@@ -171,176 +159,6 @@
     </div>
 </div>
 
-<!-- Modal for Adding Product -->
-<form action="/inventory/product_list/store" method="POST">
-    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Product Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="barcode">Barcode</label>
-                        <input type="text" class="form-control" id="barcode" name="barcode" placeholder="Enter product barcode" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="brand">Brand</label>
-                        <input type="text" class="form-control" id="brand" name="brand" placeholder="Enter product brand" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="model">Model</label>
-                        <input type="text" class="form-control" id="model" name="model" placeholder="Enter product model" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="type">Type</label>
-                        <input type="text" class="form-control" id="type" name="type" placeholder="Enter product type" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status">
-                            <option value="">Select Status</option>
-                            <option value="new">New</option>
-                            <option value="first-hand">First Hand</option>
-                            <option value="second-hand">Second Hand</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="stock_quantity">Stock Quantity</label>
-                        <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" placeholder="Enter stock quantity" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="unit_price">Unit Price</label>
-                        <input type="number" step="0.01" class="form-control" id="unit_price" name="unit_price" placeholder="Enter unit price" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cost_price">Cost Price</label>
-                        <input type="number" step="0.01" class="form-control" id="cost_price" name="cost_price" placeholder="Enter cost price" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="category_id" class="form-label">Category</label>
-                        <select name="category_id" class="form-control" required>
-                            <option value="">Select a Category</option>
-                            <?php foreach ($categories as $category): ?>
-                                <option value="<?= htmlspecialchars($category['category_id']) ?>">
-                                    <?= htmlspecialchars($category['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description (Optional)</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Product Description"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Add Product</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
-<!-- Modal for Editing Product -->
-<form action="/inventory/product_list/update" method="POST">
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="product_id" id="product_id">
-                    <div class="form-group">
-                        <label for="edit-name">Product Name</label>
-                        <input type="text" class="form-control" id="edit-name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-barcode">Barcode</label>
-                        <input type="text" class="form-control" id="edit-barcode" name="barcode" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-brand">Brand</label>
-                        <input type="text" class="form-control" id="edit-brand" name="brand" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-model">Model</label>
-                        <input type="text" class="form-control" id="edit-model" name="model" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-type">Type</label>
-                        <input type="text" class="form-control" id="edit-type" name="type" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-status">Status</label>
-                        <select class="form-control" id="edit-status" name="status">
-                            <option value="">Select Status</option>
-                            <option value="new">New</option>
-                            <option value="first-hand">First Hand</option>
-                            <option value="second-hand">Second Hand</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-stock-quantity">Stock Quantity</label>
-                        <input type="number" class="form-control" id="edit-stock-quantity" name="stock_quantity" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-category">Category</label>
-                        <select class="form-control" id="edit-category" name="category_id" required>
-                            <option value="">Select a Category</option>
-                            <?php foreach ($categories as $category): ?>
-                                <option value="<?= $category['category_id'] ?>"><?= $category['name'] ?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-description">Description</label>
-                        <textarea class="form-control" id="edit-description" name="description" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Update Product</button>
-                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
-<!-- Modal for Editing Product -->
-<script>
-    document.querySelectorAll('.editProductBtn').forEach(button => {
-        button.addEventListener('click', function() {
-
-            const productId = this.getAttribute('data-id');
-
-            document.getElementById('edit-name').value = this.getAttribute('data-name');
-            document.getElementById('edit-barcode').value = this.getAttribute('data-barcode');
-            document.getElementById('edit-brand').value = this.getAttribute('data-brand');
-            document.getElementById('edit-model').value = this.getAttribute('data-model');
-            document.getElementById('edit-type').value = this.getAttribute('data-type');
-            document.getElementById('edit-status').value = this.getAttribute('data-status');
-            document.getElementById('edit-stock-quantity').value = this.getAttribute('data-stock-quantity');
-            document.getElementById('edit-category').value = this.getAttribute('data-category');
-            document.getElementById('edit-description').value = this.getAttribute('data-description');
-
-            document.getElementById('product_id').value = productId;
-
-            const form = document.querySelector('form[action^="/inventory/product_list/update"]');
-            form.action = `/inventory/product_list/update/${productId}`;
-        });
-    });
-</script>
-
-
-
 <!-- Delete Modal (Single Modal for All Product) -->
 <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -353,7 +171,7 @@
                 Are you sure you want to delete <strong id="deleteProductName"></strong>?
             </div>
             <div class="modal-footer">
-                <form id="deleteProductForm" method="POST" action="/inventory/product_list/destroy/<?= $product['product_id'] ?>">
+                <form id="deleteProductForm" method="POST" action="/product_list/destroy/<?= $product['product_id'] ?>">
                     <input type="hidden" name="product_id" id="deleteProductId">
                     <button type="submit" class="btn btn-danger">Delete</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
