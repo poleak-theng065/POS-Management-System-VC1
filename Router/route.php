@@ -38,8 +38,7 @@ $route->get('/product_list/destroy/{id}', [ProductListController::class, 'destro
 $route->get("/", [DashboardController::class, 'dashboard']);
 
 // Import Product
-$route->get("/import_product", [ImportProductController::class, 'create']);
-$route->post("/import_product/store", [ImportProductController::class, 'store']);
+$route->get("/import_product", [ImportProductController::class, 'ImportProduct']);
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
