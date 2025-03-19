@@ -75,19 +75,19 @@ class ProductModel
         }
 
         $sql = 'UPDATE products 
-                SET name = :name, 
-                    barcode = :barcode, 
-                    brand = :brand, 
-                    model = :model, 
-                    type = :type, 
-                    status = :status,
-                    stock_quantity = :stock_quantity,
-                    unit_price = :unit_price,
-                    cost_price = :cost_price,
-                    category_id = :category_id
-                WHERE product_id = :product_id';
+            SET name = :name, 
+                barcode = :barcode, 
+                brand = :brand, 
+                model = :model, 
+                type = :type, 
+                status = :status,
+                stock_quantity = :stock_quantity,
+                unit_price = :unit_price,
+                cost_price = :cost_price,
+                category_id = :category_id
+            WHERE product_id = :product_id';
 
-        $this->pdo->query($sql, [
+        $stmt = $this->pdo->query($sql, [
             ':product_id' => $id,
             ':name' => $data['name'],
             ':barcode' => $data['barcode'],
@@ -100,12 +100,20 @@ class ProductModel
             ':cost_price' => $data['cost_price'],
             ':category_id' => $data['category_id'],
         ]);
+
+        return $stmt ? true : false;
     }
 
     public function deleteProduct($productId)
     {
         $sql = "DELETE FROM products WHERE product_id = :product_id";
-        $this->pdo->query($sql, ['product_id' => $productId]);
+        $stmt = $this->pdo->query($sql, ['product_id' => $productId]);
+        
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function show($id)
