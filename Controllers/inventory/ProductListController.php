@@ -53,12 +53,18 @@ class ProductListController extends BaseController
             }
 
             if ($this->iteam->createProduct($data)) {
-                $_SESSION['success'] = "Product added successfully!";
+                echo "<script>
+                        console.log('Setting status: success');
+                        localStorage.setItem('productStatus', 'success');
+                        window.location.href = '/product_list';
+                    </script>";
             } else {
-                $_SESSION['error'] = "Error: Unable to add product.";
+                echo "<script>
+                        console.log('Setting status: fail');
+                        localStorage.setItem('productStatus', 'fail');
+                        window.location.href = '/product_list';
+                    </script>";
             }
-
-            $this->redirect('/product_list');
         }
     }
 
@@ -111,12 +117,19 @@ class ProductListController extends BaseController
             }
 
             if ($this->iteam->updateProduct($id, $data)) {
-                $_SESSION['success'] = "Product updated successfully!";
+                echo "<script>
+                        console.log('Setting status: success');
+                        localStorage.setItem('productUpdateStatus', 'success');
+                        window.location.href = '/product_list';
+                    </script>";
             } else {
-                $_SESSION['error'] = "Error: Unable to update product.";
+                echo "<script>
+                        console.log('Setting status: fail');
+                        localStorage.setItem('productUpdateStatus', 'fail');
+                        window.location.href = '/product_list';
+                    </script>";
             }
 
-            $this->redirect('/product_list');
         }
     }
 
@@ -124,8 +137,20 @@ class ProductListController extends BaseController
     {
         if (isset($_POST['product_id'])) {
             $id = $_POST['product_id'];
-            $this->iteam->deleteProduct($id);
-            $this->redirect('/product_list');
+            $result = $this->iteam->deleteProduct($id);
+            if ($result === true) {
+                echo "<script>
+                        console.log('Setting status: success');
+                        localStorage.setItem('productDeleteStatus', 'success');
+                        window.location.href = '/product_list';
+                    </script>";
+            } else {
+                echo "<script>
+                        console.log('Setting status: fail');
+                        localStorage.setItem('productDeleteStatus', 'fail');
+                        window.location.href = '/product_list';
+                    </script>";
+            }
         } else {
             die('Error: No product ID provided.');
         }

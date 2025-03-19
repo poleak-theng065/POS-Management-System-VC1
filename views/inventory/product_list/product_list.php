@@ -198,3 +198,182 @@
         });
     });
 </script>
+
+<!-- Alert Create product -->
+<div id="formAlertContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050; width: 300px;"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const status = localStorage.getItem('productStatus');
+
+        console.log("Retrieved productStatus:", status); // Debugging log
+
+        if (status) {
+            let alertHTML = '';
+            let alertType = '';
+            let alertMessage = '';
+
+            if (status === 'success') {
+                alertType = 'success';
+                alertMessage = '<strong>Success!</strong> Product added successfully.';
+            } else if (status === 'duplicate') {
+                alertType = 'warning';
+                alertMessage = '<strong>Warning!</strong> Product already exists.';
+            } else if (status === 'fail') {
+                alertType = 'danger';
+                alertMessage = '<strong>Error!</strong> Could not add product.';
+            } else {
+                console.log("Unexpected status value:", status); // Log unexpected values
+            }
+
+            if (alertMessage) {
+                alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+                            ${alertMessage}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="progress mt-2">
+                                <div id="progressBar" class="progress-bar bg-${alertType}" style="width: 100%; transition: width 0.1s linear;"></div>
+                            </div>
+                        </div>`;
+
+                document.getElementById('formAlertContainer').innerHTML = alertHTML;
+
+                // Start progress bar countdown
+                let duration = 5;
+                let current = duration;
+                const progressBar = document.getElementById('progressBar');
+                const interval = setInterval(() => {
+                    current -= 0.1;
+                    let percent = (current / duration) * 100;
+                    progressBar.style.width = percent + '%';
+                    if (current <= 0) {
+                        clearInterval(interval);
+                        progressBar.closest('.alert').remove();
+                    }
+                }, 100);
+
+                // Remove status from localStorage after displaying
+                localStorage.removeItem('productStatus');
+            }
+        }
+    });
+</script>
+
+<!-- Alert Update product -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const status = localStorage.getItem('productUpdateStatus');
+
+        console.log("Retrieved productUpdateStatus:", status); // Debugging log
+
+        if (status) {
+            let alertHTML = '';
+            let alertType = '';
+            let alertMessage = '';
+
+            if (status === 'success') {
+                alertType = 'success';
+                alertMessage = '<strong>Success!</strong> Product updated successfully.';
+            } else if (status === 'duplicate') {
+                alertType = 'warning';
+                alertMessage = '<strong>Warning!</strong> Product already exists.';
+            } else if (status === 'fail') {
+                alertType = 'danger';
+                alertMessage = '<strong>Error!</strong> Could not update product.';
+            } else {
+                console.log("Unexpected status value:", status); // Log unexpected values
+            }
+
+            if (alertMessage) {
+                alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+                            ${alertMessage}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="progress mt-2">
+                                <div id="progressBar" class="progress-bar bg-${alertType}" style="width: 100%; transition: width 0.1s linear;"></div>
+                            </div>
+                        </div>`;
+
+                document.getElementById('formAlertContainer').innerHTML = alertHTML;
+
+                // Start progress bar countdown
+                let duration = 5;
+                let current = duration;
+                const progressBar = document.getElementById('progressBar');
+                const interval = setInterval(() => {
+                    current -= 0.1;
+                    let percent = (current / duration) * 100;
+                    progressBar.style.width = percent + '%';
+                    if (current <= 0) {
+                        clearInterval(interval);
+                        progressBar.closest('.alert').remove();
+                    }
+                }, 100);
+
+                // Remove status from localStorage after displaying
+                localStorage.removeItem('productUpdateStatus');
+            }
+        }
+    });
+</script>
+
+<!-- Alert Delete product -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const status = localStorage.getItem('productDeleteStatus');
+
+        console.log("Retrieved productDeleteStatus:", status); // Debugging log
+
+        if (status) {
+            let alertHTML = '';
+            let alertType = '';
+            let alertMessage = '';
+
+            if (status === 'success') {
+                alertType = 'success';
+                alertMessage = '<strong>Success!</strong> Product deleted successfully.';
+            } else if (status === 'duplicate') {
+                alertType = 'warning';
+                alertMessage = '<strong>Warning!</strong> Product already exists.';
+            } else if (status === 'fail') {
+                alertType = 'danger';
+                alertMessage = '<strong>Error!</strong> Could not delete product.';
+            } else {
+                console.log("Unexpected status value:", status); // Log unexpected values
+            }
+
+            if (alertMessage) {
+                alertHTML = `<div class="alert alert-${alertType} alert-dismissible fade show" role="alert">
+                            ${alertMessage}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="progress mt-2">
+                                <div id="progressBar" class="progress-bar bg-${alertType}" style="width: 100%; transition: width 0.1s linear;"></div>
+                            </div>
+                        </div>`;
+
+                document.getElementById('formAlertContainer').innerHTML = alertHTML;
+
+                // Start progress bar countdown
+                let duration = 5;
+                let current = duration;
+                const progressBar = document.getElementById('progressBar');
+                const interval = setInterval(() => {
+                    current -= 0.1;
+                    let percent = (current / duration) * 100;
+                    progressBar.style.width = percent + '%';
+                    if (current <= 0) {
+                        clearInterval(interval);
+                        progressBar.closest('.alert').remove();
+                    }
+                }, 100);
+
+                // Remove status from localStorage after displaying
+                localStorage.removeItem('productDeleteStatus');
+            }
+        }
+    });
+</script>
