@@ -139,14 +139,14 @@
             </li>
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
-                <div data-i18n="Basic">Logout</div>
+                <i class="menu-icon tf-icons bx bx-cog"></i>
+                <div data-i18n="Basic">Setting</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-cog"></i>
-                <div data-i18n="Basic">Setting</div>
+                <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
+                <div data-i18n="Basic">Logout</div>
               </a>
             </li>
             
