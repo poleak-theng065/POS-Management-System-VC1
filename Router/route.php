@@ -78,5 +78,7 @@ $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::cla
 
 // Sale form
 $route->get("/sale_form", [SaleFormController::class, 'saleForm']);
+$route->post("/sale_form/store", [SaleFormController::class, 'store']);
+$route->get("/sale_form/generate_receipt", [SaleFormController::class, 'store']);
 
 $route->route();
