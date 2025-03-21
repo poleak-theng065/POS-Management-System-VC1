@@ -7,11 +7,17 @@
     box-sizing: border-box;
     word-wrap: break-word;
     /* font-family:sans-serif; */
+    
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
+
   body {
       min-height: 100%;
       background-color: #ffffff;
   }
+  
   h1 {
       letter-spacing: -1px;
   }
@@ -20,11 +26,14 @@
     text-decoration: unset;
   }
   .login-root {
+    position: fixed;
       background: #fff;
       display: flex;
       width: 100%;
       min-height: 100vh;
       overflow: hidden;
+
+      
   }
   .loginbackground {
       min-height: 692px;
@@ -36,6 +45,26 @@
       z-index: 0;
       overflow: hidden;
   }
+
+  .loginbackground-gridContainer {
+    display: -ms-grid;
+    display: grid;
+    grid-template-columns: [start] 1fr [left-gutter] repeat(13,50.9px) [left-gutter] 1fr [end];
+    -ms-grid-rows: [top] 1fr [top-gutter] (80px)[8] [bottom-gutter] 1fr [bottom];
+    grid-template-rows: [top] 2fr [top-gutter] repeat(11,64px) [bottom-gutter] 1fr [bottom];
+    justify-content: center;
+    margin: 0 0%;
+    transform: rotate(-12deg) skew(-12deg);
+    row-gap: 30px;
+    justify-content: center;
+    /* Remove animation-related properties */
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+    
+
+
   .flex-flex {
       display: flex;
   }
@@ -76,6 +105,9 @@
   }
   .padding-top--24 {
     padding-top: 24px;
+    padding-bottom: 24px;
+    position: relative;
+    right: 232px;
   }
   .padding-top--48 {
     padding-top: 48px;
@@ -318,7 +350,23 @@
 </body>
 
 </html>
-    
+
+<script>
+  if (window.location.pathname.includes("login")) {
+      document.getElementById("layout-navbar").style.display = "none";
+      <!-- Sidebar -->
+      document.getElementById("layout-menu").style.display = "none";
+
+  }
+</script>
+
+
+// <!-- <li class="menu-item">
+//               <a href="/login" class="menu-link">
+//                 <i class="menu-icon tf-icons bx bx-log-in-circle"></i>
+//                 <div data-i18n="Basic">Login</div>
+//               </a>
+// </li> -->
 
 <!-- / Content -->
 

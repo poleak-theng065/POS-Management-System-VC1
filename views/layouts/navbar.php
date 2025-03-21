@@ -131,12 +131,7 @@
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Account</span></li>
             <!-- Cards -->
-            <li class="menu-item">
-              <a href="/login" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-log-in-circle"></i>
-                <div data-i18n="Basic">Login</div>
-              </a>
-            </li>
+            
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
