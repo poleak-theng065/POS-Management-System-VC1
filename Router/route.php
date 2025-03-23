@@ -15,6 +15,7 @@ require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ArrivedProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
 require_once "Controllers/inventory/SaleFormController.php";
+require_once "Controllers/inventory/RunOutAndLowStockProductController.php";
 
 
 $route = new Router();
@@ -53,6 +54,11 @@ $route->get("/low_stock_product", [LowStockProductController::class, 'index']);
 
 // Run Out Of Stock Product
 $route->get("/run_out_of_stock", [RunOutOfStockController::class, 'index']);
+
+
+// Run out of stock and low stock product
+$route->get("/run_out_and_low_stock_product", [RunOutAndLowStockProductController::class, 'runOutAndLowStockProduct']);
+
 
 // Return Product
 $route->get("/return_product", [ReturnProductController::class, 'returnProduct']);

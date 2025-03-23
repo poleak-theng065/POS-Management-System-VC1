@@ -129,4 +129,28 @@ class ProductModel
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    // Get count of products with stock level below 10
+    public function getLowStockProductsCount()
+    {
+        try {
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM products WHERE stock_quantity < 10");
+            return $stmt->fetchColumn(); // Return the count of low stock products
+        } catch (Exception $e) {
+            echo "Error fetching low stock product count: " . $e->getMessage();
+            return 0;
+        }
+    }
+
+    // Get count of products that are out of stock
+    public function getOutOfStockProductsCount()
+    {
+        try {
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM products WHERE stock_quantity = 0");
+            return $stmt->fetchColumn(); // Return the count of out of stock products
+        } catch (Exception $e) {
+            echo "Error fetching out of stock product count: " . $e->getMessage();
+            return 0;
+        }
+    }
 }
