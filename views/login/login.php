@@ -329,21 +329,11 @@ a.ssolink {
 </html>
 
 <script>
-  if (window.location.pathname.includes("login")) {
-      document.getElementById("layout-navbar").style.display = "none";
-      <!-- Sidebar -->
-      document.getElementById("layout-menu").style.display = "none";
-
-  }
-</script>
-
-
-// <!-- <li class="menu-item">
-//               <a href="/login" class="menu-link">
-//                 <i class="menu-icon tf-icons bx bx-log-in-circle"></i>
-//                 <div data-i18n="Basic">Login</div>
-//               </a>
-// </li> -->
-
-<!-- / Content -->
+    document.addEventListener("DOMContentLoaded", function () {
+      var navbar = document.getElementById("layout-navbar");
+      var sidebar = document.getElementById("layout-menu");
+      if (navbar) navbar.style.display = "none"; // Hide navbar if it exists
+      if (sidebar) sidebar.style.display = "none"; // Hide sidebar if it exists
+    });
+  </script>
 
