@@ -131,6 +131,14 @@
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Account</span></li>
             <!-- Cards -->
+            <li class="menu-item">
+                <a href="/create_account" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user-plus"></i> 
+                    <div data-i18n="Basic">Create Account</div>
+                </a>
+            </li>
+
+
 
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">

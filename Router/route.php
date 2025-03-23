@@ -8,6 +8,7 @@ require_once "Controllers/inventory/DashboardController.php";
 require_once "Controllers/inventory/ImportProductController.php";
 require_once "Controllers/inventory/CategoryListController.php";
 require_once "Controllers/inventory/LoginController.php";
+require_once "Controllers/inventory/CreateAccountController.php";
 require_once "Controllers/inventory/SoldProductController.php";
 require_once "Controllers/inventory/LowStockProductController.php";
 require_once "Controllers/inventory/RunOutOfStockController.php";
@@ -45,6 +46,9 @@ $route->get("/import_product", [ImportProductController::class, 'ImportProduct']
 
 // Login
 $route->get("/login", [LoginController::class, 'login']);
+
+//create account
+$route->get("/create_account", [CreateAccountController::class, 'create_account']);
 
 // Sold Product
 $route->get("/sold_product", [SoldProductController::class, 'soldProduct']);
