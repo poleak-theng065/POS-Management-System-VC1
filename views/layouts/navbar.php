@@ -54,11 +54,11 @@
                   </a>
                 </li>
                 
-                <li class="menu-item active">
+                <!-- <li class="menu-item active">
                   <a href="/category_list" class="menu-link">
                     <div data-i18n="Account">Category List</div>
                   </a>
-                </li>
+                </li> -->
                 
               </ul>
             </li>
@@ -74,11 +74,11 @@
                       <div data-i18n="Account">Import Product</div>
                     </a>
                 </li>
-                <li class="menu-item active">
+                <!-- <li class="menu-item active">
                   <a href="/arrived_product" class="menu-link">
                     <div data-i18n="Account">Arrived Product</div>
                   </a>
-                </li>
+                </li> -->
                 <li class="menu-item active">
                   <a href="/order_new_product" class="menu-link">
                     <div data-i18n="Account">Order Product</div>
@@ -100,16 +100,16 @@
                     <div data-i18n="Account">Sold Product</div>
                   </a>
                 </li>
-                <li class="menu-item active">
+                <!-- <li class="menu-item active">
                   <a href="/low_stock_product" class="menu-link">
                     <div data-i18n="Account">Low Stock</div>
                   </a>
-                </li>
-                <li class="menu-item active">
+                </li> -->
+                <!-- <li class="menu-item active">
                   <a href="/run_out_of_stock" class="menu-link">
                     <div data-i18n="Account">Run Out Of Stock</div>
                   </a>
-                </li>
+                </li> -->
               </ul>
             </li>
 
@@ -326,6 +326,34 @@
             </div>
         </nav>
         <!-- / Navbar -->
+
+
+        
+
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            var currentPage = window.location.pathname;
+            var navbar = document.getElementById("layout-navbar");
+
+            // Check if the URL contains "/edit", "/update", "/create", "/sale_form", or is "/import_product"
+            if (currentPage.includes("/edit") || 
+                currentPage.includes("/update") || 
+                currentPage.includes("/create") ||
+                currentPage === "/sale_form" ||
+                currentPage === "/import_product") {
+              navbar.style.display = "none"; // Hide navbar
+            } else {
+              navbar.style.display = "block"; // Show navbar
+            }
+          });
+        </script>
+
+
+
+
+
+
+
 
 
 

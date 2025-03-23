@@ -1,55 +1,138 @@
+
+
 <div class="container mt-4">
+    <!-- <div class="title-wrapper">
+        <i class="fas fa-box-open title-icon"></i>
+        <h1 class="product-list-title">Product List</h1>
+    </div> -->
     <div class="row text-center">
+        <?php
+        // Define stock thresholds
+        $lowStockThreshold = 5; // Change this if needed
+
+        // Filter products based on stock quantity
+        $runOutOfStock = array_filter($products, function($product) {
+            return $product['stock_quantity'] == 0;
+        });
+
+        $lowStockProducts = array_filter($products, function($product) use ($lowStockThreshold) {
+            return $product['stock_quantity'] > 0 && $product['stock_quantity'] <= $lowStockThreshold;
+        });
+
+        // Count total for dashboard
+        $totalRunOutOfStock = count($runOutOfStock);
+        $totalLowStock = count($lowStockProducts);
+        ?>
+
+        <style>
+            .view-icon {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 1.2rem;
+                color: #6c757d; /* Muted color */
+                cursor: pointer;
+                transition: color 0.3s ease-in-out;
+            }
+
+            .view-icon:hover {
+                color: #007bff; /* Change to blue on hover */
+            }
+
+            .card-container {
+                position: relative; /* Ensure the icon stays in the top-right */
+            }
+        </style>
+
+        <!-- Run Out Of Stock -->
         <div class="col-md-3 mb-4">
-            <div class="card p-3">
-                <div class="d-flex justify-content-between">
-                    <div class="icon-left"><i class="fas fa-store fa-lg"></i></div>
-                    <div class="icon-right"><i class="fas fa-arrow-up fa-lg"></i></div>
-                </div>
-                <h5 class="h6">In-store Sales</h5>
-                <div class="value" style="font-size: 1.5rem;">$3,345.43</div>
-                <div class="orders" style="font-size: 0.9rem;">50 orders <span class="increase">+57%</span></div>
+            <div class="card p-3 card-container">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-right"><i class="fas fa-exclamation-triangle text-danger fa-lg"></i></div>
+                    </div>
+                    <h5 class="h6 text-dark">Run Out Of Stock</h5>
+                    <div class="value text-dark" style="font-size: 1.5rem;"><?= $totalRunOutOfStock ?> Products</div>
+                    <div class="orders text-dark" style="font-size: 0.9rem;">Restock Needed Urgently</div>
+                </a>
+                <a href="/run_out_of_stock" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                    <i class="fas fa-eye"></i>
+                </a>
             </div>
         </div>
 
+        <!-- Low Stock Products -->
         <div class="col-md-3 mb-4">
-            <div class="card p-3">
-                <div class="d-flex justify-content-between">
-                    <div class="icon-left"><i class="fas fa-shopping-cart fa-lg"></i></div>
-                    <div class="icon-right"><i class="fas fa-arrow-up fa-lg"></i></div>
-                </div>
-                <h5 class="h6">Website Sales</h5>
-                <div class="value" style="font-size: 1.5rem;">$674,341.12</div>
-                <div class="orders" style="font-size: 0.9rem;">21 orders <span class="increase">+12%</span></div>
+            <div class="card p-3 card-container">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-right"><i class="fas fa-arrow-down text-warning fa-lg"></i></div>
+                    </div>
+                    <h5 class="h6 text-dark">Low Stock Products</h5>
+                    <div class="value text-dark" style="font-size: 1.5rem;"><?= $totalLowStock ?> Products</div>
+                    <div class="orders text-dark" style="font-size: 0.9rem;">Stock Level Below <?= $lowStockThreshold ?> Units</div>
+                </a>
+                <a href="/low_stock_product" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                    <i class="fas fa-eye"></i>
+                </a>
             </div>
         </div>
 
+        <!-- Total Models -->
         <div class="col-md-3 mb-4">
-            <div class="card p-3">
-                <div class="d-flex justify-content-between">
-                    <div class="icon-left"><i class="fas fa-percent fa-lg"></i></div>
-                    <div class="icon-right"><i class="fas fa-arrow-down fa-lg"></i></div>
-                </div>
-                <h5 class="h6">Discount</h5>
-                <div class="value" style="font-size: 1.5rem;">$14,263.12</div>
-                <div class="orders" style="font-size: 0.9rem;">60 orders <span class="decrease">-3%</span></div>
+            <div class="card p-3 card-container">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-right"><i class="fas fa-layer-group text-primary fa-lg"></i></div>
+                    </div>
+                    <h5 class="h6 text-dark">Total Models</h5>
+                    <div class="value text-dark" style="font-size: 1.5rem;">42 Models</div>
+                    <div class="orders text-dark" style="font-size: 0.9rem;">Includes All Available Phones</div>
+                </a>
+                <a href="/model_list" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                    <i class="fas fa-eye"></i>
+                </a>
             </div>
         </div>
 
+        <?php
+        
+        // Instantiate the CategoryModel class
+        $categoryModel = new CategoryModel();
+
+        // Retrieve categories count from the database
+        $categories = $categoryModel->getCategories(); // This fetches all categories
+
+        // Count the number of unique categories
+        $totalCategories = count($categories);
+        ?>
+
+        <!-- Total Categories Card -->
         <div class="col-md-3 mb-4">
-            <div class="card p-3">
+            <div class="card p-3 card-container">
                 <div class="d-flex justify-content-between">
-                    <div class="icon-left"><i class="fas fa-user-friends fa-lg"></i></div>
-                    <div class="icon-right"><i class="fas fa-arrow-down fa-lg"></i></div>
+                    <div class="icon-right"><i class="fas fa-list-alt text-info fa-lg"></i></div>
                 </div>
-                <h5 class="h6">Affiliate</h5>
-                <div class="value" style="font-size: 1.5rem;">$8,345.23</div>
-                <div class="orders" style="font-size: 0.9rem;">150 orders <span class="decrease">-5%</span></div>
+                <h5 class="h6 text-dark">Total Categories</h5>
+                <div class="value text-dark" style="font-size: 1.5rem;">
+                    <?= $totalCategories . " Categories" ?>
+                </div>
+                <div class="orders text-dark" style="font-size: 0.9rem;">Includes Accessories & Phones</div>
+                <a href="/category_list" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                    <i class="fas fa-eye"></i>
+                </a>
             </div>
         </div>
+
+        <script>
+            // Initialize Bootstrap tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        </script>
+
     </div>
 
-    <h1>Product List</h1>
+
+    <!-- <h1>Product List</h1> -->
     <div class="card p-5 bg-white shadow-lg border-0">
         <h5 class="mb-4 text-primary">Filter</h5>
         <div class="row g-4 mb-5">
@@ -81,11 +164,11 @@
         <div class="d-flex justify-content-between align-items-center mb-4 pt-4 pb-4 border-top border-bottom border-light py-2">
             <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
-                <select class="form-select w-auto me-3" style="border-radius: 10px;">
+                <!-- <select class="form-select w-auto me-3" style="border-radius: 10px;">
                     <option>10</option>
                     <option>20</option>
                     <option>50</option>
-                </select>
+                </select> -->
                 <button class="btn btn-outline-secondary me-3" disabled>Export</button>
                 <a href="/product_list/create" class="btn btn-primary ms-2">+ Add Product</a>
             </div>
@@ -107,7 +190,7 @@
                 </thead>
                 <tbody id='switchTableBody'>
                     <?php foreach ($products as $index => $product): ?>
-                        <tr>
+                        <tr class="<?= $product['stock_quantity'] == 0 ? 'bg-danger-light' : ($product['stock_quantity'] <= 5 ? 'bg-warning-light' : '') ?>">
                             <td><?= $product['barcode'] ?></td>
                             <td><?= $product['name'] ?></td>
                             <td><?= $product['brand'] ?></td>
@@ -188,6 +271,16 @@
         </div>
     </div>
 </div>
+
+<style>
+    .bg-danger-light {
+        background-color: #f8d7da !important; /* Lighter red */
+    }
+
+    .bg-warning-light {
+        background-color: #fff3cd !important; /* Lighter yellow */
+    }
+</style>
 
 <!-- Delete Modal (Single Modal for All Product) -->
 <script>

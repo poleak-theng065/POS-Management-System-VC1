@@ -1,6 +1,9 @@
 <div class="container mt-4">
     <h1>Run Out Of Stock Product</h1>
     <div class="card p-5 bg-white shadow-lg border-0">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+                <input type="text" class="form-control" placeholder="Search Order" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
+        </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
@@ -45,6 +48,9 @@
                     </li>
                 </ul>
             </nav>
+        </div>
+        <div class="d-flex justify-content-start mt-3">
+            <a href="/product_list" class="btn btn-secondary">Back</a>
         </div>
     </div>
 </div>
