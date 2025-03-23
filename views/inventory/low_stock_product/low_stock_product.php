@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h1>Low Stock Product</h1>
+    <!-- <h1>Low Stock Product</h1> -->
     <div class="card p-5 bg-white shadow-lg border-0">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -50,6 +50,9 @@
                     </li>
                 </ul>
             </nav>
+        </div>
+        <div class="d-flex justify-content-start mt-3">
+            <a href="/product_list" class="btn btn-secondary">Back</a>
         </div>
     </div>
 </div>
