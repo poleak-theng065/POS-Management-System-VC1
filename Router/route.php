@@ -15,6 +15,7 @@ require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ArrivedProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
 require_once "Controllers/inventory/SaleFormController.php";
+require_once "Controllers/inventory/GeneractRecieptController.php";
 
 
 $route = new Router();
@@ -78,8 +79,10 @@ $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::cla
 
 
 // Sale form
-$route->get("/sale_form", [SaleFormController::class, 'saleForm']);
+$route->get("/sale_form", [SaleFormController::class, 'index']);
 $route->post("/sale_form/store", [SaleFormController::class, 'store']);
-$route->get("/sale_form/generate_receipt", [SaleFormController::class, 'store']);
+
+$route->get("/sale_form/generate_receipt", [GenerateReceiptController::class, 'generateReceipt']);
+
 
 $route->route();
