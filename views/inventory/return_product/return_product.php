@@ -15,7 +15,11 @@ foreach ($returnProducts as $returnProduct) {
 
 <!-- Container for the table -->
 <div class="container mt-4">
-    <!-- <h1>Returned Product</h1> -->
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+        style="border-left: 8px solid #dc3545; background-color: #f8f9fa;">
+        <i class="bi bi-arrow-clockwise text-danger me-2"></i> Product Return Process - Items to be Returned
+    </h1>
+
     <div class="card p-5 bg-white shadow-lg border-0">
         <!-- Search and Filter in the Same Row -->
         <div class="d-flex justify-content-between align-items-center mb-4">

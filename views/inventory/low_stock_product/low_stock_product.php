@@ -1,5 +1,9 @@
 <div class="container mt-4">
-    <!-- <h1>Low Stock Product</h1> -->
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+        style="border-left: 8px solid #ffc107; background-color: #f8f9fa;">
+        <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i> Low Stock Inventory
+    </h1>
+
     <div class="card p-5 bg-white shadow-lg border-0">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
