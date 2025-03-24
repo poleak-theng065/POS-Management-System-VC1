@@ -131,19 +131,29 @@
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Account</span></li>
             <!-- Cards -->
-            
+            <li class="menu-item">
+                <a href="/create_account" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user-plus"></i> 
+                    <div data-i18n="Basic">Create Account</div>
+                </a>
+            </li>
+
+
+
             <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div data-i18n="Basic">Setting</div>
               </a>
             </li>
-            <li class="menu-item">
-              <a href="cards-basic.html" class="menu-link">
+            <li class="menu-item" >
+              <a href="/login" class="menu-link" style ="color: red; border: 1px solid; width: 150px; height: 35px; ";>
                 <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
-                <div data-i18n="Basic">Logout</div>
+                <div data-i18n="Basic" >Logout</div>
               </a>
             </li>
+           
+
             
             
           </ul>
