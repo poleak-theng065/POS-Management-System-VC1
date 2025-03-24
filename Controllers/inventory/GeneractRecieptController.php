@@ -1,87 +1,73 @@
 <?php
 require_once("Models/inventory/SaleFormModel.php");
 
-// class SaleFormController extends BaseController
-// {
-//     private $sales;
+class GeneractRecieptController extends BaseController
+{
+    private $sales;
 
-//     public function __construct()
-//     {
-//         $this->sales = new SaleFormModel();
-//     }
+    public function __construct()
+    {
+        $this->sales = new SaleFormModel();
+    }
 
-//     public function saleForm()
-//     {
-//         $this->view('inventory/sale_form/sale_form');
-//     }
+    public function saleForm()
+    {
+        $this->view('inventory/sale_form/sale_form');
+    }
 
-//     public function index()
-//     {
-//         $products = $this->sales->getProducts();
-//         $customers = $this->sales->getCustomerByDetails($customer_name, $contact_number);
-//         $saleItems = $this->sales->getSaleItems();
-//         $this->view("inventory/sale_form/sale_form", ["products" => $products, "customers" => $customers, "saleItems" => $saleItems]);
-//     }
+    public function index()
+    {
+        $products = $this->sales->getProducts();
+        $saleItems = $this->sales->getSaleItems();
+        $this->view("inventory/sale_form/sale_form", ["products" => $products, "saleItems" => $saleItems]);
+    }
 
-//     public function store()
-//     {
-//         session_start();
-//         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//             $customer_name = $_POST['customer_name'] ?? null;
-//             $contact_number = $_POST['contact_number'] ?? null;
-//             $product_id = $_POST['product_id'] ?? null;
+    public function create()
+    {
+        $saleItems = $this->sales->getSaleItems(); 
+        $this->view("inventory/sale_form/sale_form", ["saleItems" => $saleItems]); 
+    }
 
-//             if (!$customer_name || !$contact_number || !$product_id) {
-//                 $_SESSION['error'] = "Error: All required fields must be filled.";
-//                 $this->redirect('/sale_form/generate_receipt');
-//                 return;
-//             }
+    public function store()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Retrieve and sanitize input
+            $product_id = $_POST['product_id'] ?? null;
+            $quantity = $_POST['quantity'] ?? null;
+            $unit_price = $_POST['unit_price'] ?? null;
 
-//             // Check if the customer exists
-//             $customer = $this->sales->getCustomerByDetails($customer_name, $contact_number);
-//             if (!$customer) {
-//                 $customer_id = $this->sales->createCustomer($customer_name, $contact_number);
-//                 if (!$customer_id) {
-//                     $_SESSION['error'] = "Error: Unable to create customer.";
-//                     $this->redirect('/sale_form/generate_receipt');
-//                     return;
-//                 }
-//             } else {
-//                 $customer_id = $this->sales->createCustomer($customer_name, $contact_number);
-//             }
+            // Calculate total price
+            $total_price = $quantity * $unit_price;
 
-//             // Prepare sale data
-//             $data = [
-//                 'customer_id' => $customer_id,
-//                 'product_id' => $product_id,
-//                 'quantity' => $_POST['quantity'] ?? null,
-//                 'unit_price' => $_POST['unit_price'] ?? null,
-//                 'total_price' => $_POST['total_price'] ?? null,
-//             ];
+            // Validate required fields
+            if (!$product_id || !$quantity || !$unit_price) {
+                $_SESSION['error'] = "All fields are required.";
+                header("Location: /sale_form/generate_receipt");
+                exit();
+            }
 
-//             // Validate numeric fields
-//             if (!filter_var($data['quantity'], FILTER_VALIDATE_INT) || $data['quantity'] <= 0 ||
-//                 !filter_var($data['unit_price'], FILTER_VALIDATE_FLOAT) || $data['unit_price'] <= 0 ||
-//                 !filter_var($data['total_price'], FILTER_VALIDATE_FLOAT) || $data['total_price'] <= 0) {
-//                 $_SESSION['error'] = "Error: Invalid quantity or price values.";
-//                 $this->redirect('/sale_form/generate_receipt');
-//                 return;
-//             }
+            // Prepare data for insertion
+            $data = [
+                'product_id' => $product_id,
+                'quantity' => $quantity,
+                'unit_price' => $unit_price,
+                'total_price' => $total_price,
+            ];
 
-//             // Insert sale
-//             if ($this->sales->createSaleItems($data)) {
-//                 $_SESSION['success'] = "Sale item created successfully!";
-//                 echo "<script>
-//                         localStorage.setItem('saleItemStatus', 'success');
-//                         window.location.href = '/sale_form/generate_receipt';
-//                       </script>";
-//             } else {
-//                 $_SESSION['error'] = "Error: Unable to create sale item.";
-//                 echo "<script>
-//                         localStorage.setItem('saleItemStatus', 'fail');
-//                         window.location.href = '/sale_form/generate_receipt';
-//                       </script>";
-//             }
-//         }
-//     }
-// }
+            // Insert the sale record
+            $isCreated = $this->sales->createSaleForm($data);
+
+            // Set session messages based on success or failure
+            if ($isCreated) {
+                $_SESSION['success'] = "Sale record created successfully!";
+            } else {
+                $_SESSION['error'] = "Failed to create sale record.";
+            }
+
+            // Redirect back to the sale form page
+            header("Location: /sale_form/generate_receipt");
+            exit();
+        }
+    }
+
+}

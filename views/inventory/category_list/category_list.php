@@ -1,15 +1,16 @@
+
 <div class="container mt-4">
-    <h1>Product Cateory List</h1>
+    <!-- <h1>Product Cateory List</h1> -->
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
-                <select class="form-select w-auto me-2" id="entriesPerPage">
+                <!-- <select class="form-select w-auto me-2" id="entriesPerPage">
                     <option value="2">2</option>
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="25">25</option>
-                </select>
+                </select> -->
                 <a href="/category_list/create" class="btn btn-primary ms-2">+ Add Category</a>
             </div>
         </div>
@@ -86,6 +87,11 @@
                 </ul>
             </nav>
         </div>
+        <!-- Back Button -->
+        <div class="d-flex justify-content-start mt-3">
+            <a href="/product_list" class="btn btn-secondary">Back</a>
+        </div>
+
     </div>
 </div>
 

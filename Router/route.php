@@ -8,6 +8,7 @@ require_once "Controllers/inventory/DashboardController.php";
 require_once "Controllers/inventory/ImportProductController.php";
 require_once "Controllers/inventory/CategoryListController.php";
 require_once "Controllers/inventory/LoginController.php";
+require_once "Controllers/inventory/CreateAccountController.php";
 require_once "Controllers/inventory/SoldProductController.php";
 require_once "Controllers/inventory/LowStockProductController.php";
 require_once "Controllers/inventory/RunOutOfStockController.php";
@@ -46,6 +47,9 @@ $route->get("/import_product", [ImportProductController::class, 'ImportProduct']
 // Login
 $route->get("/login", [LoginController::class, 'login']);
 
+//create account
+$route->get("/create_account", [CreateAccountController::class, 'create_account']);
+
 // Sold Product
 $route->get("/sold_product", [SoldProductController::class, 'soldProduct']);
 
@@ -54,6 +58,11 @@ $route->get("/low_stock_product", [LowStockProductController::class, 'index']);
 
 // Run Out Of Stock Product
 $route->get("/run_out_of_stock", [RunOutOfStockController::class, 'index']);
+
+
+// Run out of stock and low stock product
+$route->get("/run_out_and_low_stock_product", [RunOutAndLowStockProductController::class, 'runOutAndLowStockProduct']);
+
 
 // Return Product
 $route->get("/return_product", [ReturnProductController::class, 'returnProduct']);
@@ -80,9 +89,13 @@ $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::cla
 
 // Sale form
 $route->get("/sale_form", [SaleFormController::class, 'index']);
+$route->get("/sale_form/create", [SaleFormController::class, 'create']);
 $route->post("/sale_form/store", [SaleFormController::class, 'store']);
 
-$route->get("/sale_form/generate_receipt", [GenerateReceiptController::class, 'generateReceipt']);
-
+// Generact Recipt
+// For receipt generation
+$route->get("/sale_form/generate_receipt", [GeneractRecieptController::class, 'generateReceipt']);
+$route->get("/generate_receipt/create", [GeneractRecieptController::class, 'create']);
+$route->post("/generate_receipt/store", [GeneractRecieptController::class, 'store']);
 
 $route->route();

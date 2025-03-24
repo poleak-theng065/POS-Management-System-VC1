@@ -1,6 +1,6 @@
 <div class="container mt-4">
     <h1>Receipt</h1>
-    <div class="card">
+    <!-- <div class="card">
         <?php if (!empty($saleItems)): ?>
             <?php foreach ($saleItems as $saleItem): ?>
                 <p><strong>Product Barcode:</strong> <?= htmlspecialchars($product['barcode'] ?? 'N/A') ?></p>
@@ -16,5 +16,5 @@
         <?php else: ?>
             <p>No sale items found.</p>
         <?php endif; ?>
-    </div>
+    </div> -->
 </div>
