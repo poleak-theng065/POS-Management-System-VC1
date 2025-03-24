@@ -53,14 +53,11 @@ a {
     flex-direction: column;
 }
 .loginbackground-gridContainer {
-    display: -ms-grid;
     display: grid;
-    -ms-grid-columns: [start] 1fr [left-gutter] (86.6px)[16] [left-gutter] 1fr [end];
-    grid-template-columns: [start] 1fr [left-gutter] repeat(16,86.6px) [left-gutter] 1fr [end];
-    -ms-grid-rows: [top] 1fr [top-gutter] (64px)[8] [bottom-gutter] 1fr [bottom];
-    grid-template-rows: [top] 1fr [top-gutter] repeat(8,64px) [bottom-gutter] 1fr [bottom];
+    grid-template-columns: [start] 1fr [left-gutter] repeat(16, 86.6px) [left-gutter] 1fr [end];
+    grid-template-rows: [top] 1fr [top-gutter] repeat(10, 64px) [bottom-gutter] 1fr [bottom];
     justify-content: center;
-    margin: 0 -2%;
+    margin: 0 -3%;
     transform: rotate(-12deg) skew(-12deg);
 }
 .box-divider--light-all-2 {
@@ -100,7 +97,7 @@ a {
   padding-bottom: 15px;
   position: relative;
   bottom:50px;
-  left:70px;
+  left:75px;
 }
 
 
