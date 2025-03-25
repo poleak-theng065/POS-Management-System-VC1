@@ -60,18 +60,18 @@ class OrderNewProductController extends BaseController {
         // Ensure data is posted before accessing
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Product information
-            $productName = $_POST['productname'] ?? null;
+            $productName = $_POST['productName'] ?? null;
             $barCode = $_POST['barcode'] ?? null;
             $brand = $_POST['brand'] ?? null;
             $orderDate = $_POST['orderDate'] ?? null;
-            $expectedDelivery = $_POST['expecteddelivery'] ?? null;
-            $productStatus = $_POST['productStatus'] ?? null;
+            $expectedDelivery = $_POST['expectedDelivery'] ?? null;
+            $status = $_POST['status'] ?? null;
 
             // Organization
             $category = $_POST['category'] ?? null;
             $model = $_POST['model'] ?? null;
-            $supplier = $_POST['vendor'] ?? null;
-            $status = $_POST['status'] ?? null;
+            $supplier = $_POST['supplier'] ?? null;
+            $productStatus = $_POST['productStatus'] ?? null;
 
             // Pricing
             $basePriceUSD = $_POST['basePriceUSD'] ?? null;
@@ -81,24 +81,19 @@ class OrderNewProductController extends BaseController {
             $totalPriceUSD = $_POST['totalPriceUSD'] ?? null;
             $totalPriceKHR = $_POST['totalPriceKHR'] ?? null;
 
-            // Validate the required fields (you can add more validation as needed)
-            if (!$productName || !$barCode || !$brand || !$orderDate || !$category || !$model || !$status) {
-                echo "Please fill in all required fields.";
-                return;
-            }
-
             // Call model to update the database
             $this->newOrders->updateNewOrder(
                 $id,
+                $productName,
                 $barCode,
                 $brand,
                 $orderDate,
                 $expectedDelivery,
-                $productStatus,
+                $status,
                 $category,
                 $model,
                 $supplier,
-                $status,
+                $productStatus,
                 $basePriceUSD,
                 $basePriceKHR,
                 $quantity,
@@ -113,6 +108,7 @@ class OrderNewProductController extends BaseController {
             echo "Invalid request method.";
         }
     }
+
 
 
 

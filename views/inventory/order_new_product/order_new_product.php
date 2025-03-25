@@ -412,8 +412,33 @@
                     <option value="Order">Order</option>
                 </select>
             </div>
+             <!-- Buttons and Export Dropdown -->
+            <div class="d-flex align-items-center">
+                <div class="btn-group me-2">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="exportButton">
+                        <li>
+                            <form method="POST">
+                                <button type="submit" name="export_excel" class="dropdown-item">
+                                    <i class="bi bi-file-earmark-excel me-2"></i> Export to Excel
+                                </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form method="POST">
+                                <button type="submit" name="export_pdf" class="dropdown-item">
+                                    <i class="bi bi-file-earmark-pdf me-2"></i> Export to PDF
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
 
-            <a href="/order_new_product/create" class="btn btn-primary ms-2">+ Add New Order</a>
+                <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
+            </div>
+            
         </div>
 
         <div class="mb-3">
@@ -627,22 +652,192 @@ function showProductDetails(event) {
 
 <!-- Confirm delete -->
 <script>
-// Function to open the modal and set the product name and delete URL
-function openDeleteModal(productName, deleteUrl) {
-    // Set the product name in the modal
-    document.getElementById('productName').textContent = productName;
-    
-    // Set the delete URL in the button's data attribute
-    document.getElementById('confirmDeleteButton').setAttribute('data-delete-url', deleteUrl);
-    
-    // Show the modal
-    var myModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    myModal.show();
-}
+    // Function to open the modal and set the product name and delete URL
+    function openDeleteModal(productName, deleteUrl) {
+        // Set the product name in the modal
+        document.getElementById('productName').textContent = productName;
+        
+        // Set the delete URL in the button's data attribute
+        document.getElementById('confirmDeleteButton').setAttribute('data-delete-url', deleteUrl);
+        
+        // Show the modal
+        var myModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        myModal.show();
+    }
 
-// Function to confirm the deletion
-document.getElementById('confirmDeleteButton').addEventListener('click', function() {
-    var deleteUrl = this.getAttribute('data-delete-url');
-    window.location.href = deleteUrl; // Redirect to the delete URL
-});
+    // Function to confirm the deletion
+    document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+        var deleteUrl = this.getAttribute('data-delete-url');
+        window.location.href = deleteUrl; // Redirect to the delete URL
+    });
+    </script>
+
+
+<!-- Export excel and pdf -->
+<script>
+    async function exportToExcel() {
+        const table = document.getElementById("orderTable");
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Orders");
+
+        // Extract headers while ignoring the last "Action" column
+        const headers = [];
+        table.querySelectorAll("thead tr th").forEach((th, index, arr) => {
+            if (index !== arr.length - 1) headers.push(th.innerText);
+        });
+
+        // Apply styles to headers
+        worksheet.addRow(headers).eachCell((cell) => {
+            cell.font = { bold: true, color: { argb: "FFFFFFFF" } }; // White text
+            cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "4F81BD" } }; // Blue background
+            cell.alignment = { horizontal: "center", vertical: "middle" };
+            cell.border = { bottom: { style: "thin" } };
+        });
+
+        // Extract and style table data while ignoring the "Action" column
+        const rows = [];
+        table.querySelectorAll("tbody tr").forEach((row, rowIndex) => {
+            const rowData = [];
+            row.querySelectorAll("td").forEach((cell, cellIndex, arr) => {
+                if (cellIndex !== arr.length - 1) rowData.push(cell.innerText);
+            });
+            const addedRow = worksheet.addRow(rowData);
+
+            // Alternate row colors for better readability
+            if (rowIndex % 2 !== 0) {
+                addedRow.eachCell((cell) => {
+                    cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "F2F2F2" } }; // Light gray
+                });
+            }
+
+            // Add borders to all cells
+            addedRow.eachCell((cell) => {
+                cell.border = {
+                    top: { style: "thin" },
+                    bottom: { style: "thin" },
+                    left: { style: "thin" },
+                    right: { style: "thin" }
+                };
+            });
+        });
+
+        // Auto-size columns
+        worksheet.columns.forEach((column) => {
+            column.width = 20;
+        });
+
+        // Create and download the Excel file
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "orders.xlsx";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    document.querySelector("button[name='export_excel']").addEventListener("click", function (event) {
+        event.preventDefault();
+        exportToExcel();
+    });
 </script>
+
+<!-- export to pdf -->
+<script>
+    async function exportToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Add Store Name and Description at the top of the PDF
+        const storeName = "Here you can find the best products and services.";
+        const storeDescription = "Order Product List";
+        const title = "Heng Heng";
+
+        // Set title
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.text(title, 14, 20);  // Add title with larger font size
+
+        // Set store name and description
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.text(storeName, 14, 30);
+        doc.text(storeDescription, 14, 36);
+
+        // Add a line break before table
+        doc.line(14, 40, 200, 40);  // Line separating title and table
+
+        const table = document.getElementById("orderTable");
+        const rows = [];
+        const headers = [];
+        
+        // Extract headers while ignoring "Action" column
+        const headerCells = table.querySelectorAll("thead tr th");
+        headerCells.forEach((th, index, arr) => {
+            if (index !== arr.length - 1) headers.push(th.innerText);
+        });
+
+        // Extract table rows while ignoring the "Action" column
+        table.querySelectorAll("tbody tr").forEach(row => {
+            const rowData = [];
+            const cells = row.querySelectorAll("td");
+            cells.forEach((cell, index, arr) => {
+                if (index !== arr.length - 1) rowData.push(cell.innerText);
+            });
+            rows.push(rowData);
+        });
+
+        // Define column styles and colors
+        const columnStyles = {};
+        const statusIndex = headers.findIndex((h) => h.toLowerCase().includes("status"));
+
+        rows.forEach((row, index) => {
+            const status = row[statusIndex]?.toLowerCase() || "";
+            let bgColor = ""; // Default no background
+
+            if (status.includes("completed")) bgColor = "#c6efce"; // Green
+            else if (status.includes("pending")) bgColor = "#fff2cc"; // Yellow
+            else if (status.includes("canceled")) bgColor = "#f4cccc"; // Red
+            else if (index % 2 !== 0) bgColor = "#f2f2f2"; // Light Gray (Alternating)
+
+            if (bgColor) {
+                columnStyles[index] = { fillColor: bgColor };
+            }
+        });
+
+        // Generate PDF table with styling
+        doc.autoTable({
+            head: [headers],
+            body: rows,
+            theme: "grid",
+            startY: 45,  // Start the table after the description
+            styles: {
+                font: "helvetica",
+                fontSize: 10,
+                textColor: [0, 0, 0],
+                cellPadding: 4,
+            },
+            headStyles: {
+                fillColor: [31, 78, 120], // Dark Blue header
+                textColor: 255, // White text
+                fontStyle: "bold",
+                halign: "center",
+            },
+            alternateRowStyles: {
+                fillColor: [242, 242, 242], // Light gray for alternating rows
+            },
+            columnStyles: columnStyles,
+        });
+
+        // Save the PDF
+        doc.save("orders.pdf");
+    }
+
+    document.querySelector("button[name='export_pdf']").addEventListener("click", function(event) {
+        event.preventDefault();
+        exportToPDF();
+    });
+</script>
+
+
