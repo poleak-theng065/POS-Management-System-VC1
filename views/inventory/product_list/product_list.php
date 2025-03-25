@@ -1,5 +1,4 @@
 
-
 <div class="container mt-4">
     <!-- <div class="title-wrapper">
         <i class="fas fa-box-open title-icon"></i>
@@ -44,192 +43,267 @@
             }
         </style>
 
-        <!-- Run Out Of Stock -->
         <div class="col-md-3 mb-4">
             <div class="card p-3 card-container">
-                    <div class="d-flex justify-content-between">
-                        <div class="icon-right"><i class="fas fa-exclamation-triangle text-danger fa-lg"></i></div>
+                <div class="d-flex justify-content-between">
+                    <div class="icon-right">
+                        <i class="fas fa-exclamation-triangle text-danger fa-lg"></i>
                     </div>
-                    <h5 class="h6 text-dark">Run Out Of Stock</h5>
-                    <div class="value text-dark" style="font-size: 1.5rem;"><?= $totalRunOutOfStock ?> Products</div>
-                    <div class="orders text-dark" style="font-size: 0.9rem;">Restock Needed Urgently</div>
-                </a>
-                <a href="/run_out_of_stock" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                </div>
+                <h5 class="h6 text-dark">Run Out Of Stock</h5>
+                <div class="value text-dark" style="font-size: 1.5rem;"><?= $totalRunOutOfStock ?> Products</div>
+                <div class="orders text-dark" style="font-size: 0.9rem;">Restock Needed Urgently</div>
+
+                <!-- View Details Button to Trigger Modal -->
+                <a href="#runOutOfStockModal" class="view-icon" data-bs-toggle="modal" title="View Details">
                     <i class="fas fa-eye"></i>
                 </a>
+            </div>
+        </div>
+
+        <!-- Modal for showing out of stock products -->
+        <div class="modal fade" id="runOutOfStockModal" tabindex="-1" aria-labelledby="runOutOfStockModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger fw-bold fs-4" id="runOutOfStockModalLabel">
+                            <i class="fas fa-exclamation-triangle me-2"></i> Out of Stock Products
+                        </h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-start">
+                        <!-- Table for displaying product details -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($products as $product): ?>
+                                    <?php if ($product['stock_quantity'] == 0): ?>
+                                        <tr>
+                                            <td><?= $product['barcode'] ?></td>
+                                            <td><?= $product['name'] ?></td>
+                                            <td><?= $product['stock_quantity'] ?></td>
+                                            <td><?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Low Stock Products -->
         <div class="col-md-3 mb-4">
             <div class="card p-3 card-container">
-                    <div class="d-flex justify-content-between">
-                        <div class="icon-right"><i class="fas fa-arrow-down text-warning fa-lg"></i></div>
+                <div class="d-flex justify-content-between">
+                    <div class="icon-right">
+                        <i class="fas fa-arrow-down text-warning fa-lg"></i>
                     </div>
-                    <h5 class="h6 text-dark">Low Stock Products</h5>
-                    <div class="value text-dark" style="font-size: 1.5rem;"><?= $totalLowStock ?> Products</div>
-                    <div class="orders text-dark" style="font-size: 0.9rem;">Stock Level Below <?= $lowStockThreshold ?> Units</div>
-                </a>
-                <a href="/low_stock_product" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                </div>
+                <h5 class="h6 text-dark">Low Stock Products</h5>
+                <div class="value text-dark" style="font-size: 1.5rem;">
+                    <?= $totalLowStock ?> Products
+                </div>
+                <div class="orders text-dark" style="font-size: 0.9rem;">
+                    Stock Level Below <?= $lowStockThreshold ?> Units
+                </div>
+
+                <!-- View Details Button to Trigger Modal -->
+                <a href="#lowStockModal" class="view-icon" data-bs-toggle="modal" title="View Details">
                     <i class="fas fa-eye"></i>
                 </a>
             </div>
         </div>
 
-        <!-- Total Models -->
-        <div class="col-md-3 mb-4">
-            <div class="card p-3 card-container">
-                    <div class="d-flex justify-content-between">
-                        <div class="icon-right"><i class="fas fa-layer-group text-primary fa-lg"></i></div>
+        <!-- Modal for showing low stock products -->
+        <div class="modal fade" id="lowStockModal" tabindex="-1" aria-labelledby="lowStockModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-warning fw-bold fs-4" id="lowStockModalLabel">
+                            <i class="fas fa-arrow-down me-2"></i> Low Stock Products
+                        </h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <h5 class="h6 text-dark">Total Models</h5>
-                    <div class="value text-dark" style="font-size: 1.5rem;">42 Models</div>
-                    <div class="orders text-dark" style="font-size: 0.9rem;">Includes All Available Phones</div>
-                </a>
-                <a href="/model_list" class="view-icon" data-bs-toggle="tooltip" title="View Details">
-                    <i class="fas fa-eye"></i>
-                </a>
+                    <div class="modal-body text-start">
+                        <!-- Table for displaying product details -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($products as $product): ?>
+                                    <?php if ($product['stock_quantity'] <= $lowStockThreshold && $product['stock_quantity'] > 0): ?>
+                                        <tr>
+                                            <td><?= $product['barcode'] ?></td>
+                                            <td><?= $product['name'] ?></td>
+                                            <td><?= $product['stock_quantity'] ?></td>
+                                            <td><?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
 
+
+        <!-- Total Brands -->
         <?php
-        
-        // Instantiate the CategoryModel class
-        $categoryModel = new CategoryModel();
-
-        // Retrieve categories count from the database
-        $categories = $categoryModel->getCategories(); // This fetches all categories
-
-        // Count the number of unique categories
-        $totalCategories = count($categories);
+            // Get unique brands (removes duplicates)
+            $brands = array_unique(array_column($products, 'brand'));
+            $totalBrands = count($brands); // Total number of unique brands
         ?>
 
-        <!-- Total Categories Card -->
+        <!-- Total Brands Card -->
         <div class="col-md-3 mb-4">
             <div class="card p-3 card-container">
                 <div class="d-flex justify-content-between">
-                    <div class="icon-right"><i class="fas fa-list-alt text-info fa-lg"></i></div>
+                    <div class="icon-right">
+                        <i class="fas fa-layer-group text-primary fa-lg"></i>
+                    </div>
                 </div>
-                <h5 class="h6 text-dark">Total Categories</h5>
+                <h5 class="h6 text-dark">Total Brands</h5>
                 <div class="value text-dark" style="font-size: 1.5rem;">
-                    <?= $totalCategories . " Categories" ?>
+                    <?= $totalBrands ?> Brands
                 </div>
-                <div class="orders text-dark" style="font-size: 0.9rem;">Includes Accessories & Phones</div>
-                <a href="/category_list" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                <div class="orders text-dark" style="font-size: 0.9rem;">
+                    Unique Brands in Stock
+                </div>
+
+                <!-- View Details Button to Trigger Modal -->
+                <a href="#brandDetailsModal" class="view-icon" data-bs-toggle="modal" title="View Details">
                     <i class="fas fa-eye"></i>
                 </a>
             </div>
         </div>
 
-        <script>
-            // Initialize Bootstrap tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        </script>
+        <!-- Modal for showing brand details -->
+        <div class="modal fade" id="brandDetailsModal" tabindex="-1" aria-labelledby="brandDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm"> <!-- Reduced size of the modal to "modal-sm" -->
+                <div class="modal-content">
+                    <div class="modal-header">
 
+                        <h5 class="modal-title text-primary fw-bold fs-4" id="brandDetailsModalLabel">
+                            <i class="fas fa-layer-group text-primary me-2"></i> Product Brands
+                        </h5>
+                        
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-start" style="max-height: 300px; overflow-y: auto;">
+                        <!-- Table for displaying unique brands -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>List of Brand</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($brands as $brand): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($brand) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <?php
+                // Instantiate the CategoryModel class
+                $categoryModel = new CategoryModel();
+
+                // Retrieve categories count from the database
+                $categories = $categoryModel->getCategories(); // This fetches all categories
+
+                // Count the number of unique categories
+                $totalCategories = count($categories);
+                
+
+            ?>
+
+            <!-- Total Categories Card -->
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 card-container">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-right">
+                            <i class="fas fa-list-alt text-info fa-lg"></i>
+                        </div>
+                    </div>
+                    <h5 class="h6 text-dark">Total Categories</h5>
+                    <div class="value text-dark" style="font-size: 1.5rem;">
+                        <?= $totalCategories ?> Categories
+                    </div>
+                    <div class="orders text-dark" style="font-size: 0.9rem;">Includes Accessories & Phones</div>
+                    <a href="/category_list" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                </div>
+            </div>
+
+            <script>
+                // Initialize Bootstrap tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            </script>
+        </div>
+
+
+    <div class="row g-4 mb-4 mt-1">
+        <div class="col-md-4">
+            <select class="form-select">
+                <option selected>Status</option>
+                <option>New</option>
+                <option>First-Hand</option>
+                <option>Second-Hand</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="categorySelect">
+                <option selected>Category</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select">
+                <option selected>Stock</option>
+                <option>In Stock</option>
+                <option>Out of Stock</option>
+            </select>
+        </div>
     </div>
 
-
-    <div class="row g-4 mb-5">
-    <div class="col-md-4">
-        <select class="form-select">
-            <option selected>Status</option>
-            <option>New</option>
-            <option>First-Hand</option>
-            <option>Second-Hand</option>
-        </select>
-    </div>
-    <div class="col-md-4">
-        <select class="form-select" id="categorySelect">
-            <option selected>Category</option>
-        </select>
-    </div>
-    <div class="col-md-4">
-        <select class="form-select">
-            <option selected>Stock</option>
-            <option>In Stock</option>
-            <option>Out of Stock</option>
-        </select>
-    </div>
-</div>
-
-<div class="table-responsive">
-    <!-- Your existing table HTML remains unchanged -->
-</div>
-
-<script>
-    function populateCategories() {
-        const categorySelect = document.getElementById('categorySelect');
-        categorySelect.innerHTML = '<option selected>Category</option>';
-        
-        // Get all unique categories from the table
-        const categoryCells = document.querySelectorAll('#switchTableBody tr td:nth-child(7)');
-        const categories = new Set();
-        
-        categoryCells.forEach(cell => {
-            const category = cell.textContent.trim();
-            if (category !== 'No category') {
-                categories.add(category);
-            }
-        });
-        
-        // Populate dropdown
-        Array.from(categories).sort().forEach(category => {
-            const option = document.createElement('option');
-            option.value = category.toLowerCase();
-            option.textContent = category;
-            categorySelect.appendChild(option);
-        });
-    }
-
-    function filterProducts() {
-        const statusFilterElement = document.querySelector('.row.g-4.mb-5 .col-md-4:nth-child(1) .form-select');
-        const categoryFilterElement = document.getElementById('categorySelect');
-        const stockFilterElement = document.querySelector('.row.g-4.mb-5 .col-md-4:nth-child(3) .form-select');
-
-        const statusFilter = statusFilterElement.value.trim().toLowerCase();
-        const categoryFilter = categoryFilterElement.value.trim().toLowerCase();
-        const stockFilter = stockFilterElement.value.trim().toLowerCase();
-
-        const rows = document.querySelectorAll('#switchTableBody tr');
-        let visibleRows = 0;
-
-        rows.forEach((row) => {
-            const status = row.cells[4].textContent.trim().toLowerCase();      // Status column
-            const quantity = parseInt(row.cells[5].textContent.trim());        // Quantity column
-            const category = row.cells[6].textContent.trim().toLowerCase();    // Category column
-            const stockStatus = quantity > 0 ? 'in stock' : 'out of stock';
-
-            const matchesStatus = (statusFilter === 'status' || status === statusFilter);
-            const matchesCategory = (categoryFilter === 'category' || category === categoryFilter || (categoryFilter === 'no category' && category === 'no category'));
-            const matchesStock = (stockFilter === 'stock' || stockStatus === stockFilter);
-
-            if (matchesStatus && matchesCategory && matchesStock) {
-                row.style.display = '';
-                visibleRows++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-
-        document.getElementById('entriesInfo').textContent = `Showing 1 to ${visibleRows} of ${rows.length} entries`;
-    }
-
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', () => {
-        populateCategories();
-        
-        document.querySelectorAll('.form-select').forEach(select => {
-            select.addEventListener('change', filterProducts);
-        });
-        
-        filterProducts();
-    });
-</script>
-
-        <div class="d-flex justify-content-between align-items-center mb-4 pt-4 pb-4 border-top border-bottom border-light py-2">
+    <div class="card p-4 bg-white shadow-lg border-0">
+        <div class="d-flex justify-content-between align-items-center mb-4 py-2">
             <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
                 <!-- <select class="form-select w-auto me-3" style="border-radius: 10px;">
@@ -256,15 +330,38 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id='switchTableBody'>
+                <tbody id="switchTableBody">
                     <?php foreach ($products as $index => $product): ?>
-                        <tr class="<?= $product['stock_quantity'] == 0 ? 'bg-danger-light' : ($product['stock_quantity'] <= 5 ? 'bg-warning-light' : '') ?>">
+                        <tr class="clickable-row" data-product-id="<?= $product['product_id'] ?>" 
+                            data-barcode="<?= $product['barcode'] ?>"
+                            data-name="<?= $product['name'] ?>"
+                            data-brand="<?= $product['brand'] ?>"
+                            data-type="<?= $product['type'] ?>"
+                            data-status="<?= $product['status'] ?>"
+                            data-stock="<?= $product['stock_quantity'] ?>"
+                            data-category="<?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?>">
                             <td><?= $product['barcode'] ?></td>
-                            <td><?= $product['name'] ?></td>
+                            <td>
+                                <?php if ($product['stock_quantity'] == 0): ?>
+                                    <i class="bi bi-x-circle-fill text-danger"></i> <!-- Out of stock icon -->
+                                <?php elseif ($product['stock_quantity'] <= 5): ?>
+                                    <i class="bi bi-exclamation-circle-fill text-warning"></i> <!-- Low stock icon -->
+                                <?php endif; ?>
+                                <?= $product['name'] ?>
+                            </td>
+                            
                             <td><?= $product['brand'] ?></td>
                             <td><?= $product['type'] ?></td>
                             <td><?= $product['status'] ?></td>
-                            <td><?= $product['stock_quantity'] ?></td>
+                            <td class="<?php 
+                                if ($product['stock_quantity'] == 0) {
+                                    echo 'text-danger'; // Out of stock
+                                } elseif ($product['stock_quantity'] <= 5) {
+                                    echo 'text-warning'; // Low stock
+                                }
+                            ?>">
+                                <?= $product['stock_quantity'] ?>
+                            </td>
                             <td><?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?></td>
                             <td>
                                 <div class="dropdown">
@@ -279,9 +376,9 @@
                                         </li>
                                         <li>
                                             <a type="button" class="dropdown-item text-danger deleteProductBtn"
-                                                data-id="<?= $product['product_id'] ?>"
-                                                data-name="<?= htmlspecialchars($product['name']) ?>"
-                                                data-bs-toggle="modal" data-bs-target="#deleteProductModal">
+                                            data-id="<?= $product['product_id'] ?>"
+                                            data-name="<?= htmlspecialchars($product['name']) ?>"
+                                            data-bs-toggle="modal" data-bs-target="#deleteProductModal">
                                                 <i class="bi bi-trash fs-4"></i> Delete
                                             </a>
                                         </li>
@@ -317,6 +414,82 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal display data in each column -->
+<div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productDetailsModalLabel">Product Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Barcode:</strong> <span id="modal-barcode"></span></p>
+                <p><strong>Name:</strong> <span id="modal-name"></span></p>
+                <p><strong>Brand:</strong> <span id="modal-brand"></span></p>
+                <p><strong>Type:</strong> <span id="modal-type"></span></p>
+                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                <p><strong>Stock Quantity:</strong> <span id="modal-stock"></span></p>
+                <p><strong>Category:</strong> <span id="modal-category"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script display data in each column -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add event listener for each clickable row
+        document.querySelectorAll('.clickable-row').forEach(function(row) {
+            row.addEventListener('click', function(event) {
+                // Check if the click target is not part of the dropdown button or its menu
+                if (!event.target.closest('.dropdown')) {
+                    // Get product details from the data attributes
+                    const barcode = row.getAttribute('data-barcode');
+                    const name = row.getAttribute('data-name');
+                    const brand = row.getAttribute('data-brand');
+                    const type = row.getAttribute('data-type');
+                    const status = row.getAttribute('data-status');
+                    const stock = row.getAttribute('data-stock');
+                    const category = row.getAttribute('data-category');
+
+                    // Set modal data
+                    document.getElementById('modal-barcode').textContent = barcode;
+                    document.getElementById('modal-name').textContent = name;
+                    document.getElementById('modal-brand').textContent = brand;
+                    document.getElementById('modal-type').textContent = type;
+                    document.getElementById('modal-status').textContent = status;
+                    document.getElementById('modal-stock').textContent = stock;
+                    document.getElementById('modal-category').textContent = category;
+
+                    // Show the Bootstrap modal
+                    let modal = new bootstrap.Modal(document.getElementById('productDetailsModal'));
+                    modal.show();
+                }
+            });
+        });
+    });
+</script>
+
+
+<!-- Display cursor pointer in each column -->
+<style>
+    /* Add cursor pointer to clickable rows */
+    .clickable-row {
+        cursor: pointer;
+    }
+
+    /* Optional: Add a hover effect */
+    .clickable-row:hover {
+        background-color: #f1f1f1;
+    }
+
+</style>
+
 
 <!-- Delete Modal (Single Modal for All Product) -->
 <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
@@ -537,4 +710,73 @@
             }
         }
     });
+</script>
+
+<script>
+    function populateCategories() {
+        const categorySelect = document.getElementById('categorySelect');
+        categorySelect.innerHTML = '<option selected>Category</option>';
+
+        const categoryCells = document.querySelectorAll('#switchTableBody tr td:nth-child(7)');
+        let categories = [];
+
+        categoryCells.forEach(cell => {
+            const category = cell.textContent.trim();
+            if (category !== 'No category' && !categories.includes(category)) {
+                categories.push(category);
+            }
+        });
+
+        categories.sort().forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.toLowerCase();
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    function filterProducts() {
+        const statusFilterElement = document.querySelector('.row.g-4.mb-4 .col-md-4:nth-child(1) .form-select');
+        const categoryFilterElement = document.getElementById('categorySelect');
+        const stockFilterElement = document.querySelector('.row.g-4.mb-4 .col-md-4:nth-child(3) .form-select');
+
+        const statusFilter = statusFilterElement.value.trim().toLowerCase();
+        const categoryFilter = categoryFilterElement.value.trim().toLowerCase();
+        const stockFilter = stockFilterElement.value.trim().toLowerCase();
+
+        const rows = document.querySelectorAll('#switchTableBody tr');
+        let visibleRows = 0;
+
+        rows.forEach(row => {
+            const status = row.cells[4].textContent.trim().toLowerCase();  
+            const quantity = parseInt(row.cells[5].textContent.trim());    
+            const category = row.cells[6].textContent.trim().toLowerCase();    
+            const stockStatus = quantity > 0 ? 'in stock' : 'out of stock';
+
+            const matchesStatus = (statusFilter === 'status' || status === statusFilter);
+            const matchesCategory = (categoryFilter === 'category' || category === categoryFilter || (categoryFilter === 'no category' && category === 'no category'));
+            const matchesStock = (stockFilter === 'stock' || stockStatus === stockFilter);
+
+            if (matchesStatus && matchesCategory && matchesStock) {
+                row.style.display = '';
+                visibleRows++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        document.getElementById('entriesInfo').textContent = `Showing ${visibleRows} of ${rows.length} entries`;
+    }
+
+    // Initialize when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        populateCategories();
+        
+        document.querySelectorAll('.form-select').forEach(select => {
+            select.addEventListener('change', filterProducts);
+        });
+
+        filterProducts(); // Run filter once to sync UI
+    });
+
 </script>
