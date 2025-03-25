@@ -1,5 +1,4 @@
 
-
 <div class="container mt-4">
     <!-- <div class="title-wrapper">
         <i class="fas fa-box-open title-icon"></i>
@@ -236,146 +235,75 @@
                     </div>
                 </div>
             </div>
-</div>
-
-        <?php
-        
-        // Instantiate the CategoryModel class
-        $categoryModel = new CategoryModel();
-
-        // Retrieve categories count from the database
-        $categories = $categoryModel->getCategories(); // This fetches all categories
-
-        // Count the number of unique categories
-        $totalCategories = count($categories);
-        ?>
-
-        <!-- Total Categories Card -->
-        <div class="col-md-3 mb-4">
-            <div class="card p-3 card-container">
-                <div class="d-flex justify-content-between">
-                    <div class="icon-right"><i class="fas fa-list-alt text-info fa-lg"></i></div>
-                </div>
-                <h5 class="h6 text-dark">Total Categories</h5>
-                <div class="value text-dark" style="font-size: 1.5rem;">
-                    <?= $totalCategories . " Categories" ?>
-                </div>
-                <div class="orders text-dark" style="font-size: 0.9rem;">Includes Accessories & Phones</div>
-                <a href="/category_list" class="view-icon" data-bs-toggle="tooltip" title="View Details">
-                    <i class="fas fa-eye"></i>
-                </a>
-            </div>
         </div>
 
-        <script>
-            // Initialize Bootstrap tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        </script>
+            <?php
+                // Instantiate the CategoryModel class
+                $categoryModel = new CategoryModel();
 
+                // Retrieve categories count from the database
+                $categories = $categoryModel->getCategories(); // This fetches all categories
+
+                // Count the number of unique categories
+                $totalCategories = count($categories);
+                
+
+            ?>
+
+            <!-- Total Categories Card -->
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 card-container">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-right">
+                            <i class="fas fa-list-alt text-info fa-lg"></i>
+                        </div>
+                    </div>
+                    <h5 class="h6 text-dark">Total Categories</h5>
+                    <div class="value text-dark" style="font-size: 1.5rem;">
+                        <?= $totalCategories ?> Categories
+                    </div>
+                    <div class="orders text-dark" style="font-size: 0.9rem;">Includes Accessories & Phones</div>
+                    <a href="/category_list" class="view-icon" data-bs-toggle="tooltip" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                </div>
+            </div>
+
+            <script>
+                // Initialize Bootstrap tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            </script>
+        </div>
+
+
+    <div class="row g-4 mb-4 mt-1">
+        <div class="col-md-4">
+            <select class="form-select">
+                <option selected>Status</option>
+                <option>New</option>
+                <option>First-Hand</option>
+                <option>Second-Hand</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="categorySelect">
+                <option selected>Category</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select">
+                <option selected>Stock</option>
+                <option>In Stock</option>
+                <option>Out of Stock</option>
+            </select>
+        </div>
     </div>
 
-
-    <div class="row g-4 mb-5">
-    <div class="col-md-4">
-        <select class="form-select">
-            <option selected>Status</option>
-            <option>New</option>
-            <option>First-Hand</option>
-            <option>Second-Hand</option>
-        </select>
-    </div>
-    <div class="col-md-4">
-        <select class="form-select" id="categorySelect">
-            <option selected>Category</option>
-        </select>
-    </div>
-    <div class="col-md-4">
-        <select class="form-select">
-            <option selected>Stock</option>
-            <option>In Stock</option>
-            <option>Out of Stock</option>
-        </select>
-    </div>
-</div>
-
-<div class="table-responsive">
-    <!-- Your existing table HTML remains unchanged -->
-</div>
-
-<script>
-    function populateCategories() {
-        const categorySelect = document.getElementById('categorySelect');
-        categorySelect.innerHTML = '<option selected>Category</option>';
-        
-        // Get all unique categories from the table
-        const categoryCells = document.querySelectorAll('#switchTableBody tr td:nth-child(7)');
-        const categories = new Set();
-        
-        categoryCells.forEach(cell => {
-            const category = cell.textContent.trim();
-            if (category !== 'No category') {
-                categories.add(category);
-            }
-        });
-        
-        // Populate dropdown
-        Array.from(categories).sort().forEach(category => {
-            const option = document.createElement('option');
-            option.value = category.toLowerCase();
-            option.textContent = category;
-            categorySelect.appendChild(option);
-        });
-    }
-
-    function filterProducts() {
-        const statusFilterElement = document.querySelector('.row.g-4.mb-5 .col-md-4:nth-child(1) .form-select');
-        const categoryFilterElement = document.getElementById('categorySelect');
-        const stockFilterElement = document.querySelector('.row.g-4.mb-5 .col-md-4:nth-child(3) .form-select');
-
-        const statusFilter = statusFilterElement.value.trim().toLowerCase();
-        const categoryFilter = categoryFilterElement.value.trim().toLowerCase();
-        const stockFilter = stockFilterElement.value.trim().toLowerCase();
-
-        const rows = document.querySelectorAll('#switchTableBody tr');
-        let visibleRows = 0;
-
-        rows.forEach((row) => {
-            const status = row.cells[4].textContent.trim().toLowerCase();      // Status column
-            const quantity = parseInt(row.cells[5].textContent.trim());        // Quantity column
-            const category = row.cells[6].textContent.trim().toLowerCase();    // Category column
-            const stockStatus = quantity > 0 ? 'in stock' : 'out of stock';
-
-            const matchesStatus = (statusFilter === 'status' || status === statusFilter);
-            const matchesCategory = (categoryFilter === 'category' || category === categoryFilter || (categoryFilter === 'no category' && category === 'no category'));
-            const matchesStock = (stockFilter === 'stock' || stockStatus === stockFilter);
-
-            if (matchesStatus && matchesCategory && matchesStock) {
-                row.style.display = '';
-                visibleRows++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-
-        document.getElementById('entriesInfo').textContent = `Showing 1 to ${visibleRows} of ${rows.length} entries`;
-    }
-
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', () => {
-        populateCategories();
-        
-        document.querySelectorAll('.form-select').forEach(select => {
-            select.addEventListener('change', filterProducts);
-        });
-        
-        filterProducts();
-    });
-</script>
-
-        <div class="d-flex justify-content-between align-items-center mb-4 pt-4 pb-4 border-top border-bottom border-light py-2">
+    <div class="card p-4 bg-white shadow-lg border-0">
+        <div class="d-flex justify-content-between align-items-center mb-4 py-2">
             <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
             <div class="d-flex align-items-center">
                 <!-- <select class="form-select w-auto me-3" style="border-radius: 10px;">
@@ -782,4 +710,73 @@
             }
         }
     });
+</script>
+
+<script>
+    function populateCategories() {
+        const categorySelect = document.getElementById('categorySelect');
+        categorySelect.innerHTML = '<option selected>Category</option>';
+
+        const categoryCells = document.querySelectorAll('#switchTableBody tr td:nth-child(7)');
+        let categories = [];
+
+        categoryCells.forEach(cell => {
+            const category = cell.textContent.trim();
+            if (category !== 'No category' && !categories.includes(category)) {
+                categories.push(category);
+            }
+        });
+
+        categories.sort().forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.toLowerCase();
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    function filterProducts() {
+        const statusFilterElement = document.querySelector('.row.g-4.mb-4 .col-md-4:nth-child(1) .form-select');
+        const categoryFilterElement = document.getElementById('categorySelect');
+        const stockFilterElement = document.querySelector('.row.g-4.mb-4 .col-md-4:nth-child(3) .form-select');
+
+        const statusFilter = statusFilterElement.value.trim().toLowerCase();
+        const categoryFilter = categoryFilterElement.value.trim().toLowerCase();
+        const stockFilter = stockFilterElement.value.trim().toLowerCase();
+
+        const rows = document.querySelectorAll('#switchTableBody tr');
+        let visibleRows = 0;
+
+        rows.forEach(row => {
+            const status = row.cells[4].textContent.trim().toLowerCase();  
+            const quantity = parseInt(row.cells[5].textContent.trim());    
+            const category = row.cells[6].textContent.trim().toLowerCase();    
+            const stockStatus = quantity > 0 ? 'in stock' : 'out of stock';
+
+            const matchesStatus = (statusFilter === 'status' || status === statusFilter);
+            const matchesCategory = (categoryFilter === 'category' || category === categoryFilter || (categoryFilter === 'no category' && category === 'no category'));
+            const matchesStock = (stockFilter === 'stock' || stockStatus === stockFilter);
+
+            if (matchesStatus && matchesCategory && matchesStock) {
+                row.style.display = '';
+                visibleRows++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        document.getElementById('entriesInfo').textContent = `Showing ${visibleRows} of ${rows.length} entries`;
+    }
+
+    // Initialize when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        populateCategories();
+        
+        document.querySelectorAll('.form-select').forEach(select => {
+            select.addEventListener('change', filterProducts);
+        });
+
+        filterProducts(); // Run filter once to sync UI
+    });
+
 </script>
