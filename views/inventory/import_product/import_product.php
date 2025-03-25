@@ -48,21 +48,26 @@
                 <div class="mb-5">
                     <h5 class="section-title text-primary mb-3">Organization</h5>
                     <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <label class="form-label">Category <span class="text-danger">*</span></label>
-                            <select class="form-select" name="category" id="category" required>
-                                <option selected>Select Category</option>
-                                <option value="Phones">Phones</option>
-                                <option value="Accessories">Accessories</option>
-                                <option value="Speakers">Speakers</option>
-                                <option value="Chargers">Chargers</option>
-                                <option value="Earphones">Earphones</option>
-                                <option value="Power Banks">Power Banks</option>
-                                <option value="Smartwatches">Smartwatches</option>
-                                <option value="Phone Cases">Phone Cases</option>
-                                <option value="Screen Protectors">Screen Protectors</option>
-                            </select>
-                        </div>
+                    <?php
+                        $categoryModel = new CategoryModel();
+
+                        // Fetch categories from the database
+                        $categories = $categoryModel->getCategories();
+                    ?>
+
+                    <!-- Your HTML Form with Category Dropdown -->
+                    <div class="col-md-4 mb-4">
+                        <label class="form-label">Category <span class="text-danger">*</span></label>
+                        <select class="form-select" name="category" id="category" required>
+                            <option selected>Select Category</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= htmlspecialchars($category['category_id']); ?>">
+                                    <?= htmlspecialchars($category['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
 
                         <div class="col-md-4 mb-4">
                             <label class="form-label">Model<span class="text-danger">*</span></label>
@@ -92,39 +97,10 @@
                                 <option>Second Hand</option>
                             </select>
                         </div>
-
-                        <div class="col-md-4 mb-4">
-                            <label class="form-label">Color<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="color" placeholder="Enter color">
-                        </div>
                     </div>
                 </div>
 
-                <!-- Phone Specific Fields -->
-                <div class="phone-fields" style="display: none;">
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <label class="form-label">Storage Capacity<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="storage_capacity" placeholder="Enter storage capacity (e.g. 64GB)">
-                        </div>
-
-                        <div class="col-md-4 mb-4">
-                            <label class="form-label">RAM<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="ram" placeholder="Enter RAM size (e.g. 4GB)">
-                        </div>
-
-                        <div class="col-md-4 mb-4">
-                            <label class="form-label">Screen Size<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="screen_size" placeholder="Enter screen size (e.g. 6.5 inch)">
-                        </div>
-
-                        <div class="col-md-4 mb-4">
-                            <label class="form-label">Operating System<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="operating_system" placeholder="Enter operating system (e.g. Android 11)">
-                        </div>
-                    </div>
-                </div>
-
+    
                 <!-- Product Pricing Section -->
                 <div class="mb-5">
                     <h5 class="section-title text-primary mb-3">Product Pricing</h5>
@@ -169,27 +145,6 @@
 </div>
 
 <script>
-    // Listen for category change
-    document.getElementById('category').addEventListener('change', function() {
-        const selectedCategory = this.value;
-
-        // Get all phone-related fields
-        const phoneFields = document.querySelectorAll('.phone-fields');
-
-        // If category is Phones, show related fields, otherwise hide them
-        if (selectedCategory === 'Phones') {
-            phoneFields.forEach(function(field) {
-                field.style.display = 'block';
-            });
-        } else {
-            phoneFields.forEach(function(field) {
-                field.style.display = 'none';
-            });
-        }
-    });
-</script>
-
-<script>
     function convertBasePrice() {
         let usdInput = document.getElementById('basePriceUSD');
         let khrInput = document.getElementById('basePriceKHR');
@@ -222,3 +177,14 @@
         document.getElementById('quantity').addEventListener('input', updateTotalPrice);
         document.getElementById('exchangeRate').addEventListener('input', convertBasePrice);
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get today's date in YYYY-MM-DD format
+        let today = new Date().toISOString().split('T')[0];
+
+        // Set the order date input field to today's date
+        document.getElementsByName('orderDate')[0].value = today;
+    });
+</script>
+

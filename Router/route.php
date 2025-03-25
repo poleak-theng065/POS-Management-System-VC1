@@ -94,8 +94,8 @@ $route->post("/sale_form/store", [SaleFormController::class, 'store']);
 
 // Generact Recipt
 // For receipt generation
-$route->get("/sale_form/generate_receipt", [GeneractRecieptController::class, 'generateReceipt']);
-$route->get("/generate_receipt/create", [GeneractRecieptController::class, 'create']);
-$route->post("/generate_receipt/store", [GeneractRecieptController::class, 'store']);
+$route->get("/generate_receipt", [GenerateReceiptController::class, 'index']);
+$route->get("/generate_receipt/create", [GenerateReceiptController::class, 'create']);
+$route->post("/generate_receipt/store", [GenerateReceiptController::class, 'store']);
 
 $route->route();
