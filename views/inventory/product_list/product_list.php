@@ -278,34 +278,102 @@
     </div>
 
 
-    <!-- <h1>Product List</h1> -->
-    <div class="card p-5 bg-white shadow-lg border-0">
-        <h5 class="mb-4 text-primary">Filter</h5>
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
-                <select class="form-select">
-                    <option selected>Status</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                    <option>Scheduled</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <select class="form-select">
-                    <option selected>Category</option>
-                    <option>Electronics</option>
-                    <option>Household</option>
-                    <option>Shoes</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <select class="form-select">
-                    <option selected>Stock</option>
-                    <option>In Stock</option>
-                    <option>Out of Stock</option>
-                </select>
-            </div>
-        </div>
+    <div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <select class="form-select">
+            <option selected>Status</option>
+            <option>New</option>
+            <option>First-Hand</option>
+            <option>Second-Hand</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select class="form-select" id="categorySelect">
+            <option selected>Category</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select class="form-select">
+            <option selected>Stock</option>
+            <option>In Stock</option>
+            <option>Out of Stock</option>
+        </select>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <!-- Your existing table HTML remains unchanged -->
+</div>
+
+<script>
+    function populateCategories() {
+        const categorySelect = document.getElementById('categorySelect');
+        categorySelect.innerHTML = '<option selected>Category</option>';
+        
+        // Get all unique categories from the table
+        const categoryCells = document.querySelectorAll('#switchTableBody tr td:nth-child(7)');
+        const categories = new Set();
+        
+        categoryCells.forEach(cell => {
+            const category = cell.textContent.trim();
+            if (category !== 'No category') {
+                categories.add(category);
+            }
+        });
+        
+        // Populate dropdown
+        Array.from(categories).sort().forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.toLowerCase();
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    function filterProducts() {
+        const statusFilterElement = document.querySelector('.row.g-4.mb-5 .col-md-4:nth-child(1) .form-select');
+        const categoryFilterElement = document.getElementById('categorySelect');
+        const stockFilterElement = document.querySelector('.row.g-4.mb-5 .col-md-4:nth-child(3) .form-select');
+
+        const statusFilter = statusFilterElement.value.trim().toLowerCase();
+        const categoryFilter = categoryFilterElement.value.trim().toLowerCase();
+        const stockFilter = stockFilterElement.value.trim().toLowerCase();
+
+        const rows = document.querySelectorAll('#switchTableBody tr');
+        let visibleRows = 0;
+
+        rows.forEach((row) => {
+            const status = row.cells[4].textContent.trim().toLowerCase();      // Status column
+            const quantity = parseInt(row.cells[5].textContent.trim());        // Quantity column
+            const category = row.cells[6].textContent.trim().toLowerCase();    // Category column
+            const stockStatus = quantity > 0 ? 'in stock' : 'out of stock';
+
+            const matchesStatus = (statusFilter === 'status' || status === statusFilter);
+            const matchesCategory = (categoryFilter === 'category' || category === categoryFilter || (categoryFilter === 'no category' && category === 'no category'));
+            const matchesStock = (stockFilter === 'stock' || stockStatus === stockFilter);
+
+            if (matchesStatus && matchesCategory && matchesStock) {
+                row.style.display = '';
+                visibleRows++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        document.getElementById('entriesInfo').textContent = `Showing 1 to ${visibleRows} of ${rows.length} entries`;
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+        populateCategories();
+        
+        document.querySelectorAll('.form-select').forEach(select => {
+            select.addEventListener('change', filterProducts);
+        });
+        
+        filterProducts();
+    });
+</script>
 
         <div class="d-flex justify-content-between align-items-center mb-4 pt-4 pb-4 border-top border-bottom border-light py-2">
             <input type="text" class="form-control" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
