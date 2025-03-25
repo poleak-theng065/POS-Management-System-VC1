@@ -21,237 +21,115 @@ function searchOrders() {
     }
 }
 
+// Function to fetch and display search results
+async function searchProducts() {
+    const query = document.getElementById("navbarSearchInput").value.toLowerCase().trim();
+    const resultsContainer = document.getElementById("searchResults");
 
+    // Clear previous results
+    resultsContainer.innerHTML = "";
+    resultsContainer.style.display = "none";
 
-// /// script.js
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Navbar Search (Page Navigation)
-//     const navbarSearchInput = document.getElementById("navbarSearchInput");
-//     const searchResults = document.getElementById("searchResults");
+    if (query === "") return;
 
-//     const searchData = [
-//         {"title": "Category_List", "url": "/category_list"},
-//         {"title": "Order_New_Product", "url": "/order_new_product"},
-//         {"title": "Arrived_Product", "url": "/arrived_product"},
-//         {"title": "Low_Stock_Product", "url": "/low_stock_product"},
-//         {"title": "Product_List", "url": "/product_list"},
-//         {"title": "Import_Product", "url": "/import_product"},
-//         {"title": "Dashboard", "url": "/"}
-//     ];
+    try {
+        // Fetch product data from the server
+        const response = await fetch(`/api/search_products?q=${encodeURIComponent(query)}`);
+        const products = await response.json();
 
-//     function debounce(func, wait) {
-//         let timeout;
-//         return function(...args) {
-//             clearTimeout(timeout);
-//             timeout = setTimeout(() => func.apply(this, args), wait);
-//         };
-//     }
-
-//     const performNavbarSearch = debounce(function() {
-//         const query = navbarSearchInput.value.trim().toLowerCase();
-//         if (query.length < 1) {
-//             searchResults.style.display = "none";
-//             return;
-//         }
-
-//         const filteredResults = searchData.filter(item => 
-//             item.title.toLowerCase().includes(query) || 
-//             item.url.toLowerCase().includes(query)
-//         );
-
-//         if (filteredResults.length > 0) {
-//             searchResults.innerHTML = filteredResults.map(item => `
-//                 <a href="${item.url}" class="d-block p-2 text-dark text-decoration-none">${item.title}</a>
-//             `).join("");
-//             searchResults.style.display = "block";
-//         } else {
-//             // searchResults.innerHTML = "<div class='p-2 text-muted'>No results found</div>";
-//             // searchResults.style.display = "block";
-//         }
-//     }, 300);
-
-//     navbarSearchInput.addEventListener("input", performNavbarSearch);
-
-//     document.addEventListener("keydown", function(event) {
-//         if (event.ctrlKey && event.key === "k") {
-//             event.preventDefault();
-//             navbarSearchInput.focus();
-//         }
-//     });
-
-//     document.addEventListener("click", function(event) {
-//         if (!navbarSearchInput.contains(event.target) && !searchResults.contains(event.target)) {
-//             searchResults.style.display = "none";
-//         }
-//     });
-
-//     // Table Search (Filter Categories)
-//     const tableSearchInput = document.getElementById("navbarSearchInput"); // Reuse navbar input for table
-//     const tableBody = document.getElementById("switchTableBody");
-//     const noResults = document.getElementById("noResults");
-
-//     function searchOrders() {
-//         const input = tableSearchInput;
-//         const filter = input.value.toLowerCase();
-//         const rows = tableBody.getElementsByTagName("tr");
-//         let found = false;
-
-//         for (let i = 0; i < rows.length; i++) {
-//             const cells = rows[i].getElementsByTagName("td");
-//             let rowVisible = false;
-
-//             for (let j = 0; j < cells.length - 1; j++) { // Exclude the last column (Action)
-//                 if (cells[j].textContent.toLowerCase().includes(filter)) {
-//                     rowVisible = true;
-//                     found = true;
-//                     break;
-//                 }
-//             }
-
-//             rows[i].style.display = rowVisible ? "" : "none";
-//         }
-
-//         noResults.style.display = found ? "none" : "block";
-//     }
-
-//     tableSearchInput.addEventListener("keyup", searchOrders); // Trigger table search on keyup
-
-
-
-
-
-// script.js
-document.addEventListener("DOMContentLoaded", function () {
-    // Navbar Search (Page Navigation)
-    const navbarSearchInput = document.getElementById("navbarSearchInput");
-    const searchResults = document.getElementById("searchResults");
-    const tableBody = document.getElementById("switchTableBody");
-    const noResults = document.getElementById("noResults");
-
-    const searchData = [
-        { title: "Category_List", url: "/category_list" },
-        { title: "Order_New_Product", url: "/order_new_product" },
-        { title: "Arrived_Product", url: "/arrived_product" },
-        { title: "Low_Stock_Product", url: "/low_stock_product" },
-        { title: "Product_List", url: "/product_list" },
-        { title: "Import_Product", url: "/import_product" },
-        { title: "Dashboard", url: "/" }
-    ];
-
-    // Map page to table (simplified to Product_List for now)
-    const pageTableMap = {
-        "/product_list": "switchTableBody"
-    };
-
-    function debounce(func, wait) {
-        let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), wait);
-        };
-    }
-
-    const performNavbarSearch = debounce(function () {
-        const query = navbarSearchInput.value.trim().toLowerCase();
-        if (query.length < 1) {
-            searchResults.style.display = "none";
-            searchOrders(""); // Reset table filtering
-            return;
-        }
-
-        let filteredResults = [];
-        let productFound = false;
-
-        // 1. Search for Pages (direct matches based on title or URL)
-        const directPageMatches = searchData.filter(item =>
-            item.title.toLowerCase().includes(query) ||
-            item.url.toLowerCase().includes(query)
-        );
-        directPageMatches.forEach(page => {
-            filteredResults.push({
-                title: page.title,
-                url: page.url,
-                reason: "direct match"
+        // Display results in the dropdown
+        if (products.length > 0) {
+            products.forEach(product => {
+                const resultItem = document.createElement("div");
+                resultItem.className = "p-2";
+                resultItem.textContent = `${product.name} (${product.barcode}) - ${product.brand}`;
+                resultItem.style.cursor = "pointer";
+                resultItem.onclick = () => redirectToProductPage(product.product_id, query);
+                resultsContainer.appendChild(resultItem);
             });
-        });
-
-        // 2. Search for Products in switchTableBody
-        if (tableBody) {
-            const rows = tableBody.getElementsByTagName("tr");
-            for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName("td");
-                for (let j = 0; j < cells.length - 1; j++) { // Exclude Action column
-                    if (cells[j].textContent.toLowerCase().includes(query)) {
-                        productFound = true;
-                        const productPage = searchData.find(item => item.url === "/product_list");
-                        if (productPage && !filteredResults.some(result => result.url === productPage.url)) {
-                            filteredResults.push({
-                                title: productPage.title,
-                                url: productPage.url,
-                                reason: `"${query}"`
-                            });
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-
-        // 3. Display the results in the searchResults dropdown
-        if (filteredResults.length > 0) {
-            searchResults.innerHTML = filteredResults.map(item => `
-                <a href="${item.url}" class="d-block p-2 text-dark text-decoration-none">
-                    📄 ${item.title} (${item.reason})
-                </a>
-            `).join("");
-            searchResults.style.display = "block";
+            resultsContainer.style.display = "block";
         } else {
-            // searchResults.innerHTML = "<div class='p-2 text-muted'>No results found</div>";
-            searchResults.style.display = "block";
+            resultsContainer.innerHTML = "<div class='p-2'>No results found</div>";
+            resultsContainer.style.display = "block";
         }
+    } catch (error) {
+        // console.error("Error fetching search results:", error);
+        // resultsContainer.innerHTML = "<div class='p-2'>Error searching products</div>";
+        // resultsContainer.style.display = "block";
+    }
+}
 
-        // 4. Filter the table
-        searchOrders(query);
-    }, 300);
+// Redirect to product page with search query
+function redirectToProductPage(productId, query) {
+    localStorage.setItem("searchQuery", query);
+    localStorage.setItem("selectedProductId", productId);
+    window.location.href = "/product_list";
+}
 
-    navbarSearchInput.addEventListener("input", performNavbarSearch);
-
-    document.addEventListener("keydown", function (event) {
-        if (event.ctrlKey && event.key === "k") {
-            event.preventDefault();
-            navbarSearchInput.focus();
-        }
-    });
-
-    document.addEventListener("click", function (event) {
-        if (!navbarSearchInput.contains(event.target) && !searchResults.contains(event.target)) {
-            searchResults.style.display = "none";
-        }
-    });
-
-    // Table Search (Filter Products in Table)
-    function searchOrders(filter = "") {
-        if (!tableBody) return;
-        const rows = tableBody.getElementsByTagName("tr");
-        let found = false;
-
-        for (let i = 0; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName("td");
-            let rowVisible = false;
-
-            for (let j = 0; j < cells.length - 1; j++) { // Exclude Action column
-                if (cells[j].textContent.toLowerCase().includes(filter.toLowerCase())) {
-                    rowVisible = true;
-                    found = true;
-                    break;
-                }
-            }
-
-            rows[i].style.display = rowVisible ? "" : "none";
-        }
-
-        if (noResults) {
-            noResults.style.display = found ? "none" : "block";
-        }
+// Handle search input events
+document.getElementById("navbarSearchInput").addEventListener("input", debounce(searchProducts, 300)); // Debounce to limit requests
+document.getElementById("navbarSearchInput").addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        const query = document.getElementById("navbarSearchInput").value.toLowerCase().trim();
+        if (query) redirectToProductPage(null, query); // Redirect with query only if no specific product selected
     }
 });
+
+// Hide results when clicking outside
+document.addEventListener("click", function (e) {
+    const resultsContainer = document.getElementById("searchResults");
+    const searchInput = document.getElementById("navbarSearchInput");
+    if (!resultsContainer.contains(e.target) && !searchInput.contains(e.target)) {
+        resultsContainer.style.display = "none";
+    }
+});
+
+// Debounce function to limit frequent API calls
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// On product page, filter or highlight the table based on search
+if (window.location.pathname === "/product_list") {
+    window.onload = function () {
+        const searchQuery = localStorage.getItem("searchQuery");
+        const selectedProductId = localStorage.getItem("selectedProductId");
+        const tableBody = document.getElementById("switchTableBody");
+
+        if (searchQuery || selectedProductId) {
+            const rows = tableBody.getElementsByTagName("tr");
+
+            for (let row of rows) {
+                const cells = row.getElementsByTagName("td");
+                const productId = row.querySelector(".deleteProductBtn")?.getAttribute("data-id");
+                let match = false;
+
+                if (selectedProductId && productId === selectedProductId) {
+                    match = true;
+                } else if (searchQuery) {
+                    for (let cell of cells) {
+                        if (cell.textContent.toLowerCase().includes(searchQuery)) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (match) {
+                    row.style.backgroundColor = "#f0f8ff"; // Highlight matching rows
+                } else {
+                    row.style.display = "none"; // Hide non-matching rows
+                }
+            }
+
+            // Clear localStorage after filtering
+            localStorage.removeItem("searchQuery");
+            localStorage.removeItem("selectedProductId");
+        }
+    };
+}
+

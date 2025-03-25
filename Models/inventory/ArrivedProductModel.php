@@ -9,14 +9,14 @@ class ArrivedProductModel {
 
     public function getArrivedProduct() {
 
-        $result = $this->db->query("SELECT * FROM new_orders");
+        $result = $this->db->query("SELECT * FROM order_products");
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
     public function getArrivedProductById($id) {
 
-        $result = $this->db->query("SELECT * FROM new_orders WHERE id = :id", [':id' => $id]);
+        $result = $this->db->query("SELECT * FROM order_products WHERE id = :id", [':id' => $id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -25,7 +25,7 @@ class ArrivedProductModel {
     {
         try {
             $this->db->query(
-                "UPDATE new_orders  SET 
+                "UPDATE order_products  SET 
                 product_name = :product_name, 
                 quantity = :quantity, 
                 order_date = :order_date, 
@@ -54,7 +54,7 @@ class ArrivedProductModel {
     public function deleteArrivedProduct($id)
     {
         try {
-            $this->db->query("DELETE FROM new_orders WHERE id = :id", [':id' => $id]);
+            $this->db->query("DELETE FROM order_products WHERE id = :id", [':id' => $id]);
         } catch (PDOException $e) {
             echo "Error deleting product: " . $e->getMessage();
         }
