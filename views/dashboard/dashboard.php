@@ -1,5 +1,7 @@
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+<di class="content-wrapper">
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
@@ -536,3 +538,7 @@
               </div>
             </div>
             <!-- / Content -->
+
+<?php else: ?>
+<?php $this->redirect('/login'); ?>
+<?php endif; ?>

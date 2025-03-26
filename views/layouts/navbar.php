@@ -69,11 +69,11 @@
                 <div data-i18n="Account Settings">Import Product</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item active">
+                <!-- <li class="menu-item active">
                     <a href="/import_product" class="menu-link">
                       <div data-i18n="Account">Import Product</div>
                     </a>
-                </li>
+                </li> -->
                 <!-- <li class="menu-item active">
                   <a href="/arrived_product" class="menu-link">
                     <div data-i18n="Account">Arrived Product</div>
@@ -81,7 +81,7 @@
                 </li> -->
                 <li class="menu-item active">
                   <a href="/order_new_product" class="menu-link">
-                    <div data-i18n="Account">Order Product</div>
+                    <div data-i18n="Account">Import Product</div>
                   </a>
                 </li>
                 
@@ -205,6 +205,9 @@
           });
 
         </script>
+
+        
+         
         <style>
             /* Remove underline from all menu links */
           .menu-link {
@@ -327,8 +330,101 @@
         </nav>
         <!-- / Navbar -->
 
+        <!-- Path of sidebar -->
+         <!-- Breadcrumbs -->
+        <!-- <div class="breadcrumbs">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0" id="breadcrumb-list">
+                    
+                </ol>
+            </nav>
+        </div> -->
 
-        
+
+        <!-- Path -->
+         <script>
+          document.addEventListener("DOMContentLoaded", function () {
+          // Function to update breadcrumbs
+          function generateBreadcrumbs() {
+              // Get the current path from the URL
+              const currentPath = window.location.pathname;
+
+              // Define breadcrumb names for each path
+              const breadcrumbs = {
+                  "/": "Dashboard",
+                  "/sale_form": "Sale",
+                  "/product_list": "Product List",
+                  "/category_list": "Category List", // Direct route for category list
+                  "/order_new_product": "Import Product",
+                  "/import_product": "Import Product Form",
+                  "/arrived_product": "Arrival Product",
+                  "/sold_product": "Sold Product",
+                  "/return_product": "Return Product",
+                  "/create_account": "Create Account",
+                  "/login": "Login"
+              };
+
+              // Clear previous breadcrumb items
+              const breadcrumbList = document.querySelector('.breadcrumb'); // Adjusted to match your breadcrumb element
+              breadcrumbList.innerHTML = '';
+
+              // Create the "Dashboard" breadcrumb
+              const dashboardItem = document.createElement('li');
+              dashboardItem.classList.add('breadcrumb-item');
+              const dashboardLink = document.createElement('a');
+              dashboardLink.href = '/';
+              dashboardLink.textContent = 'Dashboard';
+              dashboardItem.appendChild(dashboardLink);
+              breadcrumbList.appendChild(dashboardItem);
+
+              // Handle the current page
+              const currentPageName = breadcrumbs[currentPath] || 'Unknown Page';
+              const currentItem = document.createElement('li');
+              currentItem.classList.add('breadcrumb-item', 'active');
+              currentItem.textContent = currentPageName;
+              breadcrumbList.appendChild(currentItem);
+          }
+
+          // Call the function to generate breadcrumbs on page load
+          generateBreadcrumbs();
+      });
+         </script>
+
+         <!-- /Path of sidebar -->
+
+
+        <style>
+          /* Styling for the breadcrumbs */
+          .breadcrumbs {
+              margin-top: 25px; /* Adjust this value based on the height of your navbar */
+              padding-left: 20px;
+              padding-right: 20px;
+          }
+
+          .breadcrumb {
+              background-color: transparent;
+              margin-bottom: 0;
+          }
+
+          .breadcrumb-item a {
+              color: #007bff; /* Change to your desired link color */
+              text-decoration: none;
+          }
+
+          .breadcrumb-item.active {
+              color: #6c757d; /* Color for the current page */
+          }
+
+          .breadcrumb-item + .breadcrumb-item::before {
+              content: ">";
+              color: #6c757d;
+              padding: 0 10px;
+          }
+
+        </style>
+
+      
+
 
         <script>
           document.addEventListener("DOMContentLoaded", function () {
@@ -347,13 +443,6 @@
             }
           });
         </script>
-
-
-
-
-
-
-
 
 
 
@@ -455,3 +544,4 @@
 
 
 </script>
+

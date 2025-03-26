@@ -31,3 +31,13 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get today's date in YYYY-MM-DD format
+        let today = new Date().toISOString().split('T')[0];
+        
+        // Set the return date input field to today's date
+        document.getElementById('returnDate').value = today;
+    });
+</script>

@@ -1,6 +1,5 @@
 <div class="container mt-4">
-    <!-- <h1>Arrived Products</h1> -->
-    
+
     <!-- Summary Panel -->
     <div class="row mb-2">
         <?php
@@ -315,7 +314,10 @@
         
     </div>
 
-    
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block mb-4" 
+        style="border-left: 8px solid #28a745; background-color: #f8f9fa;">
+        <i class="bi bi-box text-success me-2"></i> New Stock Arrival - Ready for Sale
+    </h1>
 
     <div class="card p-5 bg-white shadow-lg border-0">
         <div class="d-flex justify-content-between align-items-center mb-4">

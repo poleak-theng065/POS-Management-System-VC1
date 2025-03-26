@@ -15,7 +15,11 @@ foreach ($returnProducts as $returnProduct) {
 
 <!-- Container for the table -->
 <div class="container mt-4">
-    <!-- <h1>Returned Product</h1> -->
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+        style="border-left: 8px solid #dc3545; background-color: #f8f9fa;">
+        <i class="bi bi-arrow-clockwise text-danger me-2"></i> Product Return Process - Items to be Returned
+    </h1>
+
     <div class="card p-5 bg-white shadow-lg border-0">
         <!-- Search and Filter in the Same Row -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -95,7 +99,7 @@ foreach ($returnProducts as $returnProduct) {
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-danger" href="/return_product/delete/<?= $returnProduct['return_id'] ?>" onclick="return confirm('Are you sure you want to delete this order?');">
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($returnProduct['product_name']) ?>', '/return_product/delete/<?= $returnProduct['return_id'] ?>')">
                                             <i class="bi bi-trash"></i> Delete
                                         </a>
                                     </li>
@@ -216,3 +220,43 @@ function filterReturns() {
 }
 </script>
 
+<!-- Modal for Confirmation -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this product?</p>
+                <p id="productName" class="fw-bold"></p> <!-- To display the product name -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Function to open the modal and set the product name and delete URL
+function openDeleteModal(productName, deleteUrl) {
+    // Set the product name in the modal
+    document.getElementById('productName').textContent = productName;
+    
+    // Set the delete URL in the button's data attribute
+    document.getElementById('confirmDeleteButton').setAttribute('data-delete-url', deleteUrl);
+    
+    // Show the modal
+    var myModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    myModal.show();
+}
+
+// Function to confirm the deletion
+document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+    var deleteUrl = this.getAttribute('data-delete-url');
+    window.location.href = deleteUrl; // Redirect to the delete URL
+});
+</script>

@@ -2,7 +2,7 @@
 
 class DashboardController extends BaseController {
     public function dashboard() {
-        $this->view('inventory/dashboard/dashboard');
+        $this->view('dashboard/dashboard');
     }
 
    

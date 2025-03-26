@@ -1,3 +1,11 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+$errors = $_SESSION['errors'] ?? [];
+?>
+
+
 <style>
   * {
   padding: 0;
@@ -8,8 +16,9 @@
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Ubuntu,sans-serif;
 }
 body {
-    min-height: 100%;
+    min-height: 100vh;
     background-color: #ffffff;
+    overflow: hidden;
 }
 h1 {
     letter-spacing: -1px;
@@ -55,9 +64,13 @@ a {
 .loginbackground-gridContainer {
     display: grid;
     grid-template-columns: [start] 1fr [left-gutter] repeat(16, 86.6px) [left-gutter] 1fr [end];
+<<<<<<< HEAD
     grid-template-rows: [top] 1fr [top-gutter] repeat(8, 64px) [bottom-gutter] 1fr [bottom];
+=======
+    grid-template-rows: [top] 1fr [top-gutter] repeat(10, 64px) [bottom-gutter] 1fr [bottom];
+>>>>>>> 99bbc56ed7dc8f7339ab568d4c6704fc0bc1bfec
     justify-content: center;
-    margin: 0 -2%;
+    margin: 0 -3%;
     transform: rotate(-12deg) skew(-12deg);
 }
 
@@ -98,7 +111,7 @@ a {
   padding-bottom: 15px;
   position: relative;
   bottom:50px;
-  left:70px;
+  left:75px;
 }
 
 
@@ -281,42 +294,49 @@ a.ssolink {
           </div>
         </div>
       </div>
-      <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
+      <div class="box-root padding-top--24 flex-flex flex-direction--column align-center center-center" style="flex-grow: 1; z-index: 9; max-width: 448px; margin: auto;">
         <div class="formbg-outer">
           <div class="formbg">
-            <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-              <h1>Account Login</h1>
+        <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
+          <h1>Account Login</h1>
+        </div>
+        <div class="formbg-inner padding-horizontal--48">
+          <span class="padding-bottom--15">Sign in to your account</span>
+          <!-- FROM LOGIN -->
+          <form action="/login/submit" method="post" id="stripe-login">
+            <div class="field padding-bottom--24">
+              <label for="email">Email</label>
+              <input type="email" name="email">
+              <?php if (isset($errors["email"])) : ?>
+                <div class="error"><?= $_SESSION['errors']['email'] ?></div>
+              <?php endif; ?>
             </div>
-            <div class="formbg-inner padding-horizontal--48">
-              <span class="padding-bottom--15">Sign in to your account</span>
-              <form id="stripe-login">
-                <div class="field padding-bottom--24">
-                  <label for="email">Email</label>
-                  <input type="email" name="email">
-                </div>
-                <div class="field padding-bottom--24">
-                  <div class="grid--50-50">
-                    <label for="password">Password</label>
-                    <div class="reset-pass">
-                      <a href="#">Forgot your password?</a>
-                    </div>
-                  </div>
-                  <input type="password" name="password">
-                </div>
-                <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
-                  <label for="checkbox">
-                    <input type="checkbox" name="checkbox"> Remember me
-                  </label>
-                </div>
-                <div class="field padding-bottom--24">
-                  <input type="submit" name="submit" value="Login">
-                </div>
-                <div class="field">
-                  <span>Don't have an account? <a href="">Create New Account</a></span>
-                  <!-- <a class="ssolink" href="#">Use single sign-on (Google) instead</a> -->
-                </div>
-              </form>
+            <div class="field padding-bottom--24">
+          <div class="grid--50-50">
+            <label for="password">Password</label>
+            <div class="reset-pass">
+              <a href="#">Forgot your password?</a>
             </div>
+          </div>
+          <input type="password" name="password">
+          <?php if (isset($errors["password"])) : ?>
+            <div class="error"><?= $_SESSION['errors']['password'] ?></div>
+          <?php endif; ?>
+          </div>
+            <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
+          <label for="checkbox">
+            <input type="checkbox" name="checkbox"> Remember me
+          </label>
+            </div>
+            <div class="field padding-bottom--24">
+          <input type="submit" name="submit" value="Login">
+            </div>
+            <div class="field">
+          <span>Don't have an account? <a href="">Create New Account</a></span>
+          <!-- <a class="ssolink" href="#">Use single sign-on (Google) instead</a> -->
+            </div>
+          </form>
+        </div>
           </div>
         </div>
       </div>
@@ -335,3 +355,7 @@ a.ssolink {
     });
   </script>
 
+<?php
+unset($_SESSION['errors']);
+unset($_SESSION['old_email']);
+?>
