@@ -10,7 +10,6 @@ require_once "Database/Database.php";
 
 // Inventory Require
 require_once "Controllers/inventory/ProductListController.php";
-require_once "Controllers/inventory/DashboardController.php";
 require_once "Controllers/inventory/CategoryListController.php";
 require_once "Controllers/inventory/CreateAccountController.php";
 require_once "Controllers/inventory/SoldProductController.php";
