@@ -126,15 +126,6 @@ select {
 
 </style>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
     <div class="form-container">
         <h2>Create New Account</h2>
         <form>
@@ -162,6 +153,5 @@ select {
             <button type="submit">SUBMIT</button>
         </form>
     </div>
-</body>
-</html>
+
 
