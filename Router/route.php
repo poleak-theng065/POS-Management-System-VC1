@@ -2,11 +2,15 @@
 
 require_once "Router.php";
 require_once "Controllers/BaseController.php";
+
+// Dashboard  Require
+require_once "Controllers/DashboardController.php";
+// Database Require
 require_once "Database/Database.php";
+
+// Inventory Require
 require_once "Controllers/inventory/ProductListController.php";
-require_once "Controllers/inventory/DashboardController.php";
 require_once "Controllers/inventory/CategoryListController.php";
-require_once "Controllers/inventory/LoginController.php";
 require_once "Controllers/inventory/CreateAccountController.php";
 require_once "Controllers/inventory/SoldProductController.php";
 require_once "Controllers/inventory/LowStockProductController.php";
@@ -15,8 +19,9 @@ require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ArrivedProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
 require_once "Controllers/inventory/SaleFormController.php";
-require_once "Controllers/inventory/RunOutAndLowStockProductController.php";
 
+// Auth Require 
+require_once "Controllers/auth/LoginController.php";
 
 $route = new Router();
 
@@ -42,8 +47,8 @@ $route->get("/", [DashboardController::class, 'dashboard']);
 
 
 // Login
-$route->get("/login", [LoginController::class, 'login']);
-
+$route->get("/login", [AuthController::class, 'login']);
+$route->post("/login/submit", [AuthController::class, 'authenticate']);
 //create account
 $route->get("/create_account", [CreateAccountController::class, 'create_account']);
 
@@ -86,8 +91,8 @@ $route->post("/order_new_product/upload", [OrderNewProductController::class, 'up
 
 
 // Sale form
-$route->get("/sale_form", [SaleFormController::class, 'saleForm']);
+$route->get("/sale_form", [SaleFormController::class, 'index']);
+$route->get("/sale_form/create", [SaleFormController::class, 'create']);
 $route->post("/sale_form/store", [SaleFormController::class, 'store']);
-$route->get("/sale_form/generate_receipt", [SaleFormController::class, 'store']);
 
 $route->route();

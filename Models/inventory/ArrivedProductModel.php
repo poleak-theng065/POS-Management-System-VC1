@@ -4,7 +4,7 @@ class ArrivedProductModel {
     private $db;
 
     public function __construct() {
-        $this->db = new Database("localhost", "inventorydb", "root", "");
+        $this->db = new Database("localhost", "pos-system", "root", "");
     }
 
     public function getArrivedProduct() {
