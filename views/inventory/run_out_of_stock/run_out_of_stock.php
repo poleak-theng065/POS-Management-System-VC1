@@ -1,3 +1,5 @@
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <div class="container mt-4">
     <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
         style="border-left: 8px solid #dc3545; background-color: #f8f9fa;">
@@ -59,3 +61,6 @@
         </div>
     </div>
 </div>
+<?php else: ?>
+<?php $this->redirect('/login'); ?>
+<?php endif; ?>
