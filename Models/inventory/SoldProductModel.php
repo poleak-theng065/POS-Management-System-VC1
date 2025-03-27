@@ -1,7 +1,7 @@
 <?php
 require_once "Database/Database.php";
 
-class SaleFormModel
+class SoldProductModel
 {
     private $db;
 
@@ -50,7 +50,7 @@ class SaleFormModel
         }
     }
 
-    public function getSaleItems()
+    public function getSolds()
     {
         try {
             $stmt = $this->query("

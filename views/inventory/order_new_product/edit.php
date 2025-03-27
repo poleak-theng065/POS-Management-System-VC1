@@ -3,7 +3,7 @@
     <h1 class="mb-4 text-center">Edit Product</h1>
     <div class="card shadow-lg">
         <div class="card-body">
-            <form id="editProductForm" action="/order_new_product/update/<?= $newOrder['id']; ?>" method="POST" enctype="multipart/form-data">
+            <form id="editProductForm" action="/order_new_product/update/<?= htmlspecialchars($newOrder['id']) ?>" method="POST" enctype="multipart/form-data">
 
                 <!-- Product Information and Pricing Section -->
                 <div class="mb-5">
@@ -11,23 +11,23 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Product Title <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="productName" value="<?= htmlspecialchars($newOrder['product_name']); ?>" placeholder="Enter product title" required>
+                            <input type="text" class="form-control" name="productName" value="<?= htmlspecialchars($newOrder['product_name']); ?>" placeholder="Enter product title">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Barcode <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="barcode" value="<?= htmlspecialchars($newOrder['barcode']); ?>" placeholder="e.g. 0123-4567" required>
+                            <input type="text" class="form-control" name="barcode" value="<?= htmlspecialchars($newOrder['barcode']); ?>" placeholder="e.g. 0123-4567">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Brand <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="brand" value="<?= htmlspecialchars($newOrder['brand']); ?>" placeholder="Brand Name" required>
+                            <input type="text" class="form-control" name="brand" value="<?= htmlspecialchars($newOrder['brand']); ?>" placeholder="Brand Name">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Order Date <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" name="orderDate" value="<?= htmlspecialchars($newOrder['order_date']); ?>" required>
+                            <input type="date" class="form-control" name="orderDate" value="<?= htmlspecialchars($newOrder['order_date']); ?>">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Expected Delivery <span class="text-danger">*</span></label>
-                            <select class="form-control" name="expectedDelivery" required>
+                            <select class="form-control" name="expectedDelivery">
                                 <option value="Order" <?= $newOrder['expected_delivery'] == 'Order' ? 'selected' : ''; ?>>Order</option>
                                 <option value="Delivery" <?= $newOrder['expected_delivery'] == 'Delivery' ? 'selected' : ''; ?>>Delivery</option>
                                 <option value="Arrived" <?= $newOrder['expected_delivery'] == 'Arrived' ? 'selected' : ''; ?>>Arrived</option>
@@ -35,9 +35,9 @@
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Product Status<span class="text-danger">*</span></label>
-                            <select class="form-control" name="productStatus" required>
-                                <option value="Ready" <?= $newOrder['product_status'] == 'Ready' ? 'selected' : ''; ?>>Ready</option>
-                                <option value="Pending" <?= $newOrder['product_status'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
+                            <select class="form-control" name="status">
+                                <option value="Ready" <?= $newOrder['status'] == 'Ready' ? 'selected' : ''; ?>>Ready</option>
+                                <option value="Pending" <?= $newOrder['status'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
                             </select>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         <!-- Category Dropdown -->
                         <div class="col-md-4 mb-4">
                             <label class="form-label">Category <span class="text-danger">*</span></label>
-                            <select class="form-select" name="category" id="category" required>
+                            <select class="form-select" name="category" id="category">
                                 <!-- <option value="">Select Category</option> -->
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= htmlspecialchars($category['category_id']); ?>"
@@ -86,11 +86,11 @@
                     <div class="row">
                         <div class="col-md-4 mb-4">
                             <label class="form-label">Status<span class="text-danger">*</span></label>
-                            <select class="form-select" name="status">
+                            <select class="form-select" name="productStatus">
                                 <!-- <option selected>Select Status</option> -->
-                                <option value="New" <?= $newOrder['status'] == 'New' ? 'selected' : ''; ?>>New</option>
-                                <option value="First Hand" <?= $newOrder['status'] == 'First Hand' ? 'selected' : ''; ?>>First Hand</option>
-                                <option value="Second Hand" <?= $newOrder['status'] == 'Second Hand' ? 'selected' : ''; ?>>Second Hand</option>
+                                <option value="New" <?= $newOrder['product_status'] == 'New' ? 'selected' : ''; ?>>New</option>
+                                <option value="First Hand" <?= $newOrder['product_status'] == 'First Hand' ? 'selected' : ''; ?>>First Hand</option>
+                                <option value="Second Hand" <?= $newOrder['product_status'] == 'Second Hand' ? 'selected' : ''; ?>>Second Hand</option>
                             </select>
                         </div>
                     </div>
@@ -102,19 +102,19 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Base Price (USD) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="basePriceUSD" id="basePriceUSD" value="<?= htmlspecialchars($newOrder['base_price_usd']); ?>" placeholder="Enter price in USD" required>
+                            <input type="number" class="form-control" name="basePriceUSD" id="basePriceUSD" value="<?= htmlspecialchars($newOrder['base_price_usd']); ?>" placeholder="Enter price in USD">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Base Price (KHR) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="basePriceKHR" id="basePriceKHR" value="<?= htmlspecialchars($newOrder['base_price_kh']); ?>" placeholder="Enter price in KHR" required>
+                            <input type="number" class="form-control" name="basePriceKHR" id="basePriceKHR" value="<?= htmlspecialchars($newOrder['base_price_kh']); ?>" placeholder="Enter price in KHR">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Quantity <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="quantity" id="quantity" value="<?= htmlspecialchars($newOrder['quantity']); ?>" placeholder="Enter quantity" required>
+                            <input type="number" class="form-control" name="quantity" id="quantity" value="<?= htmlspecialchars($newOrder['quantity']); ?>" placeholder="Enter quantity">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Exchange Rate (USD to KHR) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="exchangeRate" value="4000" required>
+                            <input type="number" class="form-control" id="exchangeRate" value="4000">
                         </div>
                     </div>
                 </div>
