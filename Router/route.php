@@ -49,6 +49,8 @@ $route->get("/", [DashboardController::class, 'dashboard']);
 // Login
 $route->get("/login", [AuthController::class, 'login']);
 $route->post("/login/submit", [AuthController::class, 'authenticate']);
+$route->get("/logout", [AuthController::class, 'logout']);
+
 //create account
 $route->get("/create_account", [CreateAccountController::class, 'create_account']);
 

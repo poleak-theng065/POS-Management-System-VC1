@@ -147,12 +147,11 @@
               </a>
             </li>
             <li class="menu-item" >
-              <a href="/login" class="menu-link" style ="color: red; border: 1px solid; width: 150px; height: 35px; ";>
+              <a href="/logout" class="menu-link" style ="color: red; border: 1px solid; width: 150px; height: 35px; ";>
                 <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
                 <div data-i18n="Basic" >Logout</div>
               </a>
             </li>
-           
 
             
             
