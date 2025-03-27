@@ -7,7 +7,7 @@ class ProductModel
     public function __construct()
     {
         $host = "localhost";
-        $dbname = "inventorydb";
+        $dbname = "pos-system";
         $username = "root";
         $password = "";
 
