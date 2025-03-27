@@ -103,9 +103,9 @@ class SaleFormModel
                 throw new Exception("Discount exceeds maximum value of 999.99 for DECIMAL(5,2): $discount");
             }
 
-            // Fetch product details (unit_price)
+            // Fetch product details (unit_price, stock_quantity)
             $stmt = $this->query(
-                "SELECT unit_price FROM products WHERE product_id = ? LIMIT 1",
+                "SELECT unit_price, stock_quantity FROM products WHERE product_id = ? LIMIT 1",
                 [$productId]
             );
             if ($stmt === false) {
@@ -118,6 +118,12 @@ class SaleFormModel
             error_log("Product fetched: " . json_encode($product));
 
             $unitPrice = floatval($product['unit_price']);
+            $currentStock = (int)$product['stock_quantity'];
+
+            // Check if stock is available
+            if ($currentStock < $quantity) {
+                throw new Exception("Not enough stock available. Current stock: $currentStock, requested: $quantity");
+            }
 
             // Calculate total price
             $totalPrice = ($unitPrice * $quantity) - $discount;
@@ -129,25 +135,37 @@ class SaleFormModel
             }
             error_log("Total price calculated: $totalPrice");
 
+            // Start transaction
+            $this->db->beginTransaction();
+
             // Insert the sale item
-            $params = [$productId, $quantity, $saleDate, $discount, $totalPrice];
-            error_log("Inserting sale item with params: " . json_encode($params));
-            $stmt = $this->query(
+            $insertSaleStmt = $this->query(
                 "INSERT INTO sale_items (product_id, quantity, sale_date, discount, total_price)
                 VALUES (?, ?, ?, ?, ?)",
-                $params
+                [$productId, $quantity, $saleDate, $discount, $totalPrice]
             );
-            if ($stmt === false) {
+            if ($insertSaleStmt === false) {
                 throw new Exception("Failed to insert sale item.");
             }
-            $insertedRows = $stmt->rowCount();
-            error_log("Inserted $insertedRows rows into sale_items");
-            if ($insertedRows === 0) {
-                throw new Exception("Failed to insert sale item: No rows affected");
+
+            // Reduce product quantity in stock
+            $updateStockStmt = $this->query(
+                "UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_id = ?",
+                [$quantity, $productId]
+            );
+            if ($updateStockStmt === false) {
+                throw new Exception("Failed to update product stock.");
             }
+
+            // Commit transaction
+            $this->db->commit();
+
+            error_log("Sale item created successfully and stock updated.");
 
             return true;
         } catch (Exception $e) {
+            // Rollback if there's an error
+            $this->db->rollBack();
             error_log("Error creating sale item: " . $e->getMessage());
             return $e->getMessage();
         }
