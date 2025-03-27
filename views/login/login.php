@@ -64,11 +64,16 @@ a {
 .loginbackground-gridContainer {
     display: grid;
     grid-template-columns: [start] 1fr [left-gutter] repeat(16, 86.6px) [left-gutter] 1fr [end];
+<<<<<<< HEAD
+    grid-template-rows: [top] 1fr [top-gutter] repeat(8, 64px) [bottom-gutter] 1fr [bottom];
+=======
     grid-template-rows: [top] 1fr [top-gutter] repeat(10, 64px) [bottom-gutter] 1fr [bottom];
+>>>>>>> 99bbc56ed7dc8f7339ab568d4c6704fc0bc1bfec
     justify-content: center;
     margin: 0 -3%;
     transform: rotate(-12deg) skew(-12deg);
 }
+
 .box-divider--light-all-2 {
     box-shadow: inset 0 0 0 2px #e3e8ee;
 }
