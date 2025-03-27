@@ -87,6 +87,7 @@ $route->post("/order_new_product/store", [OrderNewProductController::class, 'sto
 $route->get("/order_new_product/edit/{id}", [OrderNewProductController::class, 'edit']);
 $route->put("/order_new_product/update/{id}", [OrderNewProductController::class, 'update']);
 $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::class, 'delete']);
+$route->post("/order_new_product/upload", [OrderNewProductController::class, 'upload']);
 
 
 // Sale form
