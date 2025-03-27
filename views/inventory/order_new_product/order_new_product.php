@@ -414,7 +414,7 @@
             </div>
              <!-- Buttons and Export Dropdown -->
             <div class="d-flex align-items-center">
-                <div class="btn-group me-2">
+                <!-- <div class="btn-group me-2">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
                     </button>
@@ -434,7 +434,7 @@
                             </form>
                         </li>
                     </ul>
-                </div>
+                </div> -->
 
                 <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
             </div>
