@@ -19,7 +19,6 @@ require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ArrivedProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
 require_once "Controllers/inventory/SaleFormController.php";
-require_once "Controllers/inventory/GeneractRecieptController.php";
 
 // Auth Require 
 require_once "Controllers/auth/LoginController.php";
@@ -94,11 +93,5 @@ $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::cla
 $route->get("/sale_form", [SaleFormController::class, 'index']);
 $route->get("/sale_form/create", [SaleFormController::class, 'create']);
 $route->post("/sale_form/store", [SaleFormController::class, 'store']);
-
-// Generact Recipt
-// For receipt generation
-$route->get("/generate_receipt", [GenerateReceiptController::class, 'index']);
-$route->get("/generate_receipt/create", [GenerateReceiptController::class, 'create']);
-$route->post("/generate_receipt/store", [GenerateReceiptController::class, 'store']);
 
 $route->route();
