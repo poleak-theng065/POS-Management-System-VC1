@@ -1,3 +1,6 @@
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+
 <?php
 $today = date('Y-m-d'); // Get today's date
 ?>
@@ -190,3 +193,7 @@ $today = date('Y-m-d'); // Get today's date
         }
     });
 </script>
+
+<?php else: ?>
+<?php $this->redirect('/login'); ?>
+<?php endif; ?>

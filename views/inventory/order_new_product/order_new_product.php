@@ -1,3 +1,5 @@
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <div class="container mt-4">
     <!-- <h1>Order Details</h1> -->
 
@@ -845,4 +847,6 @@ function showProductDetails(event) {
     });
 </script>
 
-
+<?php else: ?>
+<?php $this->redirect('/login'); ?>
+<?php endif; ?>
