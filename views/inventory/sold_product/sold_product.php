@@ -1,27 +1,31 @@
 <style>
-        th.sortable {
-            cursor: pointer;
-        }
+    th.sortable {
+        cursor: pointer;
+    }
 
-        th.sortable:hover span {
-            visibility: visible; /* Show icon on hover */
-        }
+    th.sortable:hover span {
+        visibility: visible;
+        /* Show icon on hover */
+    }
 
-        th span {
-            visibility: hidden; /* Hide icon normally */
-            margin-left: 5px; /* Space between header text and icon */
-        }
+    th span {
+        visibility: hidden;
+        /* Hide icon normally */
+        margin-left: 5px;
+        /* Space between header text and icon */
+    }
 
-        .card {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-        }
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
 
-        .category-image {
-            width: 50px; /* Adjust image size */
-            height: auto;
-        }
-    </style>
+    .category-image {
+        width: 50px;
+        /* Adjust image size */
+        height: auto;
+    }
+</style>
 
 <div class="container mt-4">
     <h1>Sales List</h1>
@@ -30,67 +34,19 @@
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" class="form-check-input"></th>
-                        <th onclick="sortTable('product')" class="sortable">Product <span id="productSortIcon"></span></th>
-                        <th onclick="sortTable('category')" class="sortable">Category <span id="categorySortIcon"></span></th>
-                        <th onclick="sortTable('qty')" class="sortable">Quantity Sold <span id="qtySortIcon"></span></th>
-                        <th onclick="sortTable('earning')" class="sortable">Total Earning <span id="earningSortIcon"></span></th>
-                        <th>Action</th>
+                        <th>Barcode</th>
+                        <th>Quantity</th>
+                        <th>Discount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-bottom">
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                                <strong style="display: block;">Travel</strong>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-danger">Shoes</span></td>
-                        <td class="product-count">10</td>
-                        <td class="earning">$125</td>
-                        <td>
-                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                        </td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                                <div>
-                                    <strong style="display: block;">Travel</strong>
-                                </div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-danger">Electronics</span></td>
-                        <td class="product-count">5</td>
-                        <td class="earning">$263.49</td>
-                        <td>
-                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <img src="https://m.media-amazon.com/images/I/618Bb+QzCmL.jpg" class="category-image me-2" alt="Travel">
-                                <div>
-                                    <strong style="display: block;">Travel</strong>
-                                </div>
-                            </div>
-                        </td>
-                        <td><span class="badge bg-danger">Electronics</span></td>
-                        <td class="product-count">20</td>
-                        <td class="earning">$248.39</td>
-                        <td>
-                            <a href="#" class="text-warning me-2"><i class="bi bi-pencil-square fs-4"></i></a>
-                            <a href="#" class="text-danger"><i class="bi bi-trash fs-4"></i></a>
-                        </td>
-                    </tr>
+                    <?php foreach ($saleItems as $saleItem): ?>
+                        <tr>
+                            <td><?= $saleItem['barcode'] ?></td>
+                            <td><?= $saleItem['quantity'] ?></td>
+                            <td><?= $saleItem['discount'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -119,4 +75,3 @@
         </div>
     </div>
 </div>
-
