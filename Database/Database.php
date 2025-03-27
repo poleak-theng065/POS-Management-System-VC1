@@ -40,3 +40,34 @@ class Database
 
     
 }
+// class Database
+// {
+//     private $pdo;
+
+//     public function __construct($host, $dbname, $username, $password)
+//     {
+//         try {
+//             $this->pdo = new PDO(
+//                 "mysql:host=$host;dbname=$dbname;charset=utf8",
+//                 $username,
+//                 $password,
+//                 [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+//             );
+//         } catch (PDOException $e) {
+//             error_log("Database Connection Error: " . $e->getMessage());
+//             throw new Exception("Failed to connect to the database: " . $e->getMessage());
+//         }
+//     }
+
+//     public function query($sql, $params = [])
+//     {
+//         try {
+//             $stmt = $this->pdo->prepare($sql);
+//             $stmt->execute($params);
+//             return $stmt;
+//         } catch (PDOException $e) {
+//             error_log("PDO Query Error: " . $e->getMessage());
+//             throw $e;
+//         }
+//     }
+// }

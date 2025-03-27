@@ -17,7 +17,12 @@ $today = date('Y-m-d'); // Get today's date
                 <?php unset($_SESSION['error']); ?>
             </div>
         <?php endif; ?>
-        <form id="newOrderForm" action="/generate_receipt/store" method="post">
+        <noscript>
+            <div class="alert alert-warning">
+                JavaScript is disabled. Total price will be calculated on submission.
+            </div>
+        </noscript>
+        <form id="newOrderForm" action="/sale_form/store" method="post">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="barcode" class="form-label">Barcode</label>
@@ -25,8 +30,8 @@ $today = date('Y-m-d'); // Get today's date
                         <option value="">Select a Barcode</option>
                         <?php if (!empty($products)): ?>
                             <?php foreach ($products as $product): ?>
-                                <option value="<?= htmlspecialchars($product['product_id']) ?>" 
-                                        data-unit-price="<?= htmlspecialchars($product['unit_price']) ?>">
+                                <option value="<?= htmlspecialchars($product['product_id']) ?>"
+                                    data-unit-price="<?= htmlspecialchars($product['unit_price']) ?>">
                                     <?= htmlspecialchars($product['barcode']) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -60,7 +65,7 @@ $today = date('Y-m-d'); // Get today's date
                     <input type="date" class="form-control" id="sale_date" name="sale_date" value="<?= $today; ?>" required>
                 </div>
             </div>
-            <a href="javascript:history.back()" class="btn btn-secondary" style="margin-right: 10px;">Back</a>
+            <a href="/dashboard" class="btn btn-secondary" style="margin-right: 10px;">Back</a>
             <button type="submit" class="btn btn-primary">Add Sale</button>
         </form>
     </div>
@@ -91,4 +96,27 @@ $today = date('Y-m-d'); // Get today's date
 
     quantityInput.addEventListener("input", updateTotalPrice);
     discountInput.addEventListener("input", updateTotalPrice);
+
+    // Client-side validation
+    document.getElementById("newOrderForm").addEventListener("submit", function(event) {
+        const productId = barcodeSelect.value;
+        const quantity = parseInt(quantityInput.value) || 0;
+        const discount = parseFloat(discountInput.value) || 0;
+
+        if (!productId) {
+            alert("Please select a barcode.");
+            event.prevenpefault();
+            return;
+        }
+        if (quantity <= 0) {
+            alert("Quantity must be greater than 0.");
+            event.prevenpefault();
+            return;
+        }
+        if (discount < 0) {
+            alert("Discount cannot be negative.");
+            event.prevenpefault();
+            return;
+        }
+    });
 </script>

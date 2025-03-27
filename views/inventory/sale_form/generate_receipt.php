@@ -12,42 +12,21 @@
             </div>
 
             <div class="receipt-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Barcode</th>
-                            <th>Unit Price ($)</th>
-                            <th>Quantity</th>
-                            <th>Discount ($)</th>
-                            <th>Subtotal ($)</th>
-                            <th>Sale Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        $grandTotal = 0; 
-                        foreach ($saleItems as $saleItem): 
-                            $subtotal = $saleItem['total_price'] ?? 0;
-                            $grandTotal += $subtotal;
-                        ?>
-                            <tr>
-                                <td><?= htmlspecialchars($saleItem['barcode'] ?? 'N/A') ?></td>
-                                <td><?= number_format($saleItem['unit_price'] ?? 0, 2) ?></td>
-                                <td><?= htmlspecialchars($saleItem['quantity'] ?? 0) ?></td>
-                                <td><?= number_format($saleItem['discount'] ?? 0, 2) ?></td>
-                                <td><?= number_format($subtotal, 2) ?></td>
-                                <td><?= htmlspecialchars($saleItem['sale_date'] ?? 'N/A') ?></td>
-                            </tr>
+                <?php if (!empty($saleItems)): ?>
+                    <div class="list-group">
+                        <?php foreach ($saleItems as $item): ?>
+                            <div class="list-group-item mb-3 p-3 border rounded">
+                                <p><strong>Barcode:</strong> <?= htmlspecialchars($item['barcode']) ?></p>
+                                <p><strong>Quantity:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
+                                <p><strong>Discount ($):</strong> <?= htmlspecialchars($item['discount']) ?></p>
+                                <p><strong>Total Price ($):</strong> <?= htmlspecialchars($item['total_price']) ?></p>
+                                <p><strong>Sale Date:</strong> <?= htmlspecialchars($item['sale_date']) ?></p>
+                            </div>
                         <?php endforeach; ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="4" class="text-right">Grand Total:</th>
-                            <th>$<?= number_format($grandTotal, 2) ?></th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-center text-muted">No sales found.</p>
+                <?php endif; ?>
             </div>
 
             <div class="receipt-footer text-center mt-4">
@@ -74,12 +53,16 @@
         .no-print {
             display: none;
         }
-        .receipt-header, .receipt-footer {
+
+        .receipt-header,
+        .receipt-footer {
             font-size: 14px;
         }
+
         .table {
             font-size: 12px;
         }
+
         .container {
             width: 100%;
             margin: 0;
