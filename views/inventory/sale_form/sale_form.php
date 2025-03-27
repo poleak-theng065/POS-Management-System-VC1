@@ -71,6 +71,76 @@ $today = date('Y-m-d'); // Get today's date
     </div>
 </div>
 
+<!-- Bootstrap Modal for Receipt -->
+<div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="receiptModalLabel">Receipt</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="receiptContent">
+                <!-- Receipt Details will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button onclick="window.print()" class="btn btn-primary">Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("newOrderForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission first
+
+        // Get form values
+        const barcode = document.getElementById("barcode").options[document.getElementById("barcode").selectedIndex].text;
+        const unitPrice = document.getElementById("unit_price").value;
+        const quantity = document.getElementById("quantity").value;
+        const discount = document.getElementById("discount").value;
+        const totalPrice = document.getElementById("total_price").value;
+        const saleDate = document.getElementById("sale_date").value;
+
+        // Validate inputs
+        if (!barcode || !unitPrice || quantity <= 0) {
+            alert("Please fill out all required fields correctly.");
+            return;
+        }
+
+        // Generate receipt content
+        let receiptContent = `
+        <div class="receipt-header text-center mb-4">
+            <h3>Store Name</h3>
+            <p>123 Store Address, City, Country</p>
+            <p>Phone: (123) 456-7890</p>
+            <p>Email: store@example.com</p>
+            <hr>
+        </div>
+        <p><strong>Barcode:</strong> ${barcode}</p>
+        <p><strong>Unit Price ($):</strong> ${unitPrice}</p>
+        <p><strong>Quantity:</strong> ${quantity}</p>
+        <p><strong>Discount ($):</strong> ${discount}</p>
+        <p><strong>Total Price ($):</strong> ${totalPrice}</p>
+        <p><strong>Sale Date:</strong> ${saleDate}</p>
+        <hr>
+        <p class="text-center"><strong>Status:</strong> Completed</p>
+        <p class="text-center"><strong>Thank you for your purchase!</strong></p>
+        <p class="text-center">Visit us again!</p>
+    `;
+
+        // Insert receipt content and show modal
+        document.getElementById("receiptContent").innerHTML = receiptContent;
+        var receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+        receiptModal.show();
+
+        // Wait for the modal to close, then submit the form
+        receiptModal._element.addEventListener('hidden.bs.modal', function() {
+            document.getElementById("newOrderForm").submit();
+        });
+    });
+</script>
+
 <!-- JavaScript for Dynamic Unit Price and Total Price Calculation -->
 <script>
     const barcodeSelect = document.getElementById("barcode");
