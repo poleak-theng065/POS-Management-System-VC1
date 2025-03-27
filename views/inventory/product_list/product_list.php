@@ -311,9 +311,28 @@
                     <option>20</option>
                     <option>50</option>
                 </select> -->
-                <button class="btn btn-outline-secondary me-3" disabled>Export</button>
+                <div class="btn-group me-2">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="exportButton">
+                        <li>
+                            <button id="exportExcel" class="dropdown-item">
+                                <i class="bi bi-file-earmark-excel me-2"></i> Export to Excel
+                            </button>
+                        </li>
+                        <li>
+                            <button id="exportPdf" class="dropdown-item">
+                                <i class="bi bi-file-earmark-pdf me-2"></i> Export to PDF
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+
                 <a href="/product_list/create" class="btn btn-primary ms-2">+ Add Product</a>
             </div>
+            
         </div>
 
         <div class="table-responsive">
@@ -780,3 +799,129 @@
     });
 
 </script>
+
+
+<!-- Export excel -->
+<script>
+    document.getElementById("exportExcel").addEventListener("click", function () {
+        let table = document.getElementById("productTable");
+        let wb = XLSX.utils.book_new();
+        let wsData = [];
+
+        // Extract headers while ignoring the "Action" column
+        let headers = [];
+        table.querySelectorAll("thead th").forEach((th, index, arr) => {
+            if (index !== arr.length - 1) headers.push(th.innerText);
+        });
+        wsData.push(headers);
+
+        // Extract rows while ignoring the "Action" column
+        table.querySelectorAll("tbody tr").forEach(row => {
+            let rowData = [];
+            row.querySelectorAll("td").forEach((td, index, arr) => {
+                if (index !== arr.length - 1) rowData.push(td.innerText);
+            });
+            wsData.push(rowData);
+        });
+
+        let ws = XLSX.utils.aoa_to_sheet(wsData);
+
+        // Auto-adjust column width
+        let colWidths = headers.map(header => ({ wch: header.length + 5 }));
+        ws['!cols'] = colWidths;
+
+        // Define styling properties
+        let headerStyle = {
+            font: { bold: true, color: { rgb: "FFFFFF" } },
+            fill: { fgColor: { rgb: "4F81BD" } }, // Blue background for headers
+            alignment: { horizontal: "center", vertical: "center" },
+            border: {
+                top: { style: "thin", color: { rgb: "000000" } },
+                bottom: { style: "thin", color: { rgb: "000000" } },
+                left: { style: "thin", color: { rgb: "000000" } },
+                right: { style: "thin", color: { rgb: "000000" } }
+            }
+        };
+
+        let rowStyle1 = {
+            fill: { fgColor: { rgb: "F2F2F2" } }, // Light gray background
+            alignment: { horizontal: "left", vertical: "center" }
+        };
+
+        let rowStyle2 = {
+            fill: { fgColor: { rgb: "FFFFFF" } }, // White background
+            alignment: { horizontal: "left", vertical: "center" }
+        };
+
+        // Apply styles
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let C = range.s.c; C <= range.e.c; C++) {
+            let cellAddress = XLSX.utils.encode_cell({ r: 0, c: C });
+            if (ws[cellAddress]) ws[cellAddress].s = headerStyle;
+        }
+
+        for (let R = 1; R <= range.e.r; R++) {
+            let fillStyle = R % 2 === 0 ? rowStyle1 : rowStyle2;
+            for (let C = range.s.c; C <= range.e.c; C++) {
+                let cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+                if (ws[cellAddress]) ws[cellAddress].s = fillStyle;
+            }
+        }
+
+        // Add worksheet to workbook
+        XLSX.utils.book_append_sheet(wb, ws, "Products");
+
+        // Export as Excel file
+        XLSX.writeFile(wb, "products.xlsx");
+    });
+</script>
+
+
+<!-- Export pdf -->
+<script>
+    // Export PDF
+    document.getElementById("exportPdf").addEventListener("click", function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        let table = document.getElementById("productTable");
+        let headers = [];
+        let rows = [];
+
+        // Get headers excluding "Action"
+        table.querySelectorAll("thead th").forEach((th, index, arr) => {
+            if (index !== arr.length - 1) headers.push(th.innerText);
+        });
+
+        // Get rows excluding "Action" column
+        table.querySelectorAll("tbody tr").forEach(row => {
+            let rowData = [];
+            row.querySelectorAll("td").forEach((td, index, arr) => {
+                if (index !== arr.length - 1) rowData.push(td.innerText);
+            });
+            rows.push(rowData);
+        });
+
+        // Add title & description
+        doc.setFontSize(18);
+        doc.text("Store Name", 14, 15);
+        doc.setFontSize(12);
+        doc.text("Order Product List", 14, 25);
+        doc.setFontSize(10);
+        doc.text("This document contains a list of products available in the store.", 14, 32);
+
+        // Generate table
+        doc.autoTable({
+            startY: 40,
+            head: [headers],
+            body: rows,
+            styles: { fontSize: 10, cellPadding: 4 },
+            headStyles: { fillColor: [31, 78, 120], textColor: 255, fontStyle: "bold", halign: "center" },
+            alternateRowStyles: { fillColor: [242, 242, 242] },
+        });
+
+        doc.save("products.pdf");
+    });
+</script>
+
+

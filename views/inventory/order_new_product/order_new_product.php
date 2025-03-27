@@ -441,11 +441,16 @@
             
         </div>
 
-        <div class="mb-3">
-            <label for="fileUpload" class="form-label">Upload Orders (PDF or Excel)</label>
-            <input type="file" class="form-control" id="fileUpload" accept=".pdf, .xls, .xlsx">
-            <button class="btn btn-success mt-2" id="uploadButton">Upload</button>
-        </div>
+        <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
+                <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
+            </div>
+            <button type="submit" class="btn btn-success mt-2">Upload</button>
+        </form>
+
+
+
 
         <div class="table-responsive">
             <table class="table table-hover align-middle" id="orderTable">
