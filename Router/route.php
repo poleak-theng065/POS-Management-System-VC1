@@ -43,7 +43,7 @@ $route->get("/product_list/destroy/{id}", [ProductListController::class, 'destro
 
 
 // Dachboard 
-$route->get("/", [DashboardController::class, 'dashboard']);
+// $route->get("/", [DashboardController::class, 'dashboard']);
 
 
 // Login
