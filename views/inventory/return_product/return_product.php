@@ -1,3 +1,6 @@
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+
 <?php 
 $totalReturns = count($returnProducts);
 $goodReturns = 0;
@@ -260,3 +263,7 @@ document.getElementById('confirmDeleteButton').addEventListener('click', functio
     window.location.href = deleteUrl; // Redirect to the delete URL
 });
 </script>
+
+<?php else: ?>
+    <?php $this->redirect('/login'); ?>
+<?php endif; ?>

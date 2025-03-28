@@ -69,6 +69,7 @@ a {
     margin: 0 -3%;
     transform: rotate(-12deg) skew(-12deg);
 }
+
 .box-divider--light-all-2 {
     box-shadow: inset 0 0 0 2px #e3e8ee;
 }
@@ -106,7 +107,8 @@ a {
   padding-bottom: 15px;
   position: relative;
   bottom:50px;
-  left:75px;
+  left:70px;
+  bottom: 64px;
 }
 
 
@@ -219,6 +221,11 @@ a.ssolink {
 }
 .tans4s {
   animation: animationLeftRight 0s ease-in-out infinite;
+}
+
+.field span ,a{
+  text-align: center;
+  font-size: 17px;
 }
 
 @keyframes animationLeftRight {

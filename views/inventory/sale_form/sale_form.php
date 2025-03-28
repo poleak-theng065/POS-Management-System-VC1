@@ -1,6 +1,14 @@
-<?php
-$today = date('Y-m-d'); // Get today's date
-?>
+<?php session_start(); ?>
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+
+    <?php
+    $today = date('Y-m-d'); // Get today's date
+    ?>
+
+    <!-- Your HTML and PHP content here -->
+
+<?php endif; ?>
+
 
 <div class="container mt-4">
     <div class="card p-4 bg-light shadow-sm border-0">
@@ -27,22 +35,30 @@ $today = date('Y-m-d'); // Get today's date
                 <div class="col-md-6 mb-3">
                     <label for="barcode" class="form-label">Barcode</label>
                     <select name="product_id" id="barcode" class="form-control" required>
-                        <option value="">Select a Barcode</option>
-                        <?php if (!empty($products)): ?>
-                            <?php foreach ($products as $product): ?>
-                                <option value="<?= htmlspecialchars($product['product_id']) ?>"
-                                    data-unit-price="<?= htmlspecialchars($product['unit_price']) ?>">
-                                    <?= htmlspecialchars($product['barcode']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <option value="" disabled>No products available</option>
-                        <?php endif; ?>
+                        <option value="">Select a Product</option>
+                        <?php foreach ($products as $product): ?>
+                            <option value="<?= htmlspecialchars($product['product_id']) ?>"
+                                data-unit-price="<?= htmlspecialchars($product['unit_price']) ?>"
+                                data-name="<?= htmlspecialchars($product['name']) ?>"
+                                data-brand="<?= htmlspecialchars($product['brand']) ?>">
+                                <?= htmlspecialchars($product['barcode']) ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="unit_price" class="form-label">Unit Price ($)</label>
                     <input type="text" class="form-control" id="unit_price" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="name">Product Name</label>
+                    <input type="text" class="form-control" id="name" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="brand">Brand</label>
+                    <input type="text" class="form-control" id="brand" readonly>
                 </div>
             </div>
             <div class="row">
@@ -102,31 +118,37 @@ $today = date('Y-m-d'); // Get today's date
         const totalPrice = document.getElementById("total_price").value;
         const saleDate = document.getElementById("sale_date").value;
 
+        // Get the product name and brand
+        const productName = document.getElementById("name").value;
+        const productBrand = document.getElementById("brand").value;
+
         // Validate inputs
         if (!barcode || !unitPrice || quantity <= 0) {
             alert("Please fill out all required fields correctly.");
             return;
         }
 
-        // Generate receipt content
+        // Generate receipt content with product name and brand
         let receiptContent = `
-        <div class="receipt-header text-center mb-4">
-            <h3>Store Name</h3>
-            <p>123 Store Address, City, Country</p>
-            <p>Phone: (123) 456-7890</p>
-            <p>Email: store@example.com</p>
-            <hr>
-        </div>
-        <p><strong>Barcode:</strong> ${barcode}</p>
-        <p><strong>Unit Price ($):</strong> ${unitPrice}</p>
-        <p><strong>Quantity:</strong> ${quantity}</p>
-        <p><strong>Discount ($):</strong> ${discount}</p>
-        <p><strong>Total Price ($):</strong> ${totalPrice}</p>
-        <p><strong>Sale Date:</strong> ${saleDate}</p>
+    <div class="receipt-header text-center mb-4">
+        <h3>Store Name</h3>
+        <p>123 Store Address, City, Country</p>
+        <p>Phone: (123) 456-7890</p>
+        <p>Email: store@example.com</p>
         <hr>
-        <p class="text-center"><strong>Status:</strong> Completed</p>
-        <p class="text-center"><strong>Thank you for your purchase!</strong></p>
-        <p class="text-center">Visit us again!</p>
+    </div>
+    <p><strong>Barcode:</strong> ${barcode}</p>
+    <p><strong>Product Name:</strong> ${productName}</p>
+    <p><strong>Brand:</strong> ${productBrand}</p>
+    <p><strong>Unit Price ($):</strong> ${unitPrice}</p>
+    <p><strong>Quantity:</strong> ${quantity}</p>
+    <p><strong>Discount ($):</strong> ${discount}</p>
+    <p><strong>Total Price ($):</strong> ${totalPrice}</p>
+    <p><strong>Sale Date:</strong> ${saleDate}</p>
+    <hr>
+    <p class="text-center"><strong>Status:</strong> Completed</p>
+    <p class="text-center"><strong>Thank you for your purchase!</strong></p>
+    <p class="text-center">Visit us again!</p>
     `;
 
         // Insert receipt content and show modal
@@ -188,5 +210,66 @@ $today = date('Y-m-d'); // Get today's date
             event.prevenpefault();
             return;
         }
+    });
+</script>
+
+
+<!-- Place the custom script at the end of the body -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Your JavaScript code here
+        const barcodeSelect = document.getElementById("barcode");
+        const unitPriceInput = document.getElementById("unit_price");
+        const nameInput = document.getElementById("name");
+        const brandInput = document.getElementById("brand");
+        const quantityInput = document.getElementById("quantity");
+        const discountInput = document.getElementById("discount");
+        const totalPriceInput = document.getElementById("total_price");
+
+        function updateTotalPrice() {
+            const unitPrice = parseFloat(unitPriceInput.value) || 0;
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const discount = parseFloat(discountInput.value) || 0;
+            const totalPrice = (unitPrice * quantity) - discount;
+            totalPriceInput.value = totalPrice.toFixed(2);
+        }
+
+        barcodeSelect.addEventListener("change", function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const unitPrice = selectedOption.getAttribute("data-unit-price") || 0;
+            const productName = selectedOption.getAttribute("data-name") || "";
+            const productBrand = selectedOption.getAttribute("data-brand") || "";
+
+            unitPriceInput.value = parseFloat(unitPrice).toFixed(2);
+            nameInput.value = productName;
+            brandInput.value = productBrand;
+
+            updateTotalPrice();
+        });
+
+        quantityInput.addEventListener("input", updateTotalPrice);
+        discountInput.addEventListener("input", updateTotalPrice);
+
+        document.getElementById("newOrderForm").addEventListener("submit", function(event) {
+            const productId = barcodeSelect.value;
+            const quantity = parseInt(quantityInput.value) || 0;
+            const discount = parseFloat(discountInput.value) || 0;
+
+            if (!productId) {
+                alert("Please select a barcode.");
+                event.preventDefault();
+                return;
+            }
+            if (quantity <= 0) {
+                alert("Quantity must be greater than 0.");
+                event.preventDefault();
+                return;
+            }
+            if (discount < 0) {
+                alert("Discount cannot be negative.");
+                event.preventDefault();
+                return;
+            }
+        });
     });
 </script>
