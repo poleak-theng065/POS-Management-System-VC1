@@ -72,7 +72,6 @@
                               type="text"
                               id="firstName"
                               name="firstName"
-                              value="John"
                               autofocus
                               />
                             </div>
@@ -83,13 +82,12 @@
                                 type="text"
                                 id="email"
                                 name="email"
-                                value="john.doe@example.com"
                                 placeholder="john.doe@example.com"
                               />
                             </div>
                           <div class="mb-3 col-md-6">
                             <label for="email" class="form-label">Password</label>
-                            <input class="form-control" type="text" name="password" id="password" value="Sokha smos 1234" />
+                            <input class="form-control" type="text" name="password" id="password"/>
                           </div>
                           <div class="mb-3 col-md-6">
                               <label class="form-label" for="role">Role</label>
@@ -99,16 +97,15 @@
                                   <option value="Employee">Employee</option>
                                 </select>
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 create_date">
                               <label for="date" class="form-label">Create-Date</label>
-                              <input class="form-control" type="text" name="date" id="date" value="12/12/2025" />
+                              <input class="form-control" type="text" name="date" id="date" />
                             </div>
-                            <div class="mt-3">
-                                <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                            <div class="mt-3 save">
+                                <button type="submit" class="btn btn-primary me-2 ">Save changes</button>
                                 <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                             </div>
                       </form>
                     </div>
-                    
   </body>
 </html>

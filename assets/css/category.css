@@ -153,3 +153,7 @@ body {
 .sortable:hover .sort-icon {
     opacity: 1; /* Show on hover */
 }
+
+.create_date{
+    width: 100%;
+}
