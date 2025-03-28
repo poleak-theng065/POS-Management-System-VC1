@@ -1,6 +1,3 @@
-<?php session_start(); ?> 
-<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
-
 <style>
     th.sortable {
         cursor: pointer;
@@ -38,6 +35,8 @@
                 <thead>
                     <tr>
                         <th>Barcode</th>
+                        <th>Name</th>
+                        <th>Brand</th>
                         <th>Quantity</th>
                         <th>Discount</th>
                     </tr>
@@ -46,6 +45,8 @@
                     <?php foreach ($saleItems as $saleItem): ?>
                         <tr>
                             <td><?= $saleItem['barcode'] ?></td>
+                            <td><?= $saleItem['name'] ?></td>
+                            <td><?= $saleItem['brand'] ?></td>
                             <td><?= $saleItem['quantity'] ?></td>
                             <td><?= $saleItem['discount'] ?></td>
                         </tr>
@@ -78,7 +79,3 @@
         </div>
     </div>
 </div>
-
-<?php else: ?>
-<?php $this->redirect('/login'); ?>
-<?php endif; ?>
