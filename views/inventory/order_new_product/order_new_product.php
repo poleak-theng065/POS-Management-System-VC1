@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/../../../Models/inventory/RunOutAndLowStockProductModel.php'; ?>
+
 <div class="container mt-4">
     <!-- <h1>Order Details</h1> -->
 
@@ -414,7 +416,7 @@
             </div>
              <!-- Buttons and Export Dropdown -->
             <div class="d-flex align-items-center">
-                <div class="btn-group me-2">
+                <!-- <div class="btn-group me-2">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
                     </button>
@@ -434,20 +436,20 @@
                             </form>
                         </li>
                     </ul>
-                </div>
+                </div> -->
 
                 <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
             </div>
             
         </div>
 
-        <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
+        <!-- <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
                 <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
             </div>
             <button type="submit" class="btn btn-success mt-2">Upload</button>
-        </form>
+        </form> -->
 
 
 

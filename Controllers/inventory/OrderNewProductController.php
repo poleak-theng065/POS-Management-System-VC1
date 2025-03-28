@@ -63,8 +63,8 @@ class OrderNewProductController extends BaseController {
             $productName = $_POST['productName'] ?? null;
             $barCode = $_POST['barcode'] ?? null;
             $brand = $_POST['brand'] ?? null;
-            $orderDate = $_POST['orderDate'] ?? null;
             $expectedDelivery = $_POST['expectedDelivery'] ?? null;
+            $orderDate = $_POST['orderDate'] ?? null;
             $status = $_POST['status'] ?? null;
 
             // Organization
@@ -87,8 +87,8 @@ class OrderNewProductController extends BaseController {
                 $productName,
                 $barCode,
                 $brand,
-                $orderDate,
                 $expectedDelivery,
+                $orderDate,
                 $status,
                 $category,
                 $model,
@@ -110,8 +110,6 @@ class OrderNewProductController extends BaseController {
     }
 
 
-
-
     public function delete($id)
     {
         $this->newOrders->deleteOrderNew($id);
@@ -119,66 +117,7 @@ class OrderNewProductController extends BaseController {
     }
 
    
-    public function upload() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_FILES['fileUpload']) && $_FILES['fileUpload']['error'] == 0) {
-                $fileTmpPath = $_FILES['fileUpload']['tmp_name'];
-                $fileName = $_FILES['fileUpload']['name'];
-                $fileSize = $_FILES['fileUpload']['size'];
-                $fileType = $_FILES['fileUpload']['type'];
-                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
     
-                // Allowed file types
-                $allowedExtensions = ['xls', 'xlsx'];
-    
-                if (in_array($fileExtension, $allowedExtensions)) {
-                    // Ensure upload directory exists
-                    $uploadDir = 'uploads/';
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0777, true);
-                    }
-    
-                    $destination = $uploadDir . $fileName;
-    
-                    if (move_uploaded_file($fileTmpPath, $destination)) {
-                        echo 'File uploaded successfully!';
-    
-                        require 'vendor/autoload.php'; // Ensure PhpSpreadsheet is installed
-    
-                        // Process the Excel file
-                        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($destination);
-                        $sheet = $spreadsheet->getActiveSheet();
-                        $rows = $sheet->toArray();
-    
-                        foreach ($rows as $row) {
-                            // Insert data into the database
-                            $this->newOrders->addNewOrder(
-                                $row[0], $row[1], $row[2], $row[3], $row[4], $row[5],
-                                $row[6], $row[7], $row[8], $row[9], $row[10], $row[11], 
-                                $row[12], $row[13], $row[14], $row[15]
-                            );
-                        }
-    
-                        // Redirect after success
-                        header("Location: /order_new_product");
-                        exit();
-                    } else {
-                        echo 'Error moving the uploaded file!';
-                    }
-                } else {
-                    echo 'Invalid file type! Only .xls and .xlsx files are allowed.';
-                }
-            } else {
-                echo 'No file uploaded or an error occurred!';
-            }
-        } else {
-            echo 'Invalid request!';
-        }
-    }
-    
-    
-
-   
 }
 
 

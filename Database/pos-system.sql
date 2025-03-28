@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2025 at 06:05 AM
+-- Generation Time: Mar 28, 2025 at 12:27 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `inventorydb`
+-- Database: `pos-system`
 --
 
 -- --------------------------------------------------------
@@ -145,6 +145,41 @@ INSERT INTO `new_orders` (`id`, `product_name`, `quantity`, `order_date`, `expec
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `order_products`
+--
+
+CREATE TABLE `order_products` (
+  `id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `barcode` varchar(50) NOT NULL,
+  `brand` varchar(100) DEFAULT NULL,
+  `expected_delivery` enum('Order','Delivery','Arrived') NOT NULL,
+  `order_date` date NOT NULL,
+  `status` enum('Pending','Ready') NOT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `model` varchar(100) DEFAULT NULL,
+  `supplier` varchar(255) DEFAULT NULL,
+  `product_status` enum('New','First Hand','Second Hand') NOT NULL,
+  `base_price_usd` decimal(10,2) NOT NULL,
+  `base_price_kh` decimal(10,2) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `exchange_rate` decimal(10,2) NOT NULL,
+  `total_price_usd` decimal(10,2) GENERATED ALWAYS AS (`base_price_usd` * `quantity`) STORED,
+  `total_price_kh` decimal(10,2) GENERATED ALWAYS AS (`base_price_kh` * `quantity`) STORED
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_products`
+--
+
+INSERT INTO `order_products` (`id`, `product_name`, `barcode`, `brand`, `expected_delivery`, `order_date`, `status`, `category`, `model`, `supplier`, `product_status`, `base_price_usd`, `base_price_kh`, `quantity`, `exchange_rate`) VALUES
+(1, 'iPhone 13 Pro', 'IP13PRO123456', 'Apple', '', '2025-03-25', 'Pending', 'Phone', 'A2636', 'Apple Inc.', 'New', 999.99, 4099960.00, 5, 4100.00),
+(2, 'Samsung Galaxy S22 Ultra', 'SGS22U987654', 'Samsung', '', '2025-03-26', 'Pending', 'Phone', 'SM-S908B', 'Samsung Electronics', 'New', 1199.99, 4919960.00, 3, 4100.00),
+(3, 'Google Pixel 7', 'GPX7123456', 'Google', '', '2025-03-24', 'Pending', 'Phone', 'G7-128GB', 'Google LLC', 'New', 599.99, 2459960.00, 4, 4100.00);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `preorders`
 --
 
@@ -186,7 +221,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `name`, `description`, `barcode`, `category_id`, `unit_price`, `cost_price`, `stock_quantity`, `low_stock_threshold`, `created_at`, `status`, `brand`, `model`, `type`) VALUES
-(19, 'Noelani Logan', 'Wi-Fi-enabled smart light bulb with adjustable brightness and color temperature.', 'Velit ipsam sunt err', 5, 0.00, 0.00, 80, 50, '2025-03-11 04:15:00', 'first-hand', 'Possimus numquam co', 'Omnis nulla reiciend', 'Nulla fugiat dolore sds');
+(19, 'Noelani Logan', 'Wi-Fi-enabled smart light bulb with adjustable brightness and color temperature.', 'Velit ipsam sunt err', 5, 0.00, 0.00, 80, 50, '2025-03-11 04:15:00', 'first-hand', 'Possimus numquam co', 'Omnis nulla reiciend', 'Nulla fugiat dolore sds'),
+(22, 'Kitty', NULL, 'pnc-983489', 1, 123.00, 345.00, 5, 5, '2025-03-24 02:26:38', 'new', 'Oppo', 'A2025', '7356'),
+(23, 'fifakjdkaei', NULL, '12345642542544524542', 1, 324.00, 23.00, 0, 5, '2025-03-24 02:27:16', 'new', 'iPhone', 'shytrsh', 'gsrg');
 
 -- --------------------------------------------------------
 
@@ -223,10 +260,10 @@ CREATE TABLE `returns` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `return_product`
+-- Table structure for table `return_products`
 --
 
-CREATE TABLE `return_product` (
+CREATE TABLE `return_products` (
   `return_id` int(11) NOT NULL,
   `product_name` varchar(255) NOT NULL,
   `quantity` int(11) NOT NULL,
@@ -236,10 +273,10 @@ CREATE TABLE `return_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `return_product`
+-- Dumping data for table `return_products`
 --
 
-INSERT INTO `return_product` (`return_id`, `product_name`, `quantity`, `reason_for_return`, `type_of_return`, `return_date`) VALUES
+INSERT INTO `return_products` (`return_id`, `product_name`, `quantity`, `reason_for_return`, `type_of_return`, `return_date`) VALUES
 (1, 'Phone', 20, 'It slow', 'Good Return', '2025-03-17'),
 (2, 'Laptop', 1, 'Battery Problem', 'Damaged Return', '2025-03-12');
 
@@ -278,8 +315,8 @@ CREATE TABLE `sale_items` (
   `sale_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL CHECK (`quantity` > 0),
-  `unit_price` decimal(10,2) NOT NULL,
-  `total_price` decimal(10,2) GENERATED ALWAYS AS (`quantity` * `unit_price`) STORED
+  `discount` float DEFAULT NULL,
+  `total_price` decimal(10,2) GENERATED ALWAYS AS (`quantity` * `discount`) STORED
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -316,16 +353,18 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
   `role` enum('admin','cashier') NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `email` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password_hash`, `role`, `created_at`) VALUES
-(1, 'admin_user', 'hashedpassword123', 'admin', '2025-03-15 07:33:13'),
-(2, 'cashier1', 'hashedpassword456', 'cashier', '2025-03-15 07:33:13');
+INSERT INTO `users` (`user_id`, `username`, `password_hash`, `role`, `created_at`, `email`) VALUES
+(1, 'admin_user', 'hashedpassword123', 'admin', '2025-03-15 07:33:13', 'admin@gmail.com'),
+(2, 'cashier1', 'hashedpassword456', 'cashier', '2025-03-15 07:33:13', 'cashier@gmail.com'),
+(3, 'Poleak', '$2y$10$Hd/uS2OH/D5yLZU4hnfCvuGVHxN1JSsuTjeZEN0fOVTyAGZ0f8hLK', 'cashier', '2025-03-24 16:19:54', 'poleak@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -366,6 +405,13 @@ ALTER TABLE `import_items`
 ALTER TABLE `inventory_movements`
   ADD PRIMARY KEY (`movement_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `order_products`
+--
+ALTER TABLE `order_products`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `barcode` (`barcode`);
 
 --
 -- Indexes for table `preorders`
@@ -427,7 +473,8 @@ ALTER TABLE `suppliers`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -464,6 +511,12 @@ ALTER TABLE `inventory_movements`
   MODIFY `movement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `order_products`
+--
+ALTER TABLE `order_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `preorders`
 --
 ALTER TABLE `preorders`
@@ -473,7 +526,7 @@ ALTER TABLE `preorders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `repairs`
@@ -509,7 +562,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
