@@ -1,7 +1,7 @@
 <?php
 require_once "Database/Database.php";
 
-class SaleFormModel
+class SoldProductModel
 {
     private $db;
 
@@ -48,7 +48,7 @@ class SaleFormModel
             return [];
         }
     }
-    
+
 
     public function getSaleItems()
     {
@@ -76,7 +76,7 @@ class SaleFormModel
             return [];
         }
     }
-    
+
 
     public function createSaleItem($productId, $quantity, $saleDate, $discount)
     {

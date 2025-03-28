@@ -1,3 +1,8 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <div class="container mt-4">
 
     <!-- Summary Panel -->
@@ -468,3 +473,6 @@ function showProductDetails(id, productName, quantity, orderDate, supplier, stat
 }
 </script>
 
+<?php else: ?>
+    <?php $this->redirect('/login'); ?>
+<?php endif; ?>

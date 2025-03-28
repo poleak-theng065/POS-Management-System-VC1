@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2025 at 05:00 AM
+-- Generation Time: Mar 28, 2025 at 01:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -153,13 +153,13 @@ CREATE TABLE `order_products` (
   `product_name` varchar(255) NOT NULL,
   `barcode` varchar(50) NOT NULL,
   `brand` varchar(100) DEFAULT NULL,
-  `expected_delivery` date DEFAULT NULL,
+  `expected_delivery` enum('Order','Delivery','Arrived') NOT NULL,
   `order_date` date NOT NULL,
-  `status` varchar(50) DEFAULT NULL,
+  `status` enum('Pending','Ready') NOT NULL,
   `category` varchar(100) DEFAULT NULL,
   `model` varchar(100) DEFAULT NULL,
   `supplier` varchar(255) DEFAULT NULL,
-  `product_status` varchar(50) DEFAULT NULL,
+  `product_status` enum('New','First Hand','Second Hand') NOT NULL,
   `base_price_usd` decimal(10,2) NOT NULL,
   `base_price_kh` decimal(10,2) NOT NULL,
   `quantity` int(11) NOT NULL,
@@ -173,9 +173,9 @@ CREATE TABLE `order_products` (
 --
 
 INSERT INTO `order_products` (`id`, `product_name`, `barcode`, `brand`, `expected_delivery`, `order_date`, `status`, `category`, `model`, `supplier`, `product_status`, `base_price_usd`, `base_price_kh`, `quantity`, `exchange_rate`) VALUES
-(1, 'iPhone 13 Pro', 'IP13PRO123456', 'Apple', '2025-04-10', '2025-03-25', 'Pending', 'Phone', 'A2636', 'Apple Inc.', 'New', 999.99, 4099960.00, 5, 4100.00),
-(2, 'Samsung Galaxy S22 Ultra', 'SGS22U987654', 'Samsung', '2025-04-12', '2025-03-26', 'Processing', 'Phone', 'SM-S908B', 'Samsung Electronics', 'New', 1199.99, 4919960.00, 3, 4100.00),
-(3, 'Google Pixel 7', 'GPX7123456', 'Google', '2025-04-08', '2025-03-24', 'Shipped', 'Phone', 'G7-128GB', 'Google LLC', 'New', 599.99, 2459960.00, 4, 4100.00);
+(1, 'Phone', 'IP33333333333333333333', 'Moon Store', 'Arrived', '2025-03-28', 'Ready', '5', 'New Model', 'Samsung', 'First Hand', 2.00, 8000.00, 2, 0.00),
+(2, 'hello', '12121212121212121', 'OPPO', 'Delivery', '2025-03-19', 'Pending', '5', 'ffff', 'Oppo', 'First Hand', 3.00, 12000.00, 3, 0.00),
+(3, 'ewew', '676767676', 'OPPO', 'Order', '2025-03-28', 'Ready', '5', 'New Model', 'Oppo', 'First Hand', 3.00, 12000.00, 3, 0.00);
 
 -- --------------------------------------------------------
 
@@ -223,7 +223,7 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`product_id`, `name`, `description`, `barcode`, `category_id`, `unit_price`, `cost_price`, `stock_quantity`, `low_stock_threshold`, `created_at`, `status`, `brand`, `model`, `type`) VALUES
 (19, 'Noelani Logan', 'Wi-Fi-enabled smart light bulb with adjustable brightness and color temperature.', 'Velit ipsam sunt err', 5, 0.00, 0.00, 80, 50, '2025-03-11 04:15:00', 'first-hand', 'Possimus numquam co', 'Omnis nulla reiciend', 'Nulla fugiat dolore sds'),
 (22, 'Kitty', NULL, 'pnc-983489', 1, 123.00, 345.00, 5, 5, '2025-03-24 02:26:38', 'new', 'Oppo', 'A2025', '7356'),
-(23, 'fifakjdkaei', NULL, '12345642542544524542', 1, 324.00, 23.00, 0, 5, '2025-03-24 02:27:16', 'new', 'iPhone', 'shytrsh', 'gsrg');
+(23, 'fifakjdkaei', NULL, '1234564', 1, 0.00, 0.00, 0, 5, '2025-03-24 02:27:16', 'new', 'iPhone', 'shytrsh', 'gsrg');
 
 -- --------------------------------------------------------
 
@@ -312,22 +312,12 @@ INSERT INTO `sales` (`sale_id`, `user_id`, `customer_id`, `total_amount`, `payme
 
 CREATE TABLE `sale_items` (
   `sale_item_id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `sale_date` date NOT NULL,
-  `discount` decimal(5,2) NOT NULL,
-  `total_price` decimal(10,2) NOT NULL
+  `quantity` int(11) NOT NULL CHECK (`quantity` > 0),
+  `discount` float DEFAULT NULL,
+  `total_price` decimal(10,2) GENERATED ALWAYS AS (`quantity` * `discount`) STORED
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `sale_items`
---
-
-INSERT INTO `sale_items` (`sale_item_id`, `product_id`, `quantity`, `sale_date`, `discount`, `total_price`) VALUES
-(1, 22, 1, '2025-03-27', 0.00, 123.00),
-(2, 23, 1, '2025-03-27', 0.00, 324.00),
-(3, 22, 2, '2025-03-27', 0.00, 246.00),
-(4, 23, 3, '2025-03-27', 0.00, 972.00);
 
 -- --------------------------------------------------------
 
@@ -468,6 +458,7 @@ ALTER TABLE `sales`
 --
 ALTER TABLE `sale_items`
   ADD PRIMARY KEY (`sale_item_id`),
+  ADD KEY `sale_id` (`sale_id`),
   ADD KEY `product_id` (`product_id`);
 
 --
@@ -634,7 +625,8 @@ ALTER TABLE `sales`
 -- Constraints for table `sale_items`
 --
 ALTER TABLE `sale_items`
-  ADD CONSTRAINT `sale_items_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `sale_items_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `sale_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

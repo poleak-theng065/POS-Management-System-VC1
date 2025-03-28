@@ -119,7 +119,7 @@
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Exchange Rate (USD to KHR) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="exchangeRate" placeholder="Enter exchange rate" value="4000" required>
+                            <input type="number" class="form-control" name="exchangeRate" id="exchangeRate" placeholder="Enter exchange rate" value="4000">
                         </div>
                     </div>
                 </div>

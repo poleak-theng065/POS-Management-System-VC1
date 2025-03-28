@@ -49,11 +49,13 @@ $route->get("/", [DashboardController::class, 'dashboard']);
 // Login
 $route->get("/login", [AuthController::class, 'login']);
 $route->post("/login/submit", [AuthController::class, 'authenticate']);
+$route->get("/logout", [AuthController::class, 'logout']);
+
 //create account
 $route->get("/create_account", [CreateAccountController::class, 'create_account']);
 
 // Sold Product
-$route->get("/sold_product", [SoldProductController::class, 'soldProduct']);
+$route->get("/sold_product", [SoldProductController::class, 'index']);
 
 // Low Stock Product
 $route->get("/low_stock_product", [LowStockProductController::class, 'index']);
@@ -87,8 +89,6 @@ $route->post("/order_new_product/store", [OrderNewProductController::class, 'sto
 $route->get("/order_new_product/edit/{id}", [OrderNewProductController::class, 'edit']);
 $route->put("/order_new_product/update/{id}", [OrderNewProductController::class, 'update']);
 $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::class, 'delete']);
-$route->post("/order_new_product/upload", [OrderNewProductController::class, 'upload']);
-
 
 // Sale form
 $route->get("/sale_form", [SaleFormController::class, 'index']);

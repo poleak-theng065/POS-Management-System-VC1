@@ -1,3 +1,7 @@
+<?php require_once __DIR__ . '/../../../Models/inventory/RunOutAndLowStockProductModel.php'; ?>
+
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <div class="container mt-4">
     <!-- <h1>Order Details</h1> -->
 
@@ -441,13 +445,13 @@
             
         </div>
 
-        <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
+        <!-- <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
                 <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
             </div>
             <button type="submit" class="btn btn-success mt-2">Upload</button>
-        </form>
+        </form> -->
 
 
 
@@ -845,4 +849,6 @@ function showProductDetails(event) {
     });
 </script>
 
-
+<?php else: ?>
+<?php $this->redirect('/login'); ?>
+<?php endif; ?>
