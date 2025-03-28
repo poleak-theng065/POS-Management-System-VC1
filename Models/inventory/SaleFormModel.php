@@ -38,17 +38,17 @@ class SaleFormModel
     public function getProducts()
     {
         try {
-            $stmt = $this->query("SELECT * FROM products");
+            $stmt = $this->query("SELECT product_id, barcode, name, brand, unit_price FROM products");
             if ($stmt === false) {
                 throw new Exception("Failed to fetch products.");
             }
-            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $products;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             error_log("Error fetching products: " . $e->getMessage());
             return [];
         }
     }
+    
 
     public function getSaleItems()
     {
@@ -60,7 +60,9 @@ class SaleFormModel
                        sale_items.sale_date, 
                        sale_items.discount, 
                        sale_items.total_price, 
-                       products.barcode
+                       products.barcode,
+                       products.name,
+                       products.brand
                 FROM sale_items
                 LEFT JOIN products ON sale_items.product_id = products.product_id
                 ORDER BY sale_items.sale_item_id DESC
@@ -68,13 +70,13 @@ class SaleFormModel
             if ($stmt === false) {
                 throw new Exception("Failed to fetch sale items.");
             }
-            $saleItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $saleItems;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             error_log("Error fetching sale items: " . $e->getMessage());
             return [];
         }
     }
+    
 
     public function createSaleItem($productId, $quantity, $saleDate, $discount)
     {
