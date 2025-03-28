@@ -138,6 +138,14 @@
                 </a>
             </li>
 
+            <!-- User account  -->
+            <li class="menu-item">
+                <a href="/user_account" class="menu-link">
+                  <i class="bx bx-user"></i>
+                  <div data-i18n="Basic" style= "margin-left: 20px;">User Account</div>
+                </a>
+            </li>
+
 
 
             <li class="menu-item">

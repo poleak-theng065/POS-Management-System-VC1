@@ -51,6 +51,9 @@
             left: 50%;
             transform: translateX(-50%);
         }
+        p{
+            margin: 10px;
+        }
 
         .user-list {
             display: flex;
@@ -155,6 +158,14 @@
             color: #3498db;
         }
 
+        .admin{
+            background-color:rgb(208, 253, 223);
+        }
+
+        .no-admin{
+            background-color: rgb(214, 234, 248);
+        }
+
         @media (max-width: 600px) {
             .user {
                 flex-direction: column;
@@ -181,17 +192,17 @@
                         <p class="email">poleak@gmail.com</p>
                     </div>
                 </div>
-                <div class="user-role">
+                <div class="user-role admin">
                     <div class="role-badge">
                         <i class="fas fa-crown"></i>
-                        <p>admin</p>
                     </div>
+                    <p>admin</p>
                     <span class="dots"><i class="fa-solid fa-bars"></i></span>
-                    <span class="git-icon"><i class="fab fa-git-alt"></i></span>
+                    <!-- <span class="git-icon"><i class="fab fa-git-alt"></i></span> -->
                 </div>
             </div>
             <!-- User 2 -->
-            <div class="user employee">
+            <div class="user employee no-admin">
                 <div class="user-info">
                     <img src="https://via.placeholder.com/50" alt="Profile Picture">
                     <div class="user-details">
@@ -199,17 +210,17 @@
                         <p class="email">sokha@gmail.com</p>
                     </div>
                 </div>
-                <div class="user-role">
+                <div class="user-role ">
                     <div class="role-badge">
                         <i class="fas fa-user"></i>
-                        <p>employee</p>
                     </div>
+                    <p>employee</p>
                     <span class="dots"><i class="fa-solid fa-bars"></i></span>
-                    <span class="git-icon"><i class="fab fa-git-alt"></i></span>
+                    <!-- <span class="git-icon"><i class="fab fa-git-alt"></i></span> -->
                 </div>
             </div>
             <!-- User 3 -->
-            <div class="user employee">
+            <div class="user employee no-admin">
                 <div class="user-info">
                     <img src="https://via.placeholder.com/50" alt="Profile Picture">
                     <div class="user-details">
@@ -217,13 +228,13 @@
                         <p class="email">neang@gmail.com</p>
                     </div>
                 </div>
-                <div class="user-role">
+                <div class="user-role no-admin">
                     <div class="role-badge">
                         <i class="fas fa-user"></i>
-                        <p>employee</p>
                     </div>
+                    <p>employee</p>
                     <span class="dots"><i class="fa-solid fa-bars"></i></span>
-                    <span class="git-icon"><i class="fab fa-git-alt"></i></span>
+                    <!-- <span class="git-icon"><i class="fab fa-git-alt"></i></span> -->
                 </div>
             </div>
         </div>
