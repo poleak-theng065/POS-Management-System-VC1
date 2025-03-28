@@ -1,3 +1,6 @@
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+
 <style>
     th.sortable {
         cursor: pointer;
@@ -75,3 +78,7 @@
         </div>
     </div>
 </div>
+
+<?php else: ?>
+<?php $this->redirect('/login'); ?>
+<?php endif; ?>

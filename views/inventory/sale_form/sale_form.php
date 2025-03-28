@@ -1,6 +1,14 @@
-<?php
-$today = date('Y-m-d'); // Get today's date
-?>
+<?php session_start(); ?>
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+
+    <?php
+    $today = date('Y-m-d'); // Get today's date
+    ?>
+
+    <!-- Your HTML and PHP content here -->
+
+<?php endif; ?>
+
 
 <div class="container mt-4">
     <div class="card p-4 bg-light shadow-sm border-0">
@@ -27,16 +35,16 @@ $today = date('Y-m-d'); // Get today's date
                 <div class="col-md-6 mb-3">
                     <label for="barcode" class="form-label">Barcode</label>
                     <select name="product_id" id="barcode" class="form-control" required>
-                <option value="">Select a Product</option>
-                <?php foreach ($products as $product): ?>
-                    <option value="<?= htmlspecialchars($product['product_id']) ?>"
-                        data-unit-price="<?= htmlspecialchars($product['unit_price']) ?>"
-                        data-name="<?= htmlspecialchars($product['name']) ?>"
-                        data-brand="<?= htmlspecialchars($product['brand']) ?>">
-                        <?= htmlspecialchars($product['barcode']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+                        <option value="">Select a Product</option>
+                        <?php foreach ($products as $product): ?>
+                            <option value="<?= htmlspecialchars($product['product_id']) ?>"
+                                data-unit-price="<?= htmlspecialchars($product['unit_price']) ?>"
+                                data-name="<?= htmlspecialchars($product['name']) ?>"
+                                data-brand="<?= htmlspecialchars($product['brand']) ?>">
+                                <?= htmlspecialchars($product['barcode']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="unit_price" class="form-label">Unit Price ($)</label>
@@ -45,12 +53,12 @@ $today = date('Y-m-d'); // Get today's date
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                <label for="name">Product Name</label>
-                <input type="text" class="form-control" id="name" readonly>
+                    <label for="name">Product Name</label>
+                    <input type="text" class="form-control" id="name" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                <label for="brand">Brand</label>
-                <input type="text" class="form-control" id="brand" readonly>
+                    <label for="brand">Brand</label>
+                    <input type="text" class="form-control" id="brand" readonly>
                 </div>
             </div>
             <div class="row">
@@ -99,29 +107,29 @@ $today = date('Y-m-d'); // Get today's date
 </div>
 
 <script>
-document.getElementById("newOrderForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent form submission first
+    document.getElementById("newOrderForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission first
 
-    // Get form values
-    const barcode = document.getElementById("barcode").options[document.getElementById("barcode").selectedIndex].text;
-    const unitPrice = document.getElementById("unit_price").value;
-    const quantity = document.getElementById("quantity").value;
-    const discount = document.getElementById("discount").value;
-    const totalPrice = document.getElementById("total_price").value;
-    const saleDate = document.getElementById("sale_date").value;
+        // Get form values
+        const barcode = document.getElementById("barcode").options[document.getElementById("barcode").selectedIndex].text;
+        const unitPrice = document.getElementById("unit_price").value;
+        const quantity = document.getElementById("quantity").value;
+        const discount = document.getElementById("discount").value;
+        const totalPrice = document.getElementById("total_price").value;
+        const saleDate = document.getElementById("sale_date").value;
 
-    // Get the product name and brand
-    const productName = document.getElementById("name").value;
-    const productBrand = document.getElementById("brand").value;
+        // Get the product name and brand
+        const productName = document.getElementById("name").value;
+        const productBrand = document.getElementById("brand").value;
 
-    // Validate inputs
-    if (!barcode || !unitPrice || quantity <= 0) {
-        alert("Please fill out all required fields correctly.");
-        return;
-    }
+        // Validate inputs
+        if (!barcode || !unitPrice || quantity <= 0) {
+            alert("Please fill out all required fields correctly.");
+            return;
+        }
 
-    // Generate receipt content with product name and brand
-    let receiptContent = `
+        // Generate receipt content with product name and brand
+        let receiptContent = `
     <div class="receipt-header text-center mb-4">
         <h3>Store Name</h3>
         <p>123 Store Address, City, Country</p>
@@ -143,17 +151,16 @@ document.getElementById("newOrderForm").addEventListener("submit", function(even
     <p class="text-center">Visit us again!</p>
     `;
 
-    // Insert receipt content and show modal
-    document.getElementById("receiptContent").innerHTML = receiptContent;
-    var receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
-    receiptModal.show();
+        // Insert receipt content and show modal
+        document.getElementById("receiptContent").innerHTML = receiptContent;
+        var receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+        receiptModal.show();
 
-    // Wait for the modal to close, then submit the form
-    receiptModal._element.addEventListener('hidden.bs.modal', function() {
-        document.getElementById("newOrderForm").submit();
+        // Wait for the modal to close, then submit the form
+        receiptModal._element.addEventListener('hidden.bs.modal', function() {
+            document.getElementById("newOrderForm").submit();
+        });
     });
-});
-
 </script>
 
 <!-- JavaScript for Dynamic Unit Price and Total Price Calculation -->
@@ -209,60 +216,60 @@ document.getElementById("newOrderForm").addEventListener("submit", function(even
 
 <!-- Place the custom script at the end of the body -->
 <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Your JavaScript code here
-            const barcodeSelect = document.getElementById("barcode");
-            const unitPriceInput = document.getElementById("unit_price");
-            const nameInput = document.getElementById("name");
-            const brandInput = document.getElementById("brand");
-            const quantityInput = document.getElementById("quantity");
-            const discountInput = document.getElementById("discount");
-            const totalPriceInput = document.getElementById("total_price");
+    document.addEventListener("DOMContentLoaded", function() {
+        // Your JavaScript code here
+        const barcodeSelect = document.getElementById("barcode");
+        const unitPriceInput = document.getElementById("unit_price");
+        const nameInput = document.getElementById("name");
+        const brandInput = document.getElementById("brand");
+        const quantityInput = document.getElementById("quantity");
+        const discountInput = document.getElementById("discount");
+        const totalPriceInput = document.getElementById("total_price");
 
-            function updateTotalPrice() {
-                const unitPrice = parseFloat(unitPriceInput.value) || 0;
-                const quantity = parseFloat(quantityInput.value) || 0;
-                const discount = parseFloat(discountInput.value) || 0;
-                const totalPrice = (unitPrice * quantity) - discount;
-                totalPriceInput.value = totalPrice.toFixed(2);
-            }
+        function updateTotalPrice() {
+            const unitPrice = parseFloat(unitPriceInput.value) || 0;
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const discount = parseFloat(discountInput.value) || 0;
+            const totalPrice = (unitPrice * quantity) - discount;
+            totalPriceInput.value = totalPrice.toFixed(2);
+        }
 
-            barcodeSelect.addEventListener("change", function() {
-                const selectedOption = this.options[this.selectedIndex];
-                const unitPrice = selectedOption.getAttribute("data-unit-price") || 0;
-                const productName = selectedOption.getAttribute("data-name") || "";
-                const productBrand = selectedOption.getAttribute("data-brand") || "";
+        barcodeSelect.addEventListener("change", function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const unitPrice = selectedOption.getAttribute("data-unit-price") || 0;
+            const productName = selectedOption.getAttribute("data-name") || "";
+            const productBrand = selectedOption.getAttribute("data-brand") || "";
 
-                unitPriceInput.value = parseFloat(unitPrice).toFixed(2);
-                nameInput.value = productName;
-                brandInput.value = productBrand;
+            unitPriceInput.value = parseFloat(unitPrice).toFixed(2);
+            nameInput.value = productName;
+            brandInput.value = productBrand;
 
-                updateTotalPrice();
-            });
-
-            quantityInput.addEventListener("input", updateTotalPrice);
-            discountInput.addEventListener("input", updateTotalPrice);
-
-            document.getElementById("newOrderForm").addEventListener("submit", function(event) {
-                const productId = barcodeSelect.value;
-                const quantity = parseInt(quantityInput.value) || 0;
-                const discount = parseFloat(discountInput.value) || 0;
-
-                if (!productId) {
-                    alert("Please select a barcode.");
-                    event.preventDefault();
-                    return;
-                }
-                if (quantity <= 0) {
-                    alert("Quantity must be greater than 0.");
-                    event.preventDefault();
-                    return;
-                }
-                if (discount < 0) {
-                    alert("Discount cannot be negative.");
-                    event.preventDefault();
-                    return;
-                }
-            });
+            updateTotalPrice();
         });
-    </script>
+
+        quantityInput.addEventListener("input", updateTotalPrice);
+        discountInput.addEventListener("input", updateTotalPrice);
+
+        document.getElementById("newOrderForm").addEventListener("submit", function(event) {
+            const productId = barcodeSelect.value;
+            const quantity = parseInt(quantityInput.value) || 0;
+            const discount = parseFloat(discountInput.value) || 0;
+
+            if (!productId) {
+                alert("Please select a barcode.");
+                event.preventDefault();
+                return;
+            }
+            if (quantity <= 0) {
+                alert("Quantity must be greater than 0.");
+                event.preventDefault();
+                return;
+            }
+            if (discount < 0) {
+                alert("Discount cannot be negative.");
+                event.preventDefault();
+                return;
+            }
+        });
+    });
+</script>

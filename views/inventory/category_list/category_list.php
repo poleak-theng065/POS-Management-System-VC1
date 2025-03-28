@@ -1,4 +1,5 @@
-
+<?php session_start(); ?> 
+<?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <div class="container mt-4">
     <!-- <h1>Product Cateory List</h1> -->
     <div class="card">
@@ -335,3 +336,7 @@
         }
     });
 </script>
+
+<?php else: ?>
+<?php $this->redirect('/login'); ?>
+<?php endif; ?>
