@@ -12,6 +12,7 @@ require_once "Database/Database.php";
 require_once "Controllers/inventory/ProductListController.php";
 require_once "Controllers/inventory/CategoryListController.php";
 require_once "Controllers/inventory/CreateAccountController.php";
+require_once "Controllers/inventory/UserAccountController.php";
 require_once "Controllers/inventory/SoldProductController.php";
 require_once "Controllers/inventory/LowStockProductController.php";
 require_once "Controllers/inventory/RunOutOfStockController.php";
@@ -53,6 +54,8 @@ $route->get("/logout", [AuthController::class, 'logout']);
 
 //create account
 $route->get("/create_account", [CreateAccountController::class, 'create_account']);
+//user account
+$route->get("/user_account", [UserAccountController::class, 'user_account']);
 
 // Sold Product
 $route->get("/sold_product", [SoldProductController::class, 'index']);
