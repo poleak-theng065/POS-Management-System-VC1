@@ -317,7 +317,7 @@ a.ssolink {
           <div class="grid--50-50">
             <label for="password">Password</label>
             <div class="reset-pass">
-              <a href="#">Forgot your password?</a>
+              <a href="/forgot-password">Forgot your password?</a>
             </div>
           </div>
           <input type="password" name="password">
@@ -327,7 +327,7 @@ a.ssolink {
           </div>
             <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
           <label for="checkbox">
-            <input type="checkbox" name="checkbox"> Remember me
+            <input type="checkbox" name="checkbox" id="show-pwd"> Show Password
           </label>
             </div>
             <div class="field padding-bottom--24">
@@ -355,7 +355,17 @@ a.ssolink {
       if (navbar) navbar.style.display = "none"; // Hide navbar if it exists
       if (sidebar) sidebar.style.display = "none"; // Hide sidebar if it exists
     });
-  </script>
+    
+    const showPwd = document.getElementById("show-pwd");
+    const passwordInput = document.querySelector('input[name="password"]');
+    showPwd.addEventListener("change", function () {
+      if (showPwd.checked) {
+        passwordInput.setAttribute("type", "text");
+      } else {
+        passwordInput.setAttribute("type", "password");
+      }
+    });
+</script>
 
 <?php
 unset($_SESSION['errors']);
