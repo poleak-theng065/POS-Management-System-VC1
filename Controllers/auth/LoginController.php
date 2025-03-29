@@ -191,5 +191,10 @@ class AuthController extends BaseController
         header("Location: /users");
     }
 
+    public function forgotPassword()
+    {
+        $this->view("login/forgot_password");
+    }
+
 }
 
