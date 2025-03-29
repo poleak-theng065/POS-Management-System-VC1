@@ -154,17 +154,65 @@
                 <div data-i18n="Basic">Setting</div>
               </a>
             </li>
-            <li class="menu-item" >
-              <a href="/logout" class="menu-link" style ="color: red; border: 1px solid; width: 150px; height: 35px; ";>
+            <li class="menu-item">
+              <a href="#" class="menu-link log-out" style="color: red; border: 1px solid; width: 150px; height: 35px;">
                 <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
-                <div data-i18n="Basic" >Logout</div>
+                <div data-i18n="Basic">Logout</div>
               </a>
             </li>
-
-            
-            
           </ul>
         </aside>
+
+ <!-- Log Out Confirmation Modal (Placed outside <li>) -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="logoutModalLabel">Log out</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to log out?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" id="confirmLogout">Log out</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <style>
+            .bg-danger-light {
+              background-color: #f8d7da !important; /* Lighter red */
+            }
+
+            .bg-warning-light {
+              background-color: #fff3cd !important; /* Lighter yellow */
+            }
+          </style>
+
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              // Select the logout button that triggers the modal
+              const logoutTrigger = document.querySelector(".log-out");
+
+              // Select the modal
+              const logoutModal = new bootstrap.Modal(document.getElementById("logoutModal"));
+
+              // Add event listener to open modal when clicking logout button
+              logoutTrigger.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent navigation
+                logoutModal.show();
+              });
+
+              // Handle logout confirmation
+              document.getElementById("confirmLogout").addEventListener("click", function () {
+                window.location.href = "/logout"; // Redirect to logout
+              });
+            });
+          </script>
+
         <!-- / Menu -->
          
          <script>
