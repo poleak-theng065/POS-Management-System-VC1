@@ -81,7 +81,7 @@
                     <input type="date" class="form-control" id="sale_date" name="sale_date" value="<?= $today; ?>" required>
                 </div>
             </div>
-            <a href="/dashboard" class="btn btn-secondary" style="margin-right: 10px;">Back</a>
+            <a href="/" class="btn btn-secondary" style="margin-right: 10px;">Back</a>
             <button type="submit" class="btn btn-primary">Add Sale</button>
         </form>
     </div>

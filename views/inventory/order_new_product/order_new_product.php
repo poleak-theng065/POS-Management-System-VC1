@@ -418,7 +418,7 @@
             </div>
              <!-- Buttons and Export Dropdown -->
             <div class="d-flex align-items-center">
-                <!-- <div class="btn-group me-2">
+                <div class="btn-group me-2">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
                     </button>
@@ -438,7 +438,7 @@
                             </form>
                         </li>
                     </ul>
-                </div> -->
+                </div>
 
                 <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
             </div>
@@ -556,6 +556,20 @@
         </div>
     </div>
 </div>
+
+<style>
+ @media (min-width: 768px) and (max-width: 1024px) {
+    .card-container {
+        padding: 1.5rem; /* Padding inside the cards */
+        border: 1px solid #ddd; /* Optional border for visibility */
+        border-radius: 0.5rem; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        background-color: #fff; /* Card background color */
+        height: 100%; /* Ensure cards fill the column height */
+    }
+}
+</style>
+
 
 
 <!-- Bootstrap Modal -->

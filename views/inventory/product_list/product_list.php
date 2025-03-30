@@ -3,6 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+
 <div class="container mt-4">
     <!-- <div class="title-wrapper">
         <i class="fas fa-box-open title-icon"></i>
@@ -67,7 +68,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
         <!-- Modal for showing out of stock products -->
         <div class="modal fade" id="runOutOfStockModal" tabindex="-1" aria-labelledby="runOutOfStockModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-danger fw-bold fs-4" id="runOutOfStockModalLabel">
@@ -133,7 +134,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
         <!-- Modal for showing low stock products -->
         <div class="modal fade" id="lowStockModal" tabindex="-1" aria-labelledby="lowStockModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-warning fw-bold fs-4" id="lowStockModalLabel">
