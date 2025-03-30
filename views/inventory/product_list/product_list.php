@@ -83,6 +83,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                             <thead>
                                 <tr>
                                     <th>Barcode</th>
+                                    <th>Image</th>
                                     <th>Name</th>
                                     <th>Quantity</th>
                                     <th>Category</th>
@@ -93,7 +94,15 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                                     <?php if ($product['stock_quantity'] == 0): ?>
                                         <tr>
                                             <td><?= $product['barcode'] ?></td>
-                                            <td><?= $product['name'] ?></td>
+                                            <td>
+                                                <?php if (!empty($product['image'])): ?>
+                                                    <img src="<?= htmlspecialchars($product['image']) ?>" alt="Product Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                                <?php else: ?>
+                                                    <img src="/path/to/default/image.png" alt="Default Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                                <?php endif; ?>
+                                            <td>
+                                                <?= $product['name'] ?>
+                                            </td>
                                             <td><?= $product['stock_quantity'] ?></td>
                                             <td><?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?></td>
                                         </tr>
@@ -340,11 +349,13 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
             
         </div>
 
+        <!-- display product list -->
         <div class="table-responsive">
             <table class="table table-hover align-middle" id="productTable">
                 <thead>
                     <tr>
                         <th>Barcode</th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Brand</th>
                         <th>Type</th>
@@ -358,6 +369,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     <?php foreach ($products as $index => $product): ?>
                         <tr class="clickable-row" data-product-id="<?= $product['product_id'] ?>" 
                             data-barcode="<?= $product['barcode'] ?>"
+                            data-image="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
                             data-name="<?= $product['name'] ?>"
                             data-brand="<?= $product['brand'] ?>"
                             data-type="<?= $product['type'] ?>"

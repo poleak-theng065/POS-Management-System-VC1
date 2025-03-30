@@ -42,7 +42,17 @@ class ProductListController extends BaseController
                 'cost_price' => $_POST['cost_price'] ?? null,
                 'category_id' => $_POST['category_id'] ?? null,
                 'description' => $_POST['description'] ?? null,
+                
             ];
+
+            if (isset($_FILES['image']) && isset($_FILES['image']['name']) && isset($_FILES['image']['tmp_name'])) {
+                $image = $_FILES['image']['name'];
+
+                // Move the uploaded file to a specific directory
+                move_uploaded_file($_FILES['image']['tmp_name'], "assets/img/upload/" . $image);
+            } else {
+                $image = null; // Handle the case where no image is uploaded
+            }
 
             foreach ($data as $key => $value) {
                 if ($value === null && $key !== 'description') {
@@ -52,7 +62,7 @@ class ProductListController extends BaseController
                 }
             }
 
-            if ($this->iteam->createProduct($data)) {
+            if ($this->iteam->createProduct($data, $image)) {
                 echo "<script>
                         console.log('Setting status: success');
                         localStorage.setItem('productStatus', 'success');
