@@ -81,7 +81,8 @@
                                             <option value="<?= htmlspecialchars($product['product_id']) ?>"
                                                 data-unit-price="<?= htmlspecialchars($product['unit_price']) ?>"
                                                 data-name="<?= htmlspecialchars($product['name']) ?>"
-                                                data-brand="<?= htmlspecialchars($product['brand']) ?>">
+                                                data-brand="<?= htmlspecialchars($product['brand']) ?>"
+                                                data-image-path="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>">
                                                 <?= htmlspecialchars($product['barcode']) ?>
                                             </option>
                                         <?php endforeach; ?>
@@ -96,11 +97,11 @@
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="name">Product Name</label>
-                                <input type="text" class="form-control" id="name" readonly>
+                                <input type="text" class="form-control" id="name" required>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="unit_price" class="form-label">Unit Price ($)</label>
-                                <input type="text" class="form-control" id="unit_price" readonly>
+                                <input type="text" class="form-control" id="unit_price" required>
                             </div>
                         </div>
                         <div class="row">
@@ -144,14 +145,20 @@
                         return;
                     }
 
+                    const imagePath = selectedOption.getAttribute('data-image-path');
+                    const basePath = "../../../"; // Adjust based on directory structure
+                    const fullImagePath = basePath + imagePath;
+
                     const newProduct = {
                         barcode: selectedOption.value,
                         name: selectedOption.getAttribute('data-name'),
-                        imageUrl: "../../../assets/img/elements/5.jpg",
+                        imageUrl: fullImagePath,
                         quantity: 1,
                         price: parseFloat(selectedOption.getAttribute('data-unit-price')),
                         discount: parseFloat(discountInput) || 0
                     };
+
+                    console.log("New Product:", newProduct); // Debugging
 
                     // Check if product already exists by barcode
                     const existingProductIndex = productList.findIndex(p => p.barcode === newProduct.barcode);
