@@ -1,157 +1,92 @@
-<style>
-    /* styles.css */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
 
-body {
-    background-color: #e6f0fa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        <!-- / Menu -->
+        <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class=" row">
+                <div class="col-md-12">
+                  <div class="card mb-4">
+                    <h5 class="card-header">Profile Details</h5>
+                    <!-- Account -->
+                    <div class="card-body">
+                      <div class="d-flex align-items-start align-items-sm-center gap-4">
+                        <img
+                          src="../assets/img/avatars/1.png"
+                          alt="user-avatar"
+                          class="d-block rounded"
+                          height="100"
+                          width="100"
+                          id="uploadedAvatar"
+                        />
+                        <div class="button-wrapper">
+                          <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                            <span class="d-none d-sm-block">Upload new photo</span>
+                            <i class="bx bx-upload d-block d-sm-none"></i>
+                            <input
+                              type="file"
+                              id="upload"
+                              class="account-file-input"
+                              hidden
+                              accept="image/png, image/jpeg"
+                            />
+                          </label>
+                          <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                            <i class="bx bx-reset d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Reset</span>
+                          </button>
 
-.form-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 95%;
-    height: 85%;
-    margin: auto;
-    margin-bottom:70px;
-    padding-top: 100px;
-    
-}
-
-.form-container h2 {
-    text-align: center;
-    color: #1e3a8a;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #1e3a8a;
-    padding-bottom: 20px;
-    position: relative;
-    bottom: 50px;
-}
-
-.form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.form-row input {
-    width: 48%;
-    padding: 10px;
-    border: 1px solid #1e3a8a;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #333;
-}
-
-.form-row input::placeholder {
-    color: #aaa;
-}
-
-.date-row {
-    display: flex;
-    justify-content: space-between;
-}
-
-
-button {
-    width: 100%;
-    padding: 12px;
-    background-color:rgba(46, 31, 251, 0.85);
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 80px;
-}
-
-button:hover {
-    background-color:rgb(20, 6, 220);
-}
-
-.checkbox-row {
-    display: flex;
-    align-items: center;
-    margin-top: 15px;
-    font-size: 12px;
-    color: #1e3a8a;
-}
-
-.checkbox-row input {
-    margin-right: 5px;
-}
-
-.checkbox-row label {
-    color: #1e3a8a;
-}
-
-.form-image{
-    height: 80px;
-    width: 100%;
-    margin-top:40px;
-    /* display: flex; */
-}
-.image{
-    border: solid 1px;
-    height: 100px;
-    border-radius: 4px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #1e3a8a;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #333;
-    background-color: #fff;
-    cursor: pointer;
-    height: 44px;
-}
-
-</style>
-
-    <div class="form-container">
-        <h2>Create New Account</h2>
-        <form>
-            <div class="form-row">
-                <input type="text" placeholder="First Name" required>
-                <input type="text" placeholder="Last Name" required>
+                          <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="my-0" />
+                    <div class="card-body">
+                      <form id="formAccountSettings" method="POST" onsubmit="return false">
+                        <div class="row">
+                          <div class="mb-3 col-md-6">
+                            <label for="username" class="form-label">Username</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="firstName"
+                              name="firstName"
+                              autofocus
+                              />
+                            </div>
+                            <div class="mb-3 col-md-6">
+                              <label for="email" class="form-label">E-mail</label>
+                              <input
+                                class="form-control"
+                                type="text"
+                                id="email"
+                                name="email"
+                                placeholder="john.doe@example.com"
+                              />
+                            </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="email" class="form-label">Password</label>
+                            <input class="form-control" type="text" name="password" id="password"/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                              <label class="form-label" for="role">Role</label>
+                              <select id="role" class="select2 form-select">
+                                  <option value="">Select Role</option>
+                                  <option value="Admin">Admin</option>
+                                  <option value="Employee">Employee</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-6 create_date">
+                              <label for="date" class="form-label">Create-Date</label>
+                              <input class="form-control" type="text" name="date" id="date" />
+                            </div>
+                            <div class="mt-3 save">
+                                <button type="submit" class="btn btn-primary me-2 ">Save changes</button>
+                                <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                            </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="form-row">
-                <input type="email" placeholder="Email" required>
-                <input type="text" placeholder="Password" required>
-            </div>
-            <div class="form-row">
-                <select id="role" name="role" required>
-                    <option value="" disabled selected>Select Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="stock manager">Stock Manager</option>
-                    <option value="cashier">Cashier</option>
-                </select>
-            </div>
-
-            <div class="form-image">
-                <label for="profile-image">Upload Profile Image:</label>
-                <div class="image"><input type="file" id="profile-image" name="profile-image" accept="image/*" required></div>
-            </div>
-            <button type="submit">SUBMIT</button>
-        </form>
-    </div>
-
-
+                  
+  

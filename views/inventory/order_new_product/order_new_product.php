@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/../../../Models/inventory/RunOutAndLowStockProductModel.php'; ?>
+
 <?php session_start(); ?> 
 <?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <div class="container mt-4">
@@ -443,13 +445,13 @@
             
         </div>
 
-        <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
+        <!-- <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
                 <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
             </div>
             <button type="submit" class="btn btn-success mt-2">Upload</button>
-        </form>
+        </form> -->
 
 
 
@@ -554,6 +556,20 @@
         </div>
     </div>
 </div>
+
+<style>
+ @media (min-width: 768px) and (max-width: 1024px) {
+    .card-container {
+        padding: 1.5rem; /* Padding inside the cards */
+        border: 1px solid #ddd; /* Optional border for visibility */
+        border-radius: 0.5rem; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        background-color: #fff; /* Card background color */
+        height: 100%; /* Ensure cards fill the column height */
+    }
+}
+</style>
+
 
 
 <!-- Bootstrap Modal -->

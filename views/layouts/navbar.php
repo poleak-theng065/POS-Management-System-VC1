@@ -138,6 +138,14 @@
                 </a>
             </li>
 
+            <!-- User account  -->
+            <li class="menu-item">
+                <a href="/user_account" class="menu-link">
+                  <i class="bx bx-user"></i>
+                  <div data-i18n="Basic" style= "margin-left: 20px;">User Account</div>
+                </a>
+            </li>
+
 
 
             <li class="menu-item">
@@ -146,17 +154,65 @@
                 <div data-i18n="Basic">Setting</div>
               </a>
             </li>
-            <li class="menu-item" >
-              <a href="/logout" class="menu-link" style ="color: red; border: 1px solid; width: 150px; height: 35px; ";>
+            <li class="menu-item">
+              <a href="#" class="menu-link log-out" style="color: red; border: 1px solid; width: 150px; height: 35px;">
                 <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
-                <div data-i18n="Basic" >Logout</div>
+                <div data-i18n="Basic">Logout</div>
               </a>
             </li>
-
-            
-            
           </ul>
         </aside>
+
+ <!-- Log Out Confirmation Modal (Placed outside <li>) -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="logoutModalLabel">Log out</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to log out?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" id="confirmLogout">Log out</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <style>
+            .bg-danger-light {
+              background-color: #f8d7da !important; /* Lighter red */
+            }
+
+            .bg-warning-light {
+              background-color: #fff3cd !important; /* Lighter yellow */
+            }
+          </style>
+
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              // Select the logout button that triggers the modal
+              const logoutTrigger = document.querySelector(".log-out");
+
+              // Select the modal
+              const logoutModal = new bootstrap.Modal(document.getElementById("logoutModal"));
+
+              // Add event listener to open modal when clicking logout button
+              logoutTrigger.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent navigation
+                logoutModal.show();
+              });
+
+              // Handle logout confirmation
+              document.getElementById("confirmLogout").addEventListener("click", function () {
+                window.location.href = "/logout"; // Redirect to logout
+              });
+            });
+          </script>
+
         <!-- / Menu -->
          
          <script>
@@ -330,96 +386,160 @@
         <!-- / Navbar -->
 
         <!-- Path of sidebar -->
-         <!-- Breadcrumbs -->
-        <!-- <div class="breadcrumbs">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0" id="breadcrumb-list">
-                    
-                </ol>
-            </nav>
-        </div> -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb" id="breadcrumb"></ol>
+        </nav>
 
-
-        <!-- Path -->
-         <script>
+        <script>
           document.addEventListener("DOMContentLoaded", function () {
-          // Function to update breadcrumbs
-          function generateBreadcrumbs() {
-              // Get the current path from the URL
-              const currentPath = window.location.pathname;
-
-              // Define breadcrumb names for each path
-              const breadcrumbs = {
+              // Sidebar structure mapped to breadcrumbs
+              const breadcrumbMap = {
                   "/": "Dashboard",
                   "/sale_form": "Sale",
-                  "/product_list": "Product List",
-                  "/category_list": "Category List", // Direct route for category list
+                  "/product_list": "Products",
                   "/order_new_product": "Import Product",
-                  "/import_product": "Import Product Form",
-                  "/arrived_product": "Arrival Product",
                   "/sold_product": "Sold Product",
                   "/return_product": "Return Product",
                   "/create_account": "Create Account",
-                  "/login": "Login"
+                  "/category_list": "Categories",
+                  "/arrived_product": "Arrived" // Updated entry for Arrived
               };
 
-              // Clear previous breadcrumb items
-              const breadcrumbList = document.querySelector('.breadcrumb'); // Adjusted to match your breadcrumb element
-              breadcrumbList.innerHTML = '';
+              // Define category as a subpage of Products
+              const categorySubpage = "/category_list";
+              let path = window.location.pathname;
 
-              // Create the "Dashboard" breadcrumb
-              const dashboardItem = document.createElement('li');
-              dashboardItem.classList.add('breadcrumb-item');
-              const dashboardLink = document.createElement('a');
-              dashboardLink.href = '/';
-              dashboardLink.textContent = 'Dashboard';
-              dashboardItem.appendChild(dashboardLink);
-              breadcrumbList.appendChild(dashboardItem);
+              // Get the breadcrumb container
+              let breadcrumbContainer = document.getElementById("breadcrumb");
+              breadcrumbContainer.innerHTML = ""; // Clear existing breadcrumbs
 
-              // Handle the current page
-              const currentPageName = breadcrumbs[currentPath] || 'Unknown Page';
-              const currentItem = document.createElement('li');
-              currentItem.classList.add('breadcrumb-item', 'active');
-              currentItem.textContent = currentPageName;
-              breadcrumbList.appendChild(currentItem);
-          }
+              // Home breadcrumb
+              let homeCrumb = document.createElement("li");
+              homeCrumb.className = "breadcrumb-item";
+              homeCrumb.innerHTML = `<a href="/">Dashboard</a>`;
+              breadcrumbContainer.appendChild(homeCrumb);
 
-          // Call the function to generate breadcrumbs on page load
-          generateBreadcrumbs();
-      });
-         </script>
+              // Regular breadcrumb generation
+              if (path === categorySubpage) {
+                  let productCrumb = document.createElement("li");
+                  productCrumb.className = "breadcrumb-item";
+                  productCrumb.innerHTML = `<a href="/product_list">Products</a>`;
+                  breadcrumbContainer.appendChild(productCrumb);
 
+                  let categoryCrumb = document.createElement("li");
+                  categoryCrumb.className = "breadcrumb-item active";
+                  categoryCrumb.setAttribute("aria-current", "page");
+                  categoryCrumb.textContent = "Categories";
+                  breadcrumbContainer.appendChild(categoryCrumb);
+              } else if (path === "/order_new_product") {
+                  // Add Import Product breadcrumb
+                  let importCrumb = document.createElement("li");
+                  importCrumb.className = "breadcrumb-item active";
+                  importCrumb.setAttribute("aria-current", "page");
+                  importCrumb.textContent = "Import Product";
+                  breadcrumbContainer.appendChild(importCrumb);
+              } else if (path === "/arrived_product") {
+                  // Handle Arrived Product breadcrumb
+                  let importCrumb = document.createElement("li");
+                  importCrumb.className = "breadcrumb-item";
+                  importCrumb.innerHTML = `<a href="/order_new_product">Import Product</a>`;
+                  breadcrumbContainer.appendChild(importCrumb);
+
+                  let arrivedCrumb = document.createElement("li");
+                  arrivedCrumb.className = "breadcrumb-item active";
+                  arrivedCrumb.setAttribute("aria-current", "page");
+                  arrivedCrumb.textContent = "Arrived";
+                  breadcrumbContainer.appendChild(arrivedCrumb);
+              } else {
+                  let pathSegments = path.split("/").filter(segment => segment !== "");
+                  let fullPath = "";
+                  pathSegments.forEach((segment, index) => {
+                      fullPath += "/" + segment;
+                      let crumb = document.createElement("li");
+                      crumb.className = "breadcrumb-item";
+
+                      if (index === pathSegments.length - 1) {
+                          crumb.classList.add("active");
+                          crumb.setAttribute("aria-current", "page");
+                          crumb.textContent = breadcrumbMap[fullPath] || segment;
+                      } else {
+                          crumb.innerHTML = `<a href="${fullPath}">${breadcrumbMap[fullPath] || segment}</a>`;
+                      }
+                      breadcrumbContainer.appendChild(crumb);
+                  });
+              }
+
+              // Handle click event for the "view" icons
+              let productViewIcon = document.querySelector(".products-view-icon");
+              let categoryViewIcon = document.querySelector(".categories-view-icon");
+              let arrivedViewIcon = document.querySelector(".arrived-view-icon"); // New icon for Arrived
+
+              if (productViewIcon) {
+                  productViewIcon.addEventListener("click", function () {
+                      window.location.href = "/product_list";
+                  });
+              }
+
+              if (categoryViewIcon) {
+                  categoryViewIcon.addEventListener("click", function () {
+                      window.location.href = "/category_list";
+                  });
+              }
+
+              if (arrivedViewIcon) {
+                  arrivedViewIcon.addEventListener("click", function () {
+                      window.location.href = "/arrived_product"; // Navigate to Arrived page
+                  });
+              }
+          });
+          </script>
          <!-- /Path of sidebar -->
-
 
         <style>
           /* Styling for the breadcrumbs */
           .breadcrumbs {
-              margin-top: 25px; /* Adjust this value based on the height of your navbar */
-              padding-left: 20px;
-              padding-right: 20px;
+              margin-top: 25px; /* Space from the top (navbar) */
+              padding: 0; /* Remove padding */
+              font-family: 'Arial', sans-serif; /* Clean font */
           }
 
           .breadcrumb {
-              background-color: transparent;
-              margin-bottom: 0;
+              background-color: transparent; /* Transparent background */
+              margin-bottom: 0; /* No bottom margin */
+              padding-top: 20px; /* Vertical padding */
+              /* Adjust left padding to match your layout */
+              padding-left: 28px; /* Change this value as needed */
+              padding-right: 20px; /* Change this value as needed */
+          }
+
+          .breadcrumb-item {
+              display: inline-block; /* Display items inline */
+              font-size: 16px; /* Font size */
+              color: #6c757d; /* Color for inactive items */
           }
 
           .breadcrumb-item a {
-              color: #007bff; /* Change to your desired link color */
-              text-decoration: none;
+              color: #007bff; /* Link color */
+              text-decoration: none; /* Remove underline */
+              transition: color 0.3s; /* Smooth color transition */
+          }
+
+          .breadcrumb-item a:hover {
+              color: #0056b3; /* Darker color on hover */
+              text-decoration: underline; /* Underline on hover */
           }
 
           .breadcrumb-item.active {
-              color: #6c757d; /* Color for the current page */
+              color: #343a40; /* Color for the current page */
+              font-weight: bold; /* Bold for emphasis */
           }
 
           .breadcrumb-item + .breadcrumb-item::before {
-              content: ">";
-              color: #6c757d;
-              padding: 0 10px;
+              content: ">>"; /* Separator */
+              color: #6c757d; /* Color for the separator */
+              /* padding: 0 0px; Spacing around separator */
+              font-weight: bold; /* Make separator bold */
           }
-
         </style>
 
       
@@ -544,3 +664,5 @@
 
 </script>
 
+
+<!-- Responsive -->

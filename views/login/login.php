@@ -64,11 +64,7 @@ a {
 .loginbackground-gridContainer {
     display: grid;
     grid-template-columns: [start] 1fr [left-gutter] repeat(16, 86.6px) [left-gutter] 1fr [end];
-<<<<<<< HEAD
-    grid-template-rows: [top] 1fr [top-gutter] repeat(8, 64px) [bottom-gutter] 1fr [bottom];
-=======
     grid-template-rows: [top] 1fr [top-gutter] repeat(10, 64px) [bottom-gutter] 1fr [bottom];
->>>>>>> 99bbc56ed7dc8f7339ab568d4c6704fc0bc1bfec
     justify-content: center;
     margin: 0 -3%;
     transform: rotate(-12deg) skew(-12deg);
@@ -111,7 +107,8 @@ a {
   padding-bottom: 15px;
   position: relative;
   bottom:50px;
-  left:75px;
+  left:70px;
+  bottom: 64px;
 }
 
 
@@ -226,6 +223,11 @@ a.ssolink {
   animation: animationLeftRight 0s ease-in-out infinite;
 }
 
+.field span ,a{
+  text-align: center;
+  font-size: 17px;
+}
+
 @keyframes animationLeftRight {
   0% {
     transform: translateX(0px);
@@ -315,7 +317,7 @@ a.ssolink {
           <div class="grid--50-50">
             <label for="password">Password</label>
             <div class="reset-pass">
-              <a href="#">Forgot your password?</a>
+              <a href="/forgot-password">Forgot your password?</a>
             </div>
           </div>
           <input type="password" name="password">
@@ -325,7 +327,7 @@ a.ssolink {
           </div>
             <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
           <label for="checkbox">
-            <input type="checkbox" name="checkbox"> Remember me
+            <input type="checkbox" name="checkbox" id="show-pwd"> Show Password
           </label>
             </div>
             <div class="field padding-bottom--24">
@@ -353,7 +355,17 @@ a.ssolink {
       if (navbar) navbar.style.display = "none"; // Hide navbar if it exists
       if (sidebar) sidebar.style.display = "none"; // Hide sidebar if it exists
     });
-  </script>
+    
+    const showPwd = document.getElementById("show-pwd");
+    const passwordInput = document.querySelector('input[name="password"]');
+    showPwd.addEventListener("change", function () {
+      if (showPwd.checked) {
+        passwordInput.setAttribute("type", "text");
+      } else {
+        passwordInput.setAttribute("type", "password");
+      }
+    });
+</script>
 
 <?php
 unset($_SESSION['errors']);

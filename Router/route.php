@@ -12,6 +12,7 @@ require_once "Database/Database.php";
 require_once "Controllers/inventory/ProductListController.php";
 require_once "Controllers/inventory/CategoryListController.php";
 require_once "Controllers/inventory/CreateAccountController.php";
+require_once "Controllers/inventory/UserAccountController.php";
 require_once "Controllers/inventory/SoldProductController.php";
 require_once "Controllers/inventory/LowStockProductController.php";
 require_once "Controllers/inventory/RunOutOfStockController.php";
@@ -50,9 +51,12 @@ $route->get("/", [DashboardController::class, 'dashboard']);
 $route->get("/login", [AuthController::class, 'login']);
 $route->post("/login/submit", [AuthController::class, 'authenticate']);
 $route->get("/logout", [AuthController::class, 'logout']);
+$route->get("/forgot-password", [AuthController::class, 'forgotPassword']);
 
 //create account
 $route->get("/create_account", [CreateAccountController::class, 'create_account']);
+//user account
+$route->get("/user_account", [UserAccountController::class, 'user_account']);
 
 // Sold Product
 $route->get("/sold_product", [SoldProductController::class, 'index']);
@@ -89,8 +93,6 @@ $route->post("/order_new_product/store", [OrderNewProductController::class, 'sto
 $route->get("/order_new_product/edit/{id}", [OrderNewProductController::class, 'edit']);
 $route->put("/order_new_product/update/{id}", [OrderNewProductController::class, 'update']);
 $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::class, 'delete']);
-$route->post("/order_new_product/upload", [OrderNewProductController::class, 'upload']);
-
 
 // Sale form
 $route->get("/sale_form", [SaleFormController::class, 'index']);

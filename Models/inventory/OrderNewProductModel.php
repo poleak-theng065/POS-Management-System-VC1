@@ -40,14 +40,13 @@ class OrderNewProductModel {
                     ':exchange_rate' => $exchangeRate,
                     ':total_price_usd' => $totalPriceUSD,
                     ':total_price_kh' => $totalPriceKHR
-                ]
-            );
+                ]);
         } catch (PDOException $e) {
-            // Log or display the error message more clearly
-            echo "Error adding product: " . $e->getMessage();
-            // Optionally log to a file or redirect to an error page
+            // Handle error (log it, show a friendly message, etc.)
+            echo 'Error: ' . $e->getMessage();
         }
     }
+
 
 
     public function getOrderNewProductById($id) {
@@ -57,8 +56,8 @@ class OrderNewProductModel {
     }
     
 
-    public function updateNewOrder($id, $productName, $barCode, $brand, $orderDate, $expectedDelivery, 
-    $productStatus, $category, $model, $supplier, $status, $basePriceUSD, $basePriceKHR, $quantity, 
+    public function updateNewOrder($id, $productName, $barCode, $brand, $expectedDelivery, $orderDate,
+    $status, $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, 
     $exchangeRate, $totalPriceUSD, $totalPriceKHR) 
     {
         try {
