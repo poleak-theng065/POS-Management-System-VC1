@@ -5,10 +5,11 @@ if (session_status() === PHP_SESSION_NONE) {
 if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
 <div class="container mt-4">
-    <!-- <div class="title-wrapper">
-        <i class="fas fa-box-open title-icon"></i>
-        <h1 class="product-list-title">Product List</h1>
-    </div> -->
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+            style="border-left: 8px solid #0dcaf0; background-color: #f8f9fa;">
+        <i class="bi bi-list-ul text-info me-2"></i> Product List - Available Items
+    </h1>
+
     <div class="row text-center">
         <?php
         // Define stock thresholds
@@ -284,28 +285,28 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
         </div>
 
 
-    <div class="row g-4 mb-4 mt-1">
-        <div class="col-md-4">
-            <select class="form-select">
-                <option selected>Status</option>
-                <option>New</option>
-                <option>First-Hand</option>
-                <option>Second-Hand</option>
-            </select>
+        <div class="row g-4 mb-4 mt-1">
+            <div class="col-md-4">
+                <select class="form-select">
+                    <option selected>Status</option>
+                    <option>New</option>
+                    <option>First-Hand</option>
+                    <option>Second-Hand</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" id="categorySelect">
+                    <option selected>Category</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select">
+                    <option selected>Stock</option>
+                    <option>In Stock</option>
+                    <option>Out of Stock</option>
+                </select>
+            </div>
         </div>
-        <div class="col-md-4">
-            <select class="form-select" id="categorySelect">
-                <option selected>Category</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <select class="form-select">
-                <option selected>Stock</option>
-                <option>In Stock</option>
-                <option>Out of Stock</option>
-            </select>
-        </div>
-    </div>
 
     <div class="card p-4 bg-white shadow-lg border-0">
         <div class="d-flex justify-content-between align-items-center mb-4 py-2">
@@ -411,6 +412,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                             </td>
                         </tr>
                     <?php endforeach ?>
+                     
                 </tbody>
             </table>
         </div>
