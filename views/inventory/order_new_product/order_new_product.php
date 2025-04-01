@@ -480,7 +480,7 @@
                     <?php foreach($newOrders as $newOrder): ?>
                     <tr class="border-bottom" 
                         data-id="<?= htmlspecialchars($newOrder['id']) ?>" 
-                        data-product-name="<?= htmlspecialchars($newOrder['name']) ?>" 
+                        data-product-name="<?= htmlspecialchars($newOrder['product_name']) ?>" 
                         data-quantity="<?= htmlspecialchars($newOrder['quantity']) ?>" 
                         data-base-price-usd="<?= htmlspecialchars($newOrder['base_price_usd']) ?>"
                         data-total-price-usd="<?= htmlspecialchars($newOrder['total_price_usd']) ?>"
@@ -491,7 +491,7 @@
                         style="cursor: pointer;">
                         
                         <td><?= htmlspecialchars($newOrder['id']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['name']) ?></td>
+                        <td><?= htmlspecialchars($newOrder['product_name']) ?></td>
                         <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
                         <td><?= htmlspecialchars($newOrder['base_price_usd']) ?></td>
                         <td><?= htmlspecialchars($newOrder['total_price_usd']) ?></td>
