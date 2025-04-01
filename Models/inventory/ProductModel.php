@@ -37,10 +37,10 @@ class ProductModel
         return $products->fetchAll();
     }
 
-    function createProduct($data)
+    function createProduct($data, $image)
     {
-        $sql = 'INSERT INTO products (name, barcode, brand, model, type, status, stock_quantity, unit_price, cost_price, category_id) 
-                VALUES (:name, :barcode, :brand, :model, :type, :status, :stock_quantity, :unit_price, :cost_price, :category_id)';
+        $sql = 'INSERT INTO products (name, barcode, brand, model, type, status, stock_quantity, unit_price, cost_price, category_id, image_path) 
+                VALUES (:name, :barcode, :brand, :model, :type, :status, :stock_quantity, :unit_price, :cost_price, :category_id, :image_path)';
 
         $stmt = $this->pdo->query($sql, [
             ':name' => $data['name'],
@@ -53,6 +53,7 @@ class ProductModel
             ':unit_price' => $data['unit_price'],
             ':cost_price' => $data['cost_price'],
             ':category_id' => $data['category_id'],
+            ':image_path' => $image,
         ]);
 
         return $stmt ? true : false;
