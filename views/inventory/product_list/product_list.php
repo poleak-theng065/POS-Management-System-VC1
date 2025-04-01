@@ -5,10 +5,11 @@ if (session_status() === PHP_SESSION_NONE) {
 if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
 <div class="container mt-4">
-    <!-- <div class="title-wrapper">
-        <i class="fas fa-box-open title-icon"></i>
-        <h1 class="product-list-title">Product List</h1>
-    </div> -->
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+            style="border-left: 8px solid #0dcaf0; background-color: #f8f9fa;">
+        <i class="bi bi-list-ul text-info me-2"></i> Product List - Available Items
+    </h1>
+
     <div class="row text-center">
         <?php
         // Define stock thresholds
@@ -340,77 +341,24 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
             
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle" id="productTable">
-                <thead>
-                    <tr>
-                        <th>Barcode</th>
-                        <th>Name</th>
-                        <th>Brand</th>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th>Quantity</th>
-                        <th>Category</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="switchTableBody">
-                    <?php foreach ($products as $index => $product): ?>
-                        <tr class="clickable-row" data-product-id="<?= $product['product_id'] ?>" 
-                            data-barcode="<?= $product['barcode'] ?>"
-                            data-name="<?= $product['name'] ?>"
-                            data-brand="<?= $product['brand'] ?>"
-                            data-type="<?= $product['type'] ?>"
-                            data-status="<?= $product['status'] ?>"
-                            data-stock="<?= $product['stock_quantity'] ?>"
-                            data-category="<?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?>">
-                            <td><?= $product['barcode'] ?></td>
-                            <td>
-                                <?php if ($product['stock_quantity'] == 0): ?>
-                                    <i class="bi bi-x-circle-fill text-danger"></i> <!-- Out of stock icon -->
-                                <?php elseif ($product['stock_quantity'] <= 5): ?>
-                                    <i class="bi bi-exclamation-circle-fill text-warning"></i> <!-- Low stock icon -->
-                                <?php endif; ?>
-                                <?= $product['name'] ?>
-                            </td>
-                            
-                            <td><?= $product['brand'] ?></td>
-                            <td><?= $product['type'] ?></td>
-                            <td><?= $product['status'] ?></td>
-                            <td class="<?php 
-                                if ($product['stock_quantity'] == 0) {
-                                    echo 'text-danger'; // Out of stock
-                                } elseif ($product['stock_quantity'] <= 5) {
-                                    echo 'text-warning'; // Low stock
-                                }
-                            ?>">
-                                <?= $product['stock_quantity'] ?>
-                            </td>
-                            <td><?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?></td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-three-dots-vertical fs-5"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                            <a href="/product_list/edit/<?= $product['product_id'] ?>" class="dropdown-item text-warning">
-                                                <i class="bi bi-pencil-square fs-4"></i> Edit
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a type="button" class="dropdown-item text-danger deleteProductBtn"
-                                            data-id="<?= $product['product_id'] ?>"
-                                            data-name="<?= htmlspecialchars($product['name']) ?>"
-                                            data-bs-toggle="modal" data-bs-target="#deleteProductModal">
-                                                <i class="bi bi-trash fs-4"></i> Delete
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
+            <!-- display product list -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="productTable">
+                    <thead>
+                        <tr>
+                            <th>Barcode</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Brand</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Quantity</th>
+                            <th>Category</th>
+                            <th>Action</th>
                         </tr>
+<<<<<<< HEAD
                     <?php endforeach ?>
+                     
                 </tbody>
             </table>
         </div>
@@ -438,6 +386,103 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
         </div>
     </div>
 </div>
+=======
+                    </thead>
+                    <tbody id="switchTableBody">
+                        <?php foreach ($products as $index => $product): ?>
+                            <tr class="clickable-row" data-product-id="<?= $product['product_id'] ?>"
+                                data-barcode="<?= $product['barcode'] ?>"
+                                data-image="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
+                                data-name="<?= $product['name'] ?>"
+                                data-brand="<?= $product['brand'] ?>"
+                                data-type="<?= $product['type'] ?>"
+                                data-status="<?= $product['status'] ?>"
+                                data-stock="<?= $product['stock_quantity'] ?>"
+                                data-category="<?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?>">
+>>>>>>> ed53797f2ea312bae1c26400055c556e944f655f
+
+                                <td><?= $product['barcode'] ?></td>
+
+                                <!--Add this <td> to show the product image -->
+                                <td>
+                                    <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
+                                        alt="Product Image" width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+                                </td>
+
+                                <td>
+                                    <?php if ($product['stock_quantity'] == 0): ?>
+                                        <i class="bi bi-x-circle-fill text-danger"></i> <!-- Out of stock icon -->
+                                    <?php elseif ($product['stock_quantity'] <= 5): ?>
+                                        <i class="bi bi-exclamation-circle-fill text-warning"></i> <!-- Low stock icon -->
+                                    <?php endif; ?>
+                                    <?= $product['name'] ?>
+                                </td>
+
+                                <td><?= $product['brand'] ?></td>
+                                <td><?= $product['type'] ?></td>
+                                <td><?= $product['status'] ?></td>
+                                <td class="<?php
+                                            if ($product['stock_quantity'] == 0) {
+                                                echo 'text-danger'; // Out of stock
+                                            } elseif ($product['stock_quantity'] <= 5) {
+                                                echo 'text-warning'; // Low stock
+                                            }
+                                            ?>">
+                                    <?= $product['stock_quantity'] ?>
+                                </td>
+                                <td><?= !empty($product['category_name']) ? $product['category_name'] : 'No category' ?></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical fs-5"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a href="/product_list/edit/<?= $product['product_id'] ?>" class="dropdown-item text-warning">
+                                                    <i class="bi bi-pencil-square fs-4"></i> Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a type="button" class="dropdown-item text-danger deleteProductBtn"
+                                                    data-id="<?= $product['product_id'] ?>"
+                                                    data-name="<?= htmlspecialchars($product['name']) ?>"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteProductModal">
+                                                    <i class="bi bi-trash fs-4"></i> Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div id="entriesInfo" class="text-muted">
+                    Showing 1 to <?= count($products) ?> of <?= count($products) ?> entries
+                </div>
+                <nav>
+                    <ul class="pagination" id="pagination">
+                        <li class="page-item disabled" id="prevPage">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item active" id="page1">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item" id="nextPage">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 
 
 <!-- Modal display data in each column -->
