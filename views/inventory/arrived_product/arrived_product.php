@@ -15,13 +15,13 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
             foreach ($arrivedProducts as $arrivedProduct) {
                 if ($arrivedProduct['expected_delivery'] === 'Arrived') {
                     // Check if the product name is already in the array
-                    if (isset($arrivedProductsGroupedByName[$arrivedProduct['product_name']])) {
+                    if (isset($arrivedProductsGroupedByName[$arrivedProduct['name']])) {
                         // If the product exists, sum the quantity
-                        $arrivedProductsGroupedByName[$arrivedProduct['product_name']]['quantity'] += $arrivedProduct['quantity'];
+                        $arrivedProductsGroupedByName[$arrivedProduct['name']]['quantity'] += $arrivedProduct['quantity'];
                     } else {
                         // If the product doesn't exist, add it to the array with its quantity and supplier
-                        $arrivedProductsGroupedByName[$arrivedProduct['product_name']] = [
-                            'name' => $arrivedProduct['product_name'],
+                        $arrivedProductsGroupedByName[$arrivedProduct['name']] = [
+                            'name' => $arrivedProduct['name'],
                             'quantity' => $arrivedProduct['quantity'],
                             'supplier' => $arrivedProduct['supplier']
                         ];
@@ -97,13 +97,13 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
             foreach ($arrivedProducts as $arrivedProduct) {
                 if ($arrivedProduct['expected_delivery'] === 'Arrived' && $arrivedProduct['status'] === 'Ready') {
                     // Check if the product name is already in the array
-                    if (isset($readyProductsGroupedByName[$arrivedProduct['product_name']])) {
+                    if (isset($readyProductsGroupedByName[$arrivedProduct['name']])) {
                         // If the product exists, sum the quantity
-                        $readyProductsGroupedByName[$arrivedProduct['product_name']]['quantity'] += $arrivedProduct['quantity'];
+                        $readyProductsGroupedByName[$arrivedProduct['name']]['quantity'] += $arrivedProduct['quantity'];
                     } else {
                         // If the product doesn't exist, add it to the array with its quantity and supplier
-                        $readyProductsGroupedByName[$arrivedProduct['product_name']] = [
-                            'name' => $arrivedProduct['product_name'],
+                        $readyProductsGroupedByName[$arrivedProduct['name']] = [
+                            'name' => $arrivedProduct['name'],
                             'quantity' => $arrivedProduct['quantity'],
                             'supplier' => $arrivedProduct['supplier']
                         ];
@@ -180,13 +180,13 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
             foreach ($arrivedProducts as $arrivedProduct) {
                 if ($arrivedProduct['expected_delivery'] === 'Arrived' && $arrivedProduct['status'] === 'Pending') {
                     // Check if the product name is already in the array
-                    if (isset($pendingProductsGroupedByName[$arrivedProduct['product_name']])) {
+                    if (isset($pendingProductsGroupedByName[$arrivedProduct['name']])) {
                         // If the product exists, sum the quantity
-                        $pendingProductsGroupedByName[$arrivedProduct['product_name']]['quantity'] += $arrivedProduct['quantity'];
+                        $pendingProductsGroupedByName[$arrivedProduct['name']]['quantity'] += $arrivedProduct['quantity'];
                     } else {
                         // If the product doesn't exist, add it to the array with its quantity and supplier
-                        $pendingProductsGroupedByName[$arrivedProduct['product_name']] = [
-                            'name' => $arrivedProduct['product_name'],
+                        $pendingProductsGroupedByName[$arrivedProduct['name']] = [
+                            'name' => $arrivedProduct['name'],
                             'quantity' => $arrivedProduct['quantity'],
                             'supplier' => $arrivedProduct['supplier']
                         ];
@@ -348,14 +348,14 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                         <?php if ($arrivedProduct['expected_delivery'] === 'Arrived'): ?>
                             <tr class="border-bottom" onclick="showProductDetails(
                                 '<?= htmlspecialchars($arrivedProduct['id']) ?>',
-                                '<?= htmlspecialchars($arrivedProduct['product_name']) ?>',
+                                '<?= htmlspecialchars($arrivedProduct['name']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['quantity']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['order_date']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['supplier']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['status']) ?>'
                             )" style="cursor: pointer;">
                                 <td><?= htmlspecialchars($arrivedProduct['id']) ?></td>
-                                <td><?= htmlspecialchars($arrivedProduct['product_name']) ?></td>
+                                <td><?= htmlspecialchars($arrivedProduct['name']) ?></td>
                                 <td><?= htmlspecialchars($arrivedProduct['quantity']) ?></td>
                                 <td><?= htmlspecialchars($arrivedProduct['order_date']) ?></td>
                                 <td>

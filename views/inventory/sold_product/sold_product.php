@@ -28,7 +28,11 @@
 </style>
 
 <div class="container mt-4">
-    <h1>Sales List</h1>
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+            style="border-left: 8px solid #198754; background-color: #f8f9fa;">
+        <i class="bi bi-cart-check text-success me-2"></i> Sales List - Sold Items
+    </h1>
+
     <div class="card p-5 bg-white shadow-lg border-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle" id="productTable">
