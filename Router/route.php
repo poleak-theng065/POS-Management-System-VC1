@@ -11,8 +11,6 @@ require_once "Database/Database.php";
 // Inventory Require
 require_once "Controllers/inventory/ProductListController.php";
 require_once "Controllers/inventory/CategoryListController.php";
-require_once "Controllers/inventory/CreateAccountController.php";
-require_once "Controllers/inventory/UserAccountController.php";
 require_once "Controllers/inventory/SoldProductController.php";
 require_once "Controllers/inventory/LowStockProductController.php";
 require_once "Controllers/inventory/RunOutOfStockController.php";
@@ -23,6 +21,8 @@ require_once "Controllers/inventory/SaleFormController.php";
 
 // Auth Require 
 require_once "Controllers/auth/LoginController.php";
+require_once "Controllers/auth/CreateAccountController.php";
+require_once "Controllers/auth/UserAccountController.php";
 
 $route = new Router();
 
