@@ -1,16 +1,21 @@
 <div class="container mt-4">
     <div class="card p-4 bg-light shadow-sm border-0">
         <h3 class="card-title">Create New Product</h3>
-        <form action="/product_list/store" method="post">
+        <form action="/product_list/store" method="post" enctype="multipart/form-data">
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="name">Product Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" required>
-                </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-4 mb-3">
                     <label for="barcode">Barcode</label>
                     <input type="text" class="form-control" id="barcode" name="barcode" placeholder="Enter product barcode" required>
                 </div>
+                <div class="col-md-4 mb-3">
+                    <label for="name">Product Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="image">Product Image</label>
+                    <input type="file" class="form-control" id="name" name="image" required>
+                </div>
+                
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">

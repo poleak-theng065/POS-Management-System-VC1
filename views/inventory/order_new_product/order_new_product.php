@@ -2,10 +2,17 @@
 
 <?php session_start(); ?> 
 <?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
-<div class="container mt-4">
-    <!-- <h1>Order Details</h1> -->
 
-    <div class="row text-center">
+<div class="container mt-4">
+
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+        style="border-left: 8px solid #71DD37; background-color: #f8f9fa;">
+        <i class="bi bi-box-arrow-in-down" style="color: #71DD37; margin-right: 0.5rem;"></i> 
+        Import Product - Items to be Imported
+    </h1>
+
+
+    <div class="row g-4">
         <?php
         // Instantiate the RunOutAndLowStockProductModel class
         $productModel = new RunOutAndLowStockProductModel();
@@ -21,22 +28,15 @@
         ?>
 
         <!-- Need to Order -->
-        <div class="col-md-3 mb-4">
-            <div class="card p-3 card-container position-relative">
-                <!-- Title with Icon -->
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="icon-right">
+        <div class="col-md-3 mb-4 d-flex">
+            <div class="card p-3 flex-grow-1 d-flex flex-column">
+                <div class="d-flex align-items-start">
+                    <div class="icon-right me-3">
                         <i class="fas fa-exclamation-triangle text-danger fa-lg"></i>
                     </div>
-                </div>
-
-                <!-- Need to Order text in center at the top -->
-                <div class="text-center">
                     <h5 class="h6 text-dark">Need to Order</h5>
                 </div>
-
-                <div class="d-flex justify-content-between">
-                    <!-- Display Low Stock Count -->
+                <div class="d-flex justify-content-between mt-3 flex-grow-1">
                     <div class="low-stock text-center" style="flex: 1;">
                         <div class="value text-dark" style="font-size: 2rem; font-weight: bold;">
                             <?= $lowStockCount ?>
@@ -45,8 +45,6 @@
                             Low Stock
                         </div>
                     </div>
-
-                    <!-- Display Out of Stock Count -->
                     <div class="out-of-stock text-center" style="flex: 1;">
                         <div class="value text-dark" style="font-size: 2rem; font-weight: bold;">
                             <?= $outOfStockCount ?>
@@ -56,8 +54,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- View icon positioned at top-right -->
                 <a href="#" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" title="View Details">
                     <i class="fas fa-eye"></i>
                 </a>
@@ -179,19 +175,20 @@
             ?>
 
             <!-- Arrived Product -->
-            <div class="col-md-3 mb-4">
-                <div class="card p-3 card-container position-relative">
-                    <div class="d-flex justify-content-between">
-                        <div class="icon-right"><i class="fas fa-box-open text-success fa-lg"></i></div>
+            <div class="col-md-3 mb-4 d-flex">
+                <div class="card p-3 flex-grow-1 d-flex flex-column">
+                    <div class="d-flex align-items-start">
+                        <div class="icon-right me-3">
+                            <i class="fas fa-box-open text-success fa-lg"></i>
+                        </div>
+                        <h5 class="h6 text-dark">Arrived</h5>
                     </div>
-                    <h5 class="h6 text-dark">Arrived</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
                         <?= $totalArrived ?> Products
                     </div>
                     <div class="orders text-dark" style="font-size: 0.9rem;">
                         Newly arrived stock ready for sale.
                     </div>
-                    <!-- View icon positioned at top-right of the card -->
                     <a href="/arrived_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
                         <i class="fas fa-eye"></i>
                     </a>
@@ -209,20 +206,22 @@
                     }
                 }
             ?>
+            
             <!-- Delivery Product -->
-            <div class="col-md-3 mb-4">
-                <div class="card p-3 card-container position-relative">
-                    <div class="d-flex justify-content-between">
-                        <div class="icon-right"><i class="fas fa-truck text-primary fa-lg"></i></div>
+            <div class="col-md-3 mb-4 d-flex">
+                <div class="card p-3 flex-grow-1 d-flex flex-column">
+                    <div class="d-flex align-items-start">
+                        <div class="icon-right me-3">
+                            <i class="fas fa-truck text-primary fa-lg"></i>
+                        </div>
+                        <h5 class="h6 text-dark">Delivery</h5>
                     </div>
-                    <h5 class="h6 text-dark">Delivery</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
                         <?= $totalDelivery ?> Products
                     </div>
                     <div class="orders text-dark" style="font-size: 0.9rem;">
                         Products on the way for delivery.
                     </div>
-                    <!-- View icon positioned at top-right of the card -->
                     <a href="#" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="modal" data-bs-target="#deliveryDetailsModal" title="View Details" onclick="loadDeliveryDetails()">
                         <i class="fas fa-eye"></i>
                     </a>
@@ -261,7 +260,7 @@
                                                     <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
                                                         {
                                                             "id": "<?= htmlspecialchars($newOrder['id']) ?>",
-                                                            "product_name": "<?= htmlspecialchars($newOrder['product_name']) ?>",
+                                                            "product_name": "<?= htmlspecialchars($newOrder['name']) ?>",
                                                             "quantity": "<?= htmlspecialchars($newOrder['quantity']) ?>",
                                                             "order_date": "<?= htmlspecialchars($newOrder['order_date']) ?>",
                                                             "supplier": "<?= htmlspecialchars($newOrder['supplier']) ?>" <!-- Added supplier -->
@@ -313,20 +312,22 @@
                     }
                 }
             ?>
-            <!-- Total Order -->
-            <div class="col-md-3 mb-4">
-                <div class="card p-3 card-container">
-                    <div class="d-flex justify-content-between">
-                        <div class="icon-right"><i class="fas fa-shopping-cart text-info fa-lg"></i></div>
+
+             <!-- Total Order -->
+            <div class="col-md-3 mb-4 d-flex">
+                <div class="card p-3 flex-grow-1 d-flex flex-column">
+                    <div class="d-flex align-items-start">
+                        <div class="icon-right me-3">
+                            <i class="fas fa-shopping-cart text-info fa-lg"></i>
+                        </div>
+                        <h5 class="h6 text-dark">Orders</h5>
                     </div>
-                    <h5 class="h6 text-dark">Orders</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
                         <?= $totalOrders ?> Orders
                     </div>
                     <div class="orders text-dark" style="font-size: 0.9rem;">
                         Total number of orders placed.
                     </div>
-                    <!-- View icon positioned at top-right of the card -->
                     <a href="#" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="modal" data-bs-target="#orderProductModal" title="View Details" onclick="loadOrderDetails()">
                         <i class="fas fa-eye"></i>
                     </a>
@@ -374,7 +375,7 @@
                             <?php if ($newOrder['expected_delivery'] === 'Order'): ?>
                                 {
                                     "id": "<?= htmlspecialchars($newOrder['id']) ?>",
-                                    "product_name": "<?= htmlspecialchars($newOrder['product_name']) ?>",
+                                    "product_name": "<?= htmlspecialchars($newOrder['name']) ?>",
                                     "quantity": "<?= htmlspecialchars($newOrder['quantity']) ?>",
                                     "order_date": "<?= htmlspecialchars($newOrder['order_date']) ?>",
                                     "supplier": "<?= htmlspecialchars($newOrder['supplier']) ?>"
@@ -404,6 +405,10 @@
                 }
             </script>
         </div>
+        <!-- <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+            style="border-left: 8px solid #0d6efd; background-color: #f8f9fa;">
+            <i class="bi bi-box-arrow-in-down text-primary me-2"></i> Import Product - Items to be Imported
+        </h1> -->
 
     <div class="card p-5 bg-white shadow-lg border-0">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -418,7 +423,7 @@
             </div>
              <!-- Buttons and Export Dropdown -->
             <div class="d-flex align-items-center">
-                <!-- <div class="btn-group me-2">
+                <div class="btn-group me-2">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
                     </button>
@@ -438,7 +443,7 @@
                             </form>
                         </li>
                     </ul>
-                </div> -->
+                </div>
 
                 <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
             </div>
@@ -515,7 +520,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['product_name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
                                             <i class="bi bi-trash"></i> Delete
                                         </a>
                                     </li>
@@ -556,6 +561,20 @@
         </div>
     </div>
 </div>
+
+<style>
+ @media (min-width: 768px) and (max-width: 1024px) {
+    .card-container {
+        padding: 1.5rem; /* Padding inside the cards */
+        border: 1px solid #ddd; /* Optional border for visibility */
+        border-radius: 0.5rem; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        background-color: #fff; /* Card background color */
+        height: 100%; /* Ensure cards fill the column height */
+    }
+}
+</style>
+
 
 
 <!-- Bootstrap Modal -->

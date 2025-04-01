@@ -18,13 +18,13 @@ class OrderNewProductModel {
     {
         try {
             $this->db->query(
-                "INSERT INTO order_products (product_name, barcode, brand, expected_delivery, order_date, status, 
+                "INSERT INTO order_products (name, barcode, brand, expected_delivery, order_date, status, 
                 category, model, supplier, product_status, base_price_usd, base_price_kh, quantity, exchange_rate, total_price_usd, total_price_kh)
-                VALUES (:product_name, :barcode, :brand, :expected_delivery, :order_date, :status,
+                VALUES (:name, :barcode, :brand, :expected_delivery, :order_date, :status,
                 :category, :model, :supplier, :product_status, :base_price_usd, :base_price_kh,
                 :quantity, :exchange_rate, :total_price_usd, :total_price_kh)",
                 [
-                    ':product_name' => $productName,
+                    ':name' => $productName,
                     ':barcode' => $barCode,
                     ':brand' => $brand,
                     ':expected_delivery' => $expectedDelivery,
@@ -63,7 +63,7 @@ class OrderNewProductModel {
         try {
             // SQL query to update an order
             $sql = "UPDATE order_products 
-                    SET product_name = :product_name, barcode = :barcode, brand = :brand, expected_delivery = :expected_delivery,
+                    SET name = :name, barcode = :barcode, brand = :brand, expected_delivery = :expected_delivery,
                         order_date = :order_date, status = :status, 
                         category = :category, model = :model, supplier = :supplier, product_status = :product_status, 
                         base_price_usd = :base_price_usd, base_price_kh = :base_price_kh, 
@@ -74,7 +74,7 @@ class OrderNewProductModel {
             // Parameters to bind to the SQL query
             $params = [
                 ':id' => $id,
-                ':product_name' => $productName,
+                ':name' => $productName,
                 ':barcode' => $barCode,
                 ':brand' => $brand,
                 ':expected_delivery' => $expectedDelivery,
