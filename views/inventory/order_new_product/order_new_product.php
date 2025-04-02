@@ -12,7 +12,7 @@
     </h1>
 
 
-    <div class="row g-4">
+    <div class="row  d-flex align-items-stretch">
         <?php
         // Instantiate the RunOutAndLowStockProductModel class
         $productModel = new RunOutAndLowStockProductModel();
@@ -28,30 +28,26 @@
         ?>
 
         <!-- Need to Order -->
-        <div class="col-md-3 mb-4 d-flex">
-            <div class="card p-3 flex-grow-1 d-flex flex-column">
-                <div class="d-flex align-items-start">
-                    <div class="icon-right me-3">
+        <div class="col-md-3 mb-4 d-flex mt-2">
+            <div class="card p-3 flex-grow-1 d-flex flex-column position-relative text-center">
+                <div class="d-flex justify-content-between">
+                    <div class="icon-left">
                         <i class="fas fa-exclamation-triangle text-danger fa-lg"></i>
                     </div>
-                    <h5 class="h6 text-dark">Need to Order</h5>
                 </div>
-                <div class="d-flex justify-content-between mt-3 flex-grow-1">
-                    <div class="low-stock text-center" style="flex: 1;">
+                <h5 class="h6 text-dark mt-2 mb-0">Need to Order</h5>
+                <div class="d-flex justify-content-between mt-3 flex-grow-1 text-center">
+                    <div class="low-stock" style="flex: 1;">
                         <div class="value text-dark" style="font-size: 2rem; font-weight: bold;">
                             <?= $lowStockCount ?>
                         </div>
-                        <div class="text-dark" style="font-size: 0.9rem;">
-                            Low Stock
-                        </div>
+                        <div class="text-dark" style="font-size: 0.9rem;">Low Stock</div>
                     </div>
-                    <div class="out-of-stock text-center" style="flex: 1;">
+                    <div class="out-of-stock" style="flex: 1;">
                         <div class="value text-dark" style="font-size: 2rem; font-weight: bold;">
                             <?= $outOfStockCount ?>
                         </div>
-                        <div class="text-dark" style="font-size: 0.9rem;">
-                            Out of Stock
-                        </div>
+                        <div class="text-dark" style="font-size: 0.9rem;">Out of Stock</div>
                     </div>
                 </div>
                 <a href="#" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" title="View Details">
@@ -59,6 +55,7 @@
                 </a>
             </div>
         </div>
+
 
         <!-- Modal for showing low stock and out of stock product details -->
         <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
@@ -175,14 +172,14 @@
             ?>
 
             <!-- Arrived Product -->
-            <div class="col-md-3 mb-4 d-flex">
-                <div class="card p-3 flex-grow-1 d-flex flex-column">
-                    <div class="d-flex align-items-start">
-                        <div class="icon-right me-3">
+            <div class="col-md-3 mb-4 d-flex mt-2">
+                <div class="card p-3 flex-grow-1 d-flex flex-column position-relative text-center">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-left">
                             <i class="fas fa-box-open text-success fa-lg"></i>
                         </div>
-                        <h5 class="h6 text-dark">Arrived</h5>
                     </div>
+                    <h5 class="h6 text-dark mt-2 mb-0">Arrived</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
                         <?= $totalArrived ?> Products
                     </div>
@@ -208,14 +205,14 @@
             ?>
             
             <!-- Delivery Product -->
-            <div class="col-md-3 mb-4 d-flex">
-                <div class="card p-3 flex-grow-1 d-flex flex-column">
-                    <div class="d-flex align-items-start">
-                        <div class="icon-right me-3">
+            <div class="col-md-3 mb-4 d-flex mt-2">
+                <div class="card p-3 flex-grow-1 d-flex flex-column position-relative text-center">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-left">
                             <i class="fas fa-truck text-primary fa-lg"></i>
                         </div>
-                        <h5 class="h6 text-dark">Delivery</h5>
                     </div>
+                    <h5 class="h6 text-dark mt-2 mb-0">Delivery</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
                         <?= $totalDelivery ?> Products
                     </div>
@@ -314,14 +311,14 @@
             ?>
 
              <!-- Total Order -->
-            <div class="col-md-3 mb-4 d-flex">
-                <div class="card p-3 flex-grow-1 d-flex flex-column">
-                    <div class="d-flex align-items-start">
-                        <div class="icon-right me-3">
+             <div class="col-md-3 mb-4 d-flex mt-2">
+                <div class="card p-3 flex-grow-1 d-flex flex-column position-relative text-center">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-left">
                             <i class="fas fa-shopping-cart text-info fa-lg"></i>
                         </div>
-                        <h5 class="h6 text-dark">Orders</h5>
                     </div>
+                    <h5 class="h6 text-dark mt-2 mb-0">Orders</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
                         <?= $totalOrders ?> Orders
                     </div>
