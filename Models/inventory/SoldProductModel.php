@@ -49,7 +49,6 @@ class SoldProductModel
         }
     }
 
-
     public function getSaleItems()
     {
         try {
@@ -62,7 +61,8 @@ class SoldProductModel
                        sale_items.total_price, 
                        products.barcode,
                        products.name,
-                       products.brand
+                       products.brand,
+                       products.image_path
                 FROM sale_items
                 LEFT JOIN products ON sale_items.product_id = products.product_id
                 ORDER BY sale_items.sale_item_id DESC
@@ -76,7 +76,6 @@ class SoldProductModel
             return [];
         }
     }
-
 
     public function createSaleItem($productId, $quantity, $saleDate, $discount)
     {
