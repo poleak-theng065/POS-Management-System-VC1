@@ -7,30 +7,30 @@
 /* Style the card body */
 .card-body {
     padding: 2rem;
-    
 }
 
 /* Form styling */
 form {
-    max-width: 100%; /* Optional: limits form width */
-    margin: 0 auto; /* Centers the form */
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 /* Form group styling */
 form div {
-    margin-bottom: 1.25rem; /* Spacing between form groups */
+    margin-bottom: 1.25rem;
 }
 
-.row-form{
+.row-form {
     display: flex;
     gap: 20px;
 }
+
 /* Label styling */
 form label {
     display: block;
     font-weight: 500;
     margin-bottom: 0.5rem;
-    color: #566a7f; /* Matches Bootstrap muted text */
+    color: #566a7f;
 }
 
 /* Input styling */
@@ -51,7 +51,7 @@ form select {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-form input[type="file"]{
+form input[type="file"] {
     width: 100%;
     height: 100px;
 }
@@ -62,16 +62,22 @@ form input[type="email"]:focus,
 form input[type="password"]:focus,
 form select:focus {
     outline: 0;
-    border-color: #696cff; /* Primary color from Bootstrap */
+    border-color: #696cff;
     box-shadow: 0 0 0 0.2rem rgba(105, 108, 255, 0.25);
 }
 
 /* Error message styling */
 .error {
     display: block;
-    color: #ff3e1d; /* Bootstrap danger color */
+    color: #ff3e1d;
     font-size: 0.875rem;
     margin-top: 0.25rem;
+}
+
+/* Text muted styling */
+.text-muted {
+    color: #566a7f;
+    font-size: 0.875rem;
 }
 
 /* Button styling */
@@ -81,7 +87,7 @@ form button[type="submit"] {
     font-size: 1rem;
     font-weight: 500;
     color: #fff;
-    background-color: #696cff; /* Primary color */
+    background-color: #696cff;
     border: none;
     border-radius: 0.375rem;
     cursor: pointer;
@@ -89,7 +95,7 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-    background-color: #595cd9; /* Darker shade on hover */
+    background-color: #595cd9;
 }
 
 /* Match the upload button styling */
@@ -100,7 +106,7 @@ form button[type="submit"]:hover {
 
 /* Ensure the image preview stays aligned */
 #uploadedAvatar {
-    object-fit: cover; /* Keeps image aspect ratio */
+    object-fit: cover;
 }
 
 /* Responsive adjustments */
@@ -119,7 +125,7 @@ form button[type="submit"]:hover {
     }
 }
 </style>
-       
+
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
@@ -133,7 +139,7 @@ form button[type="submit"]:hover {
                                 <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                     <span class="d-none d-sm-block">Upload new photo</span>
                                     <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
+                                    <input type="file" id="upload" name="image" class="account-file-input" hidden accept="image/png, image/jpeg" />
                                 </label>
                                 <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
                                     <i class="bx bx-reset d-block d-sm-none"></i>
@@ -146,26 +152,27 @@ form button[type="submit"]:hover {
                     <hr class="my-0" />
                     <div class="card-body">
                         <form method="POST" action="/user_account" enctype="multipart/form-data">
-                           <div class="row-form">
+                            <div class="row-form">
                                 <div>
                                     <label>Username</label>
-                                    <input type="text" name="username" value="<?= $data['form_data']['username'] ?? '' ?>">
+                                    <input type="text" name="username" value="<?= htmlspecialchars($data['form_data']['username'] ?? '') ?>">
                                     <?php if (isset($data['errors']['username'])): ?>
                                         <span class="error"><?= $data['errors']['username'] ?></span>
                                     <?php endif; ?>
                                 </div>
                                 <div>
                                     <label>Email</label>
-                                    <input type="email" name="email" value="<?= $data['form_data']['email'] ?? '' ?>">
+                                    <input type="email" name="email" value="<?= htmlspecialchars($data['form_data']['email'] ?? '') ?>">
                                     <?php if (isset($data['errors']['email'])): ?>
                                         <span class="error"><?= $data['errors']['email'] ?></span>
                                     <?php endif; ?>
                                 </div>
-                           </div>
+                            </div>
                             <div class="row-form">
                                 <div>
                                     <label>Password</label>
-                                    <input type="password" name="password_hash"> <!-- Fixed type and name -->
+                                    <input type="password" name="password">
+                                    <p class="text-muted mb-0">Password must be at least 12 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character (!@#$%^&*(),.?":{}|<>), with no spaces.</p>
                                     <?php if (isset($data['errors']['password'])): ?>
                                         <span class="error"><?= $data['errors']['password'] ?></span>
                                     <?php endif; ?>
@@ -173,6 +180,7 @@ form button[type="submit"]:hover {
                                 <div>
                                     <label>Role</label>
                                     <select name="role">
+                                        <option value="">Select Role</option>
                                         <option value="admin" <?= ($data['form_data']['role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
                                         <option value="cashier" <?= ($data['form_data']['role'] ?? '') === 'cashier' ? 'selected' : '' ?>>Cashier</option>
                                     </select>
@@ -181,6 +189,9 @@ form button[type="submit"]:hover {
                                     <?php endif; ?>
                                 </div>
                             </div>
+                            <?php if (isset($data['errors']['general'])): ?>
+                                <span class="error"><?= $data['errors']['general'] ?></span>
+                            <?php endif; ?>
                             <button type="submit">Create Account</button>
                         </form>
                     </div>
@@ -189,5 +200,3 @@ form button[type="submit"]:hover {
         </div>
     </div>
 </div>
-                  
-  

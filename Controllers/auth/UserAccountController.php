@@ -1,5 +1,6 @@
 <?php
 require_once ("Models/auth/AuthModel.php");
+
 class UserAccountController extends BaseController {
     private $authModel;
 
@@ -13,7 +14,8 @@ class UserAccountController extends BaseController {
             'title' => 'User Accounts',
             'users' => $this->authModel->getUsers(), // Fetch all users
             'errors' => [],
-            'form_data' => []
+            'form_data' => [],
+            'success' => isset($_GET['success']) ? $_GET['success'] : null // Get success message if exists
         ];
         $this->view('account/user_account', $data);
     }
@@ -23,7 +25,7 @@ class UserAccountController extends BaseController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Sanitize input data
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-            $password_hash = $_POST['password_hash'];
+            $password_hash = $_POST['password_hash']; // Ensure this matches your input field name
             $role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_STRING);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 
@@ -34,7 +36,7 @@ class UserAccountController extends BaseController {
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true); // Create directory if it doesn't exist
                 }
-                $imageName = uniqid() . '-' . basename($_FILES['image']['username']);
+                $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
                 $imagePath = $uploadDir . $imageName;
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
                     $image = $imagePath;
@@ -49,7 +51,7 @@ class UserAccountController extends BaseController {
             } elseif ($this->authModel->emailExists($email)) {
                 $errors['email'] = 'Email already exists';
             }
-            if (empty($password) || strlen($password) < 6) {
+            if (empty($password_hash) || strlen($password_hash) < 6) {
                 $errors['password'] = 'Password must be at least 6 characters';
             }
             if (empty($role)) $errors['role'] = 'Role is required';
@@ -63,17 +65,20 @@ class UserAccountController extends BaseController {
                         'username' => $username,
                         'email' => $email,
                         'role' => $role
-                    ]
+                    ],
+                    'success' => null
                 ];
                 $this->view('account/user_account', $data);
                 return;
             }
 
-            // Hash password and add user
+            // Hash password
             $hashedPassword = password_hash($password_hash, PASSWORD_DEFAULT);
-            $this->authModel->addUser($username, $email, $hashedPassword, $role, $image);
 
-            // Redirect to user_account page
+            // Add user to the database
+            $this->authModel->addUser($username, $hashedPassword, $role, $email, $image);
+
+            // Redirect to user_account page with success message
             header('Location: /user_account?success=User created successfully');
             exit();
         }
