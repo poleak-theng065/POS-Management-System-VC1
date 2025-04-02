@@ -71,6 +71,7 @@
     </div>
 </div>
 
+<!-- View sold product list -->
 <div class="container mt-4">
     <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block"
         style="border-left: 8px solid #198754; background-color: #f8f9fa;">
