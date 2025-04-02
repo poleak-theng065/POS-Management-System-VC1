@@ -72,8 +72,8 @@
 </div>
 
 <div class="container mt-4">
-    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
-            style="border-left: 8px solid #198754; background-color: #f8f9fa;">
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block"
+        style="border-left: 8px solid #198754; background-color: #f8f9fa;">
         <i class="bi bi-cart-check text-success me-2"></i> Sales List - Sold Items
     </h1>
 
@@ -83,6 +83,7 @@
                 <thead>
                     <tr>
                         <th>Barcode</th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Brand</th>
                         <th>Quantity</th>
@@ -93,6 +94,10 @@
                     <?php foreach ($saleItems as $saleItem): ?>
                         <tr>
                             <td><?= $saleItem['barcode'] ?></td>
+                            <td>
+                                <img src="<?= !empty($saleItem['image_path']) ? 'assets/img/upload/' . $saleItem['image_path'] : '/path/to/default/image.png' ?>"
+                                    alt="Product Image" width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+                            </td>
                             <td><?= $saleItem['name'] ?></td>
                             <td><?= $saleItem['brand'] ?></td>
                             <td><?= $saleItem['quantity'] ?></td>
