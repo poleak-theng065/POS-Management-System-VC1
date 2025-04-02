@@ -21,7 +21,7 @@ class CreateAccountController extends BaseController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Sanitize input data
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-            $password = $_POST['password']; // Correct: Match the form field name
+            $password = $_POST['password_hash']; // Correct: Match the form field name
             $role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_STRING);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 

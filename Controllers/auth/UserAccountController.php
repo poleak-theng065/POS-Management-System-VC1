@@ -49,8 +49,8 @@ class UserAccountController extends BaseController {
             } elseif ($this->authModel->emailExists($email)) {
                 $errors['email'] = 'Email already exists';
             }
-            if (empty($password_hash) || strlen($password_hash) < 6) {
-                $errors['password_hash'] = 'Password must be at least 6 characters';
+            if (empty($password) || strlen($password) < 6) {
+                $errors['password'] = 'Password must be at least 6 characters';
             }
             if (empty($role)) $errors['role'] = 'Role is required';
 
