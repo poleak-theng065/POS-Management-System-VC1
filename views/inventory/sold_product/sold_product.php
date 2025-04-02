@@ -27,9 +27,54 @@
     }
 </style>
 
+<div class="container d-flex flex-row">
+    <!-- Total Profit Sold Product -->
+    <div class="col-md-6 mb-4 d-flex">
+        <div class="card p-3 flex-grow-1 d-flex flex-column">
+            <div class="d-flex align-items-start">
+                <div class="icon-right me-3">
+                    <i class="fas fa-credit-card text-success fa-lg"></i>
+                </div>
+                <h5 class="h6 text-dark">Sold Profit</h5>
+            </div>
+            <div class="value text-dark" style="font-size: 1.5rem;">
+                $
+            </div>
+            <div class="orders text-dark" style="font-size: 0.9rem;">
+                The total profit for this month in sales.
+            </div>
+            <a href="/arrived_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
+                <i class="fas fa-eye"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Total Sold Items -->
+    <div class="col-md-6 mb-4 d-flex">
+        <div class="card p-3 flex-grow-1 d-flex flex-column">
+            <div class="d-flex align-items-start">
+                <div class="icon-right me-3">
+                    <i class="fas fa-box-open text-danger fa-lg"></i>
+                </div>
+                <h5 class="h6 text-dark">Sold Product</h5>
+            </div>
+            <div class="value text-dark" style="font-size: 1.5rem;">
+                Items
+            </div>
+            <div class="orders text-dark" style="font-size: 0.9rem;">
+                Total items sold successfully.
+            </div>
+            <a href="/sold_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
+                <i class="fas fa-eye"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- View sold product list -->
 <div class="container mt-4">
-    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
-            style="border-left: 8px solid #198754; background-color: #f8f9fa;">
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block"
+        style="border-left: 8px solid #198754; background-color: #f8f9fa;">
         <i class="bi bi-cart-check text-success me-2"></i> Sales List - Sold Items
     </h1>
 
@@ -39,6 +84,7 @@
                 <thead>
                     <tr>
                         <th>Barcode</th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Brand</th>
                         <th>Quantity</th>
@@ -49,6 +95,10 @@
                     <?php foreach ($saleItems as $saleItem): ?>
                         <tr>
                             <td><?= $saleItem['barcode'] ?></td>
+                            <td>
+                                <img src="<?= !empty($saleItem['image_path']) ? 'assets/img/upload/' . $saleItem['image_path'] : '/path/to/default/image.png' ?>"
+                                    alt="Product Image" width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+                            </td>
                             <td><?= $saleItem['name'] ?></td>
                             <td><?= $saleItem['brand'] ?></td>
                             <td><?= $saleItem['quantity'] ?></td>
