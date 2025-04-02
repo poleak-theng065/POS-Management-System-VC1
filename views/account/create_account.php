@@ -6,12 +6,13 @@
 
 /* Style the card body */
 .card-body {
-    padding: 1.5rem;
+    padding: 2rem;
+    
 }
 
 /* Form styling */
 form {
-    max-width: 600px; /* Optional: limits form width */
+    max-width: 100%; /* Optional: limits form width */
     margin: 0 auto; /* Centers the form */
 }
 
@@ -20,6 +21,10 @@ form div {
     margin-bottom: 1.25rem; /* Spacing between form groups */
 }
 
+.row-form{
+    display: flex;
+    gap: 20px;
+}
 /* Label styling */
 form label {
     display: block;
@@ -31,11 +36,11 @@ form label {
 /* Input styling */
 form input[type="text"],
 form input[type="email"],
-form input[type="password_hash"],
+form input[type="password"],
 form input[type="file"],
 form select {
     display: block;
-    width: 100%;
+    width: 520px;
     padding: 0.5rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
@@ -46,10 +51,15 @@ form select {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+form input[type="file"]{
+    width: 100%;
+    height: 100px;
+}
+
 /* Input focus state */
 form input[type="text"]:focus,
 form input[type="email"]:focus,
-form input[type="password_hash"]:focus,
+form input[type="password"]:focus,
 form select:focus {
     outline: 0;
     border-color: #696cff; /* Primary color from Bootstrap */
@@ -136,40 +146,40 @@ form button[type="submit"]:hover {
                     <hr class="my-0" />
                     <div class="card-body">
                         <form method="POST" action="/user_account" enctype="multipart/form-data">
-                            <div>
-                                <label>Username</label>
-                                <input type="text" name="username" value="<?= $data['form_data']['username'] ?? '' ?>">
-                                <?php if (isset($data['errors']['username'])): ?>
-                                    <span class="error"><?= $data['errors']['username'] ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <div>
-                                <label>Email</label>
-                                <input type="email" name="email" value="<?= $data['form_data']['email'] ?? '' ?>">
-                                <?php if (isset($data['errors']['email'])): ?>
-                                    <span class="error"><?= $data['errors']['email'] ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <div>
-                                <label>Password</label>
-                                <input type="password" name="password_hash"> <!-- Fixed type and name -->
-                                <?php if (isset($data['errors']['password'])): ?>
-                                    <span class="error"><?= $data['errors']['password'] ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <div>
-                                <label>Role</label>
-                                <select name="role">
-                                    <option value="admin" <?= ($data['form_data']['role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
-                                    <option value="cashier" <?= ($data['form_data']['role'] ?? '') === 'cashier' ? 'selected' : '' ?>>Cashier</option>
-                                </select>
-                                <?php if (isset($data['errors']['role'])): ?>
-                                    <span class="error"><?= $data['errors']['role'] ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <div>
-                                <label>Profile Image</label>
-                                <input type="file" name="image" accept="image/*">
+                           <div class="row-form">
+                                <div>
+                                    <label>Username</label>
+                                    <input type="text" name="username" value="<?= $data['form_data']['username'] ?? '' ?>">
+                                    <?php if (isset($data['errors']['username'])): ?>
+                                        <span class="error"><?= $data['errors']['username'] ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <div>
+                                    <label>Email</label>
+                                    <input type="email" name="email" value="<?= $data['form_data']['email'] ?? '' ?>">
+                                    <?php if (isset($data['errors']['email'])): ?>
+                                        <span class="error"><?= $data['errors']['email'] ?></span>
+                                    <?php endif; ?>
+                                </div>
+                           </div>
+                            <div class="row-form">
+                                <div>
+                                    <label>Password</label>
+                                    <input type="password" name="password_hash"> <!-- Fixed type and name -->
+                                    <?php if (isset($data['errors']['password'])): ?>
+                                        <span class="error"><?= $data['errors']['password'] ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <div>
+                                    <label>Role</label>
+                                    <select name="role">
+                                        <option value="admin" <?= ($data['form_data']['role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
+                                        <option value="cashier" <?= ($data['form_data']['role'] ?? '') === 'cashier' ? 'selected' : '' ?>>Cashier</option>
+                                    </select>
+                                    <?php if (isset($data['errors']['role'])): ?>
+                                        <span class="error"><?= $data['errors']['role'] ?></span>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             <button type="submit">Create Account</button>
                         </form>
