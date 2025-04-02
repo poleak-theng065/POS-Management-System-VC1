@@ -1,59 +1,47 @@
-<?php require_once __DIR__ . '/../../../Models/inventory/RunOutAndLowStockProductModel.php'; ?>
 
 <?php session_start(); ?> 
 <?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
-
 <div class="container mt-4">
+    <!-- <h1>Order Details</h1> -->
 
-    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
-        style="border-left: 8px solid #71DD37; background-color: #f8f9fa;">
-        <i class="bi bi-box-arrow-in-down" style="color: #71DD37; margin-right: 0.5rem;"></i> 
-        Import Product - Items to be Imported
-    </h1>
-
-
-    <div class="row g-4">
-        <?php
-        // Instantiate the RunOutAndLowStockProductModel class
-        $productModel = new RunOutAndLowStockProductModel();
-
-        // Retrieve the low stock and out of stock products from the database
-        $lowAndOutOfStockProducts = $productModel->getRunOutAndLowStockProduct();  // Fetches products with stock <= 5
-        $lowStockCount = count(array_filter($lowAndOutOfStockProducts, function ($product) {
-            return $product['stock_quantity'] <= 5 && $product['stock_quantity'] > 0;
-        })); // Count of low stock products
-        $outOfStockCount = count(array_filter($lowAndOutOfStockProducts, function ($product) {
-            return $product['stock_quantity'] == 0;
-        })); // Count of out of stock products
-        ?>
+    <div class="row text-center">
 
         <!-- Need to Order -->
-        <div class="col-md-3 mb-4 d-flex">
-            <div class="card p-3 flex-grow-1 d-flex flex-column">
-                <div class="d-flex align-items-start">
-                    <div class="icon-right me-3">
+        <div class="col-md-3 mb-4">
+            <div class="card p-3 card-container position-relative">
+                <!-- Title with Icon -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="icon-right">
                         <i class="fas fa-exclamation-triangle text-danger fa-lg"></i>
                     </div>
+                </div>
+
+                <!-- Need to Order text in center at the top -->
+                <div class="text-center">
                     <h5 class="h6 text-dark">Need to Order</h5>
                 </div>
-                <div class="d-flex justify-content-between mt-3 flex-grow-1">
+
+                <div class="d-flex justify-content-between">
+                    <!-- Display Low Stock Count -->
                     <div class="low-stock text-center" style="flex: 1;">
                         <div class="value text-dark" style="font-size: 2rem; font-weight: bold;">
-                            <?= $lowStockCount ?>
                         </div>
                         <div class="text-dark" style="font-size: 0.9rem;">
                             Low Stock
                         </div>
                     </div>
+
+                    <!-- Display Out of Stock Count -->
                     <div class="out-of-stock text-center" style="flex: 1;">
                         <div class="value text-dark" style="font-size: 2rem; font-weight: bold;">
-                            <?= $outOfStockCount ?>
                         </div>
                         <div class="text-dark" style="font-size: 0.9rem;">
                             Out of Stock
                         </div>
                     </div>
                 </div>
+
+                <!-- View icon positioned at top-right -->
                 <a href="#" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" title="View Details">
                     <i class="fas fa-eye"></i>
                 </a>
@@ -102,20 +90,9 @@
                                             <th>Quantity</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php foreach ($lowAndOutOfStockProducts as $product): ?>
-                                            <?php if ($product['stock_quantity'] <= 5 && $product['stock_quantity'] > 0): ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($product['barcode']) ?></td>
-                                                    <td><?= htmlspecialchars($product['name']) ?></td>
-                                                    <td><?= htmlspecialchars($product['brand']) ?></td>
-                                                    <td><?= htmlspecialchars($product['type']) ?></td>
-                                                    <td><?= htmlspecialchars($product['status']) ?></td>
-                                                    <td><?= htmlspecialchars($product['stock_quantity']) ?></td>
-                                                </tr>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </tbody>
+                                    <!-- <tbody>
+                                        
+                                    </tbody> -->
                                 </table>
                             </div>
 
@@ -138,20 +115,7 @@
                                             <th>Quantity</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php foreach ($lowAndOutOfStockProducts as $product): ?>
-                                            <?php if ($product['stock_quantity'] == 0): ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($product['barcode']) ?></td>
-                                                    <td><?= htmlspecialchars($product['name']) ?></td>
-                                                    <td><?= htmlspecialchars($product['brand']) ?></td>
-                                                    <td><?= htmlspecialchars($product['type']) ?></td>
-                                                    <td><?= htmlspecialchars($product['status']) ?></td>
-                                                    <td><?= htmlspecialchars($product['stock_quantity']) ?></td>
-                                                </tr>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </tbody>
+                                    
                                 </table>
                             </div>
                         </div>
@@ -164,31 +128,21 @@
         </div>
 
 
-            <?php
-                // Count the number of arrived products
-                $totalArrived = 0;
-                foreach ($newOrders as $newOrder) {
-                    if ($newOrder['expected_delivery'] === 'Arrived') {
-                        $totalArrived++;
-                    }
-                }
-            ?>
 
             <!-- Arrived Product -->
-            <div class="col-md-3 mb-4 d-flex">
-                <div class="card p-3 flex-grow-1 d-flex flex-column">
-                    <div class="d-flex align-items-start">
-                        <div class="icon-right me-3">
-                            <i class="fas fa-box-open text-success fa-lg"></i>
-                        </div>
-                        <h5 class="h6 text-dark">Arrived</h5>
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 card-container position-relative">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-right"><i class="fas fa-box-open text-success fa-lg"></i></div>
                     </div>
+                    <h5 class="h6 text-dark">Arrived</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
-                        <?= $totalArrived ?> Products
+
                     </div>
                     <div class="orders text-dark" style="font-size: 0.9rem;">
                         Newly arrived stock ready for sale.
                     </div>
+                    <!-- View icon positioned at top-right of the card -->
                     <a href="/arrived_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
                         <i class="fas fa-eye"></i>
                     </a>
@@ -196,32 +150,21 @@
             </div>
 
 
-            <!-- Delivery card -->
-            <?php
-                // Count the number of delivery products
-                $totalDelivery = 0;
-                foreach ($newOrders as $newOrder) {
-                    if ($newOrder['expected_delivery'] === 'Delivery') {
-                        $totalDelivery++;
-                    }
-                }
-            ?>
-            
+          
             <!-- Delivery Product -->
-            <div class="col-md-3 mb-4 d-flex">
-                <div class="card p-3 flex-grow-1 d-flex flex-column">
-                    <div class="d-flex align-items-start">
-                        <div class="icon-right me-3">
-                            <i class="fas fa-truck text-primary fa-lg"></i>
-                        </div>
-                        <h5 class="h6 text-dark">Delivery</h5>
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 card-container position-relative">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-right"><i class="fas fa-truck text-primary fa-lg"></i></div>
                     </div>
+                    <h5 class="h6 text-dark">Delivery</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
-                        <?= $totalDelivery ?> Products
+                         Products
                     </div>
                     <div class="orders text-dark" style="font-size: 0.9rem;">
                         Products on the way for delivery.
                     </div>
+                    <!-- View icon positioned at top-right of the card -->
                     <a href="#" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="modal" data-bs-target="#deliveryDetailsModal" title="View Details" onclick="loadDeliveryDetails()">
                         <i class="fas fa-eye"></i>
                     </a>
@@ -256,17 +199,7 @@
                                         function loadDeliveryDetails() {
                                             // The array of delivery products
                                             const deliveryProducts = [
-                                                <?php foreach ($newOrders as $newOrder): ?>
-                                                    <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
-                                                        {
-                                                            "id": "<?= htmlspecialchars($newOrder['id']) ?>",
-                                                            "product_name": "<?= htmlspecialchars($newOrder['name']) ?>",
-                                                            "quantity": "<?= htmlspecialchars($newOrder['quantity']) ?>",
-                                                            "order_date": "<?= htmlspecialchars($newOrder['order_date']) ?>",
-                                                            "supplier": "<?= htmlspecialchars($newOrder['supplier']) ?>" <!-- Added supplier -->
-                                                        },
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
+                                                
                                             ];
 
                                             // Get the table body where the delivery products will be listed
@@ -302,32 +235,21 @@
 
 
 
-            <!-- Order card -->
-            <?php
-                // Count the number of order products
-                $totalOrders = 0;
-                foreach ($newOrders as $newOrder) {
-                    if ($newOrder['expected_delivery'] === 'Order') {
-                        $totalOrders++;
-                    }
-                }
-            ?>
-
-             <!-- Total Order -->
-            <div class="col-md-3 mb-4 d-flex">
-                <div class="card p-3 flex-grow-1 d-flex flex-column">
-                    <div class="d-flex align-items-start">
-                        <div class="icon-right me-3">
-                            <i class="fas fa-shopping-cart text-info fa-lg"></i>
-                        </div>
-                        <h5 class="h6 text-dark">Orders</h5>
+          
+            <!-- Total Order -->
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 card-container">
+                    <div class="d-flex justify-content-between">
+                        <div class="icon-right"><i class="fas fa-shopping-cart text-info fa-lg"></i></div>
                     </div>
+                    <h5 class="h6 text-dark">Orders</h5>
                     <div class="value text-dark" style="font-size: 1.5rem;">
-                        <?= $totalOrders ?> Orders
+                       Orders
                     </div>
                     <div class="orders text-dark" style="font-size: 0.9rem;">
                         Total number of orders placed.
                     </div>
+                    <!-- View icon positioned at top-right of the card -->
                     <a href="#" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="modal" data-bs-target="#orderProductModal" title="View Details" onclick="loadOrderDetails()">
                         <i class="fas fa-eye"></i>
                     </a>
@@ -371,17 +293,7 @@
                 function loadOrderDetails() {
                     // The array of order products
                     const orderProducts = [
-                        <?php foreach ($newOrders as $newOrder): ?>
-                            <?php if ($newOrder['expected_delivery'] === 'Order'): ?>
-                                {
-                                    "id": "<?= htmlspecialchars($newOrder['id']) ?>",
-                                    "product_name": "<?= htmlspecialchars($newOrder['name']) ?>",
-                                    "quantity": "<?= htmlspecialchars($newOrder['quantity']) ?>",
-                                    "order_date": "<?= htmlspecialchars($newOrder['order_date']) ?>",
-                                    "supplier": "<?= htmlspecialchars($newOrder['supplier']) ?>"
-                                },
-                            <?php endif; ?>
-                        <?php endforeach; ?>
+                        
                     ];
 
                     // Get the table body where the order products will be listed
@@ -405,10 +317,6 @@
                 }
             </script>
         </div>
-        <!-- <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
-            style="border-left: 8px solid #0d6efd; background-color: #f8f9fa;">
-            <i class="bi bi-box-arrow-in-down text-primary me-2"></i> Import Product - Items to be Imported
-        </h1> -->
 
     <div class="card p-5 bg-white shadow-lg border-0">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -423,7 +331,7 @@
             </div>
              <!-- Buttons and Export Dropdown -->
             <div class="d-flex align-items-center">
-                <div class="btn-group me-2">
+                <!-- <div class="btn-group me-2">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
                     </button>
@@ -443,7 +351,7 @@
                             </form>
                         </li>
                     </ul>
-                </div>
+                </div> -->
 
                 <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
             </div>
@@ -477,7 +385,7 @@
                     </tr>
                 </thead>
                 <tbody id="switchTableBody">
-                    <?php foreach($newOrders as $newOrder): ?>
+                    <?php // foreach($newOrders as $newOrder): ?>
                     <tr class="border-bottom" 
                         data-id="<?= htmlspecialchars($newOrder['id']) ?>" 
                         data-product-name="<?= htmlspecialchars($newOrder['product_name']) ?>" 
@@ -490,52 +398,14 @@
                         onclick="showProductDetails(event)"
                         style="cursor: pointer;">
                         
-                        <td><?= htmlspecialchars($newOrder['id']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['product_name']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['base_price_usd']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['total_price_usd']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['order_date']) ?></td>
-                        <td>
-                            <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
-                                <span class="badge bg-info">Delivery</span>
-                            <?php elseif ($newOrder['expected_delivery'] === 'Arrived'): ?>
-                                <span class="badge bg-success">Arrived</span>
-                            <?php elseif ($newOrder['expected_delivery'] === 'Order'): ?>
-                                <span class="badge bg-primary">Order</span>
-                            <?php else: ?>
-                                <span class="badge bg-secondary"><?= htmlspecialchars($newOrder['expected_delivery']) ?></span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?= htmlspecialchars($newOrder['supplier']) ?></td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical fs-5"></i>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item text-warning" href="/order_new_product/edit/<?= $newOrder['id'] ?>">
-                                            <i class="bi bi-pencil-square"></i> Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                        
+                            
             </table>
 
             <!-- Pagination Component -->
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <div id="entriesInfo" class="text-muted">
-                    Showing 1 to <?= count($newOrders) ?> of <?= count($newOrders) ?> entries
+                  
                 </div>
                 <nav>
                     <ul class="pagination" id="pagination">
@@ -561,20 +431,6 @@
         </div>
     </div>
 </div>
-
-<style>
- @media (min-width: 768px) and (max-width: 1024px) {
-    .card-container {
-        padding: 1.5rem; /* Padding inside the cards */
-        border: 1px solid #ddd; /* Optional border for visibility */
-        border-radius: 0.5rem; /* Rounded corners */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-        background-color: #fff; /* Card background color */
-        height: 100%; /* Ensure cards fill the column height */
-    }
-}
-</style>
-
 
 
 <!-- Bootstrap Modal -->

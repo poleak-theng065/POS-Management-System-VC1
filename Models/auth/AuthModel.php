@@ -1,4 +1,5 @@
 <?php
+require_once "Database/Database.php";
 class AuthModel {
     private $db;
 
@@ -11,8 +12,8 @@ class AuthModel {
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getUserById($id) {
-        $result = $this->db->query("SELECT * FROM users WHERE id = :id", ['id' => $id]);
+    public function getUserById($user_id ) {
+        $result = $this->db->query("SELECT * FROM users WHERE user_id  = :user_id ", ['user_id ' => $user_id ]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -23,15 +24,15 @@ class AuthModel {
         return $result->fetchColumn() > 0; // Return true if count is greater than 0
     }
 
-    public function addUser($name, $email, $password, $role, $image) {
+    public function addUser($username, $password_hash, $role, $email, $image) {
         try {
             $this->db->query(
-                "INSERT INTO users (name, email, password, role, image) VALUES (:name, :email, :password, :role, :image)",
+                "INSERT INTO users (username, password_hash, role, email, image) VALUES (:username, :password_hash, :role, email, :image)",
                 [
-                    ':name' => $name,
-                    ':email' => $email,
-                    ':password' => $password,
+                    ':username' => $username,
+                    ':password_hash' => $password_hash,
                     ':role' => $role,
+                    ':email' => $email,
                     ':image' => $image
                 ]
             );
@@ -40,22 +41,23 @@ class AuthModel {
         }
     }
 
-    public function updateUser($id, $name, $email, $password, $role, $image) {
+    public function updateUser($user_id , $username, $password_hash, $role,$email, $image) {
         try {
             // Prepare the SQL update statement
-            $query = "UPDATE users SET name = :name, email = :email, role = :role, image = :image WHERE id = :id";
+            $query = "UPDATE users SET username = :username, password_hash = :password_hash, role = :role, email = :email,image = :image WHERE user_id  = :user_id ";
             $params = [
-                ':id' => $id,
-                ':name' => $name,
-                ':email' => $email,
+                ':user_id ' => $user_id,
+                ':username' => $username,
+                ':password_hash' => $password_hash,
                 ':role' => $role,
+                ':email' => $email,
                 ':image' => $image
             ];
 
             // Only update the password if provided
-            if (!empty($password)) {
-                $query = "UPDATE users SET name = :name, email = :email, password = :password, role = :role, image = :image WHERE id = :id";
-                $params[':password'] = password_hash($password, PASSWORD_DEFAULT); // Hash the password
+            if (!empty($password_hash)) {
+                $query = "UPDATE users SET username = :username, password_hash = :password_hash, role = :role, image = :image WHERE user_id  = :user_id ";
+                $params[':password_hash'] = password_hash($password_hash, PASSWORD_DEFAULT); // Hash the password
             }
 
             // Execute the query
@@ -65,8 +67,8 @@ class AuthModel {
         }
     }
 
-    public function deleteUser($id) {
-        $result = $this->db->query("DELETE FROM users WHERE id = :id", ['id' => $id]);
+    public function deleteUser($user_id ) {
+        $result = $this->db->query("DELETE FROM users WHERE user_id  = :user_id ", ['user_id ' => $user_id ]);
         return $result;
     }
 
@@ -77,7 +79,7 @@ class AuthModel {
     }
 
     public function getDeletedUsers() {
-        $query = "SELECT id, name, email, role, deleted_by, deleted_at FROM deleted_users ORDER BY deleted_at ASC";
+        $query = "SELECT user_id , username, email, role, deleted_by, deleted_at FROM deleted_users ORDER BY deleted_at ASC";
         $result = $this->db->query($query);
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -85,10 +87,10 @@ class AuthModel {
     
     public function setUserStatusActive($userId) {
         try {
-            $query = "UPDATE users SET status = :status WHERE id = :id";
+            $query = "UPDATE users SET status = :status WHERE user_id  = :user_id ";
             $params = [
                 ':status' => 'Active',
-                ':id' => $userId
+                ':user_id ' => $userId
             ];
             $this->db->query($query, $params);
         } catch (PDOException $e) {
@@ -99,10 +101,10 @@ class AuthModel {
 
     public function setUserStatusInactive($userId) {
         try {
-            $query = "UPDATE users SET status = :status WHERE id = :id";
+            $query = "UPDATE users SET status = :status WHERE user_id  = :user_id ";
             $params = [
                 ':status' => 'Inactive',
-                ':id' => $userId
+                ':user_id ' => $userId
             ];
             $this->db->query($query, $params);
         } catch (PDOException $e) {
