@@ -18,6 +18,7 @@ require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ArrivedProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
 require_once "Controllers/inventory/SaleFormController.php";
+require_once "Controllers/inventory/SaleReceiptController.php";
 
 // Auth Require 
 require_once "Controllers/auth/LoginController.php";
@@ -64,6 +65,10 @@ $route->get("/sold_product", [SoldProductController::class, 'index']);
 // Low Stock Product
 $route->get("/low_stock_product", [LowStockProductController::class, 'index']);
 
+
+$route->get("/sale_receipt", [SaleReceiptController::class, 'orderNewProduct']);
+
+
 // Run Out Of Stock Product
 $route->get("/run_out_of_stock", [RunOutOfStockController::class, 'index']);
 
@@ -85,6 +90,14 @@ $route->get("/arrived_product", [ArrivedProductController::class, 'arrivedProduc
 $route->get("/arrived_product/edit/{id}", [ArrivedProductController::class, 'edit']);
 $route->put("/arrived_product/update/{id}", [ArrivedProductController::class, 'update']);
 $route->delete("/arrived_product/delete/{id}", [ArrivedProductController::class, 'delete']);
+
+// sale receipt
+$route->get("/sale_receipt", [SaleReceiptController::class, 'orderNewProduct']);
+$route->get("/sale_receipt/create", [SaleReceiptController::class, 'create']);
+$route->post("/sale_receipt/store", [SaleReceiptController::class, 'store']);
+$route->get("/sale_receipt/edit/{id}", [SaleReceiptController::class, 'edit']);
+$route->put("/sale_receipt/update/{id}", [SaleReceiptController::class, 'update']);
+$route->delete("/sale_receipt/delete/{id}", [SaleReceiptController::class, 'delete']);
 
 // Order New Product
 $route->get("/order_new_product", [OrderNewProductController::class, 'orderNewProduct']);
