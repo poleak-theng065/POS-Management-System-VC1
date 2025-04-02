@@ -38,8 +38,9 @@
                 <h5 class="h6 text-dark">Sold Profit</h5>
             </div>
             <div class="value text-dark" style="font-size: 1.5rem;">
-                $
+                $<?= number_format($totalProfit, 2) ?>
             </div>
+
             <div class="orders text-dark" style="font-size: 0.9rem;">
                 The total profit for this month in sales.
             </div>
@@ -59,7 +60,8 @@
                 <h5 class="h6 text-dark">Sold Product</h5>
             </div>
             <div class="value text-dark" style="font-size: 1.5rem;">
-                Items
+                <!-- Display total quantity sold -->
+                <?= isset($totalQuantitySold) ? $totalQuantitySold : '0'; ?> Items
             </div>
             <div class="orders text-dark" style="font-size: 0.9rem;">
                 Total items sold successfully.
@@ -69,6 +71,7 @@
             </a>
         </div>
     </div>
+
 </div>
 
 <!-- View sold product list -->

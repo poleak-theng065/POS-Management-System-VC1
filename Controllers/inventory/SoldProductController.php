@@ -20,26 +20,34 @@ class SoldProductController extends BaseController
     // This method fetches products and sold items from the model and passes them to the view
     public function index()
     {
-        // Fetch all products and sold items from the model
+        // Get the products and sale items from the model
         $products = $this->sales->getProducts();
-        $saleItems = $this->sales->getSaleItems();  // Fetch sold products including image_path
+        $saleItems = $this->sales->getSaleItems();
+        $totalProfit = $this->sales->getTotalProfitForCurrentMonth();
 
-        // Check if data retrieval was successful
+        // Calculate total quantity of all sold products (sum across all sale items)
+        $totalQuantitySold = 0;
+        foreach ($saleItems as $saleItem) {
+            $totalQuantitySold += $saleItem['quantity'];  // Summing the quantity of each sale item
+        }
+
+        // Handle errors when fetching products or sale items
         if ($products === false || $saleItems === false) {
-            // Log error or handle it as needed
             error_log("Failed to fetch data in SoldProductController::index");
             $products = $products === false ? [] : $products;
             $saleItems = $saleItems === false ? [] : $saleItems;
         }
 
-        // Pass data to the view
+        // Pass the necessary data to the view
         $this->view("inventory/sold_product/sold_product", [
             "products" => $products,
-            "saleItems" => $saleItems
+            "saleItems" => $saleItems,
+            "totalProfit" => $totalProfit,
+            "totalQuantitySold" => $totalQuantitySold  // Pass total quantity to the view
         ]);
     }
 
-    // Optional: Method to get unit price by barcode (if needed in the view)
+    // Fetch unit price by barcode via AJAX
     public function getUnitPrice($barcode)
     {
         $unitPrice = $this->sales->getUnitPriceByBarcode($barcode);
