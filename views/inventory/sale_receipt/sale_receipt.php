@@ -3,6 +3,10 @@
 <?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 <div class="container mt-4">
     <!-- <h1>Order Details</h1> -->
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
+            style="border-left: 8px solid #198754; background-color: #f8f9fa;">
+        <i class="fa fa-camera-retro fa-1x"></i> Sales Recei
+    </h1>
 
     <div class="row text-center">
 
@@ -320,15 +324,6 @@
 
     <div class="card p-5 bg-white shadow-lg border-0">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-                <input type="text" class="form-control me-2" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
-                <select class="form-select" id="filterSelect" onchange="filterOrders()" style="width: 200px;">
-                    <option value="">Filter by Status</option>
-                    <option value="Delivery">Delivery</option>
-                    <option value="Arrived">Arrived</option>
-                    <option value="Order">Order</option>
-                </select>
-            </div>
              <!-- Buttons and Export Dropdown -->
             <div class="d-flex align-items-center">
                 <!-- <div class="btn-group me-2">
@@ -353,34 +348,18 @@
                     </ul>
                 </div> -->
 
-                <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
             </div>
             
         </div>
-
-        <!-- <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
-                <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
-            </div>
-            <button type="submit" class="btn btn-success mt-2">Upload</button>
-        </form> -->
-
-
-
-
         <div class="table-responsive">
             <table class="table table-hover align-middle" id="orderTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Price USD</th>
-                        <th>Total USD</th>
-                        <th>Order Date</th>
-                        <th>Expected Delivery</th>
-                        <th>Supplier</th>
+                        <th>Sale ID</th>
+                        <th>Costomer Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Price</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -434,7 +413,7 @@
 
 
 <!-- Bootstrap Modal -->
-<div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -442,21 +421,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Order ID:</strong> <span id="modal-order-id"></span></p>
-                <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
-                <p><strong>Quantity:</strong> <span id="modal-quantity"></span></p>
-                <p><strong>Order Date:</strong> <span id="modal-order-date"></span></p>
-                <p><strong>Expected Delivery:</strong> <span id="modal-expected-delivery"></span></p>
-                <p><strong>Supplier:</strong> <span id="modal-supplier"></span></p>
-                <p><strong>Base Price USD:</strong> <span id="modal-base_price_usd"></span></p>
-                <p><strong>Total Price USD:</strong> <span id="modal-total_price_usd"></span></p>
+                <p><strong>Sale ID:</strong> <span id="modal-order-id"></span></p>
+                <p><strong>Costromer Name:</strong> <span id="modal-product-name"></span></p>
+                <p><strong>Date</strong> <span id="modal-quantity"></span></p>
+                <p><strong>Time</strong> <span id="modal-order-date"></span></p>
+                <p><strong>Price</strong> <span id="modal-expected-delivery"></span></p>
+                <p><strong>Action</strong> <span id="modal-supplier"></span></p>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 <script>
