@@ -173,62 +173,32 @@
         }
     </style>
 
-    <div class="container">
-        <h1>User Accounts</h1>
-        <div class="user-list">
-            <!-- User 1 -->
-            <div class="user admin">
-                <div class="user-info">
-                    <img src="https://via.placeholder.com/50" alt="Profile Picture">
-                    <div class="user-details">
-                        <p class="name">POLEAK</p>
-                        <p class="email">poleak@gmail.com</p>
+<div class="container">
+    <h1>User Accounts</h1>
+    <div class="user-list">
+        <?php if (!empty($data['users'])): ?>
+            <?php foreach ($data['users'] as $user): ?>
+                <div class="user <?= $user['role'] === 'admin' ? 'admin' : 'no-admin' ?>">
+                    <div class="user-info">
+                        <img src="<?= htmlspecialchars($user['image'] ? $user['image'] : 'https://via.placeholder.com/50') ?>" alt="Profile picture of <?= htmlspecialchars($user['username']) ?>">
+                        <div class="user-details">
+                            <p class="name"><?= htmlspecialchars($user['username']) ?></p>
+                            <p class="email"><?= htmlspecialchars($user['email']) ?></p>
+                        </div>
+                    </div>
+                    <div class="user-role <?= $user['role'] === 'admin' ? 'admin' : 'no-admin' ?>"> <!-- Fixed consistency -->
+                        <div class="role-badge">
+                            <i class="fas fa-<?= $user['role'] === 'admin' ? 'crown' : 'user' ?>"></i>
+                        </div>
+                        <p><?= htmlspecialchars($user['role']) ?></p>
+                        <span class="dots" aria-label="User options menu"><i class="fa-solid fa-bars"></i></span>
                     </div>
                 </div>
-                <div class="user-role admin">
-                    <div class="role-badge">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <p>admin</p>
-                    <span class="dots"><i class="fa-solid fa-bars"></i></span>
-                    <!-- <span class="git-icon"><i class="fab fa-git-alt"></i></span> -->
-                </div>
-            </div>
-            <!-- User 2 -->
-            <div class="user employee no-admin">
-                <div class="user-info">
-                    <img src="https://via.placeholder.com/50" alt="Profile Picture">
-                    <div class="user-details">
-                        <p class="name">SOKHA</p>
-                        <p class="email">sokha@gmail.com</p>
-                    </div>
-                </div>
-                <div class="user-role ">
-                    <div class="role-badge">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <p>employee</p>
-                    <span class="dots"><i class="fa-solid fa-bars"></i></span>
-                    <!-- <span class="git-icon"><i class="fab fa-git-alt"></i></span> -->
-                </div>
-            </div>
-            <!-- User 3 -->
-            <div class="user employee no-admin">
-                <div class="user-info">
-                    <img src="https://via.placeholder.com/50" alt="Profile Picture">
-                    <div class="user-details">
-                        <p class="name">NEANG</p>
-                        <p class="email">neang@gmail.com</p>
-                    </div>
-                </div>
-                <div class="user-role no-admin">
-                    <div class="role-badge">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <p>employee</p>
-                    <span class="dots"><i class="fa-solid fa-bars"></i></span>
-                    <!-- <span class="git-icon"><i class="fab fa-git-alt"></i></span> -->
-                </div>
-            </div>
-        </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No users found.</p>
+        <?php endif; ?>
     </div>
+</div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
