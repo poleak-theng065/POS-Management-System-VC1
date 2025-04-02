@@ -27,6 +27,50 @@
     }
 </style>
 
+<div class="container d-flex flex-row">
+    <!-- Total Profit Sold Product -->
+    <div class="col-md-6 mb-4 d-flex">
+        <div class="card p-3 flex-grow-1 d-flex flex-column">
+            <div class="d-flex align-items-start">
+                <div class="icon-right me-3">
+                    <i class="fas fa-credit-card text-success fa-lg"></i>
+                </div>
+                <h5 class="h6 text-dark">Sold Profit</h5>
+            </div>
+            <div class="value text-dark" style="font-size: 1.5rem;">
+                $
+            </div>
+            <div class="orders text-dark" style="font-size: 0.9rem;">
+                The total profit for this month in sales.
+            </div>
+            <a href="/arrived_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
+                <i class="fas fa-eye"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Total Sold Items -->
+    <div class="col-md-6 mb-4 d-flex">
+        <div class="card p-3 flex-grow-1 d-flex flex-column">
+            <div class="d-flex align-items-start">
+                <div class="icon-right me-3">
+                    <i class="fas fa-box-open text-danger fa-lg"></i>
+                </div>
+                <h5 class="h6 text-dark">Sold Product</h5>
+            </div>
+            <div class="value text-dark" style="font-size: 1.5rem;">
+                Items
+            </div>
+            <div class="orders text-dark" style="font-size: 0.9rem;">
+                Total items sold successfully.
+            </div>
+            <a href="/sold_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
+                <i class="fas fa-eye"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
 <div class="container mt-4">
     <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block" 
             style="border-left: 8px solid #198754; background-color: #f8f9fa;">
