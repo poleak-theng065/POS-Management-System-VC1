@@ -52,30 +52,41 @@ class SoldProductModel
     public function getSaleItems()
     {
         try {
+            // Query to get each sale item along with individual quantities and the total sum of all quantities sold
             $stmt = $this->query("
-                SELECT sale_items.sale_item_id, 
-                       sale_items.product_id, 
-                       sale_items.quantity, 
-                       sale_items.sale_date, 
-                       sale_items.discount, 
-                       sale_items.total_price, 
-                       products.barcode,
-                       products.name,
-                       products.brand,
-                       products.image_path
+                SELECT 
+                    sale_items.sale_item_id, 
+                    sale_items.product_id, 
+                    sale_items.quantity, 
+                    sale_items.sale_date, 
+                    sale_items.discount, 
+                    sale_items.total_price, 
+                    products.barcode,
+                    products.name,
+                    products.brand,
+                    products.image_path,
+                    products.unit_price,
+                    products.cost_price,
+                    ((products.unit_price - products.cost_price) * sale_items.quantity - sale_items.discount) AS profit,
+                    -- Total sum of all quantities sold
+                    (SELECT SUM(quantity) FROM sale_items) AS total_quantity_sold 
                 FROM sale_items
                 LEFT JOIN products ON sale_items.product_id = products.product_id
                 ORDER BY sale_items.sale_item_id DESC
             ");
+
             if ($stmt === false) {
                 throw new Exception("Failed to fetch sale items.");
             }
+
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             error_log("Error fetching sale items: " . $e->getMessage());
             return [];
         }
     }
+
+
 
     public function createSaleItem($productId, $quantity, $saleDate, $discount)
     {
@@ -187,6 +198,57 @@ class SoldProductModel
         } catch (Exception $e) {
             error_log("Error fetching unit price by barcode: " . $e->getMessage());
             return null;
+        }
+    }
+
+    public function getTotalProfitForCurrentMonth()
+    {
+        try {
+            // Execute the SQL query to calculate total profit for the current month
+            $stmt = $this->query("
+                SELECT SUM((products.unit_price - products.cost_price) * sale_items.quantity - sale_items.discount) AS total_profit 
+                FROM sale_items 
+                LEFT JOIN products ON sale_items.product_id = products.product_id
+                WHERE MONTH(sale_items.sale_date) = MONTH(CURRENT_DATE())
+                AND YEAR(sale_items.sale_date) = YEAR(CURRENT_DATE())
+            ");
+
+            // Check if the query was successful
+            if ($stmt === false) {
+                throw new Exception("Failed to calculate total profit.");
+            }
+
+            // Fetch the result (total profit)
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Return the total profit, ensuring it's a float or 0.00 if null
+            return ($result && $result['total_profit'] !== null) ? floatval($result['total_profit']) : 0.00;
+        } catch (Exception $e) {
+            // Log the error and return a default value (0.00) if an exception occurs
+            error_log("Error fetching total profit: " . $e->getMessage());
+            return 0.00;
+        }
+    }
+
+    public function getTotalQuantitySold()
+    {
+        try {
+            // Query to calculate the total quantity sold across all sale items
+            $stmt = $this->query("SELECT SUM(quantity) AS total_quantity_sold FROM sale_items");
+
+            if ($stmt === false) {
+                throw new Exception("Failed to calculate total quantity sold.");
+            }
+
+            // Fetch the result (total quantity sold)
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Return the total quantity sold, ensuring it's 0 if null
+            return ($result && $result['total_quantity_sold'] !== null) ? (int)$result['total_quantity_sold'] : 0;
+        } catch (Exception $e) {
+            // Log the error and return a default value (0) if an exception occurs
+            error_log("Error fetching total quantity sold: " . $e->getMessage());
+            return 0;
         }
     }
 }
