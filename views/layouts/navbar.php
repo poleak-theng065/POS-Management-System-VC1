@@ -100,6 +100,11 @@
                     <div data-i18n="Account">Sold Product</div>
                   </a>
                 </li>
+                <li class="menu-item active">
+                  <a href="/sale_receipt" class="menu-link">
+                    <div data-i18n="Account">Sale Receipt</div>
+                  </a>
+                </li>
                 <!-- <li class="menu-item active">
                   <a href="/low_stock_product" class="menu-link">
                     <div data-i18n="Account">Low Stock</div>
