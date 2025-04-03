@@ -36,9 +36,8 @@
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Product Status<span class="text-danger">*</span></label>
                             <select class="form-control" name="status" required>
-                                <option value="">Select Status</option>
+                                <option value="Pending" selected>Pending</option> 
                                 <option value="Ready">Ready</option>
-                                <option value="Pending">Pending</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-4">

@@ -66,23 +66,17 @@ class OrderNewProductController extends BaseController {
 
     public function update($id)
     {
-        // Ensure data is posted before accessing
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Product information
             $productName = $_POST['productName'] ?? null;
             $barCode = $_POST['barcode'] ?? null;
             $brand = $_POST['brand'] ?? null;
             $expectedDelivery = $_POST['expectedDelivery'] ?? null;
             $orderDate = $_POST['orderDate'] ?? null;
             $status = $_POST['status'] ?? null;
-
-            // Organization
             $category = $_POST['category'] ?? null;
             $model = $_POST['model'] ?? null;
             $supplier = $_POST['supplier'] ?? null;
             $productStatus = $_POST['productStatus'] ?? null;
-
-            // Pricing
             $basePriceUSD = $_POST['basePriceUSD'] ?? null;
             $basePriceKHR = $_POST['basePriceKHR'] ?? null;
             $quantity = $_POST['quantity'] ?? null;
@@ -90,33 +84,27 @@ class OrderNewProductController extends BaseController {
             $totalPriceUSD = $_POST['totalPriceUSD'] ?? null;
             $totalPriceKHR = $_POST['totalPriceKHR'] ?? null;
 
-            // Call model to update the database
+            // Handle image upload
+            $image = null;
+            if (isset($_FILES['image']) && $_FILES['image']['name']) {
+                $image = $_FILES['image']['name'];
+                move_uploaded_file($_FILES['image']['tmp_name'], "assets/img/upload/" . $image);
+            }
+
+            // Call model function
             $this->newOrders->updateNewOrder(
-                $id,
-                $productName,
-                $barCode,
-                $brand,
-                $expectedDelivery,
-                $orderDate,
-                $status,
-                $category,
-                $model,
-                $supplier,
-                $productStatus,
-                $basePriceUSD,
-                $basePriceKHR,
-                $quantity,
-                $exchangeRate,
-                $totalPriceUSD,
-                $totalPriceKHR
+                $id, $productName, $barCode, $brand, $expectedDelivery, $orderDate, $status,
+                $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, 
+                $quantity, $exchangeRate, $totalPriceUSD, $totalPriceKHR, $image
             );
 
-            // Redirect after the update
+            // Redirect after update
             $this->redirect('/order_new_product');
         } else {
             echo "Invalid request method.";
         }
     }
+
 
 
     public function delete($id)

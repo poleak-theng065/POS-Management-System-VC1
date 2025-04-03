@@ -3,19 +3,6 @@
 <?php session_start(); ?> 
 <?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
-<style>
-    /* text in each stay at the center of row */
-    .table td {
-        vertical-align: middle;
-        /* Align text to the start */
-        text-align: left; 
-    }
-
-    .table td:nth-child(2) {
-        display: flex;
-        align-items: center;
-    }
-</style>
 
 <div class="container mt-4">
 
@@ -116,11 +103,13 @@
                                     <tbody>
                                         <?php foreach ($lowAndOutOfStockProducts as $product): ?>
                                             <?php if ($product['stock_quantity'] <= 5 && $product['stock_quantity'] > 0): ?>
-                                                <tr>
+                                                <tr  class="border-bottom">
                                                     <td><?= htmlspecialchars($product['barcode']) ?></td>
                                                     <td>
-                                                        <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
-                                                            alt="Product Image" width="50" height="50" style="object-fit: cover; border-radius: 5px; display: inline-block; margin-right: 8px;">
+                                                        <div class="product-image-container">
+                                                            <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>" 
+                                                                alt="Product Image" class="product-image">
+                                                        </div>
                                                         
                                                         <?= $product['name'] ?>
                                                     </td>
@@ -155,12 +144,13 @@
                                     <tbody>
                                         <?php foreach ($lowAndOutOfStockProducts as $product): ?>
                                             <?php if ($product['stock_quantity'] == 0): ?>
-                                                <tr>
+                                                <tr  class="border-bottom">
                                                     <td><?= htmlspecialchars($product['barcode']) ?></td>
                                                     <td>
-                                                        <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
-                                                            alt="Product Image" width="50" height="50" style="object-fit: cover; border-radius: 5px; display: inline-block; margin-right: 8px;">
-                                                        
+                                                        <div class="product-image-container">
+                                                            <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>" 
+                                                                alt="Product Image" class="product-image">
+                                                        </div>
                                                         <?= $product['name'] ?>
                                                     </td>
                                                     <td><?= htmlspecialchars($product['brand']) ?></td>
@@ -262,7 +252,7 @@
                         <div class="modal-body text-start">
                             <table class="table table-striped">
                                 <thead>
-                                    <tr>
+                                    <tr  class="border-bottom">
                                         <th>ID</th>
                                         <th>Product</th>
                                         <th>Quantity</th>
@@ -298,10 +288,13 @@
                                             // Loop through the delivery products and insert them into the table
                                             deliveryProducts.forEach(product => {
                                                 const row = document.createElement('tr');
+                                                row.classList.add('border-bottom'); // Add border-bottom class to the row
                                                 row.innerHTML = `
                                                     <td>${product.id}</td>
                                                     <td>
-                                                        <img src="${product.image_path}" alt="Product Image" width="50" height="50" class="rounded me-2">
+                                                        <div class="product-image-container">
+                                                            <img src="${product.image_path}" alt="Product Image" class="product-image">
+                                                        </div>
                                                         ${product.product_name}
                                                     </td>
                                                     <td>${product.quantity}</td>
@@ -416,10 +409,13 @@
                     // Loop through the order products and insert them into the table
                     orderProducts.forEach(product => {
                         const row = document.createElement('tr');
+                        row.classList.add('border-bottom'); // Add border-bottom class to the row
                         row.innerHTML = `
                             <td>${product.id}</td>
                             <td>
-                                <img src="${product.image_path}" alt="Product Image" width="50" height="50" class="rounded me-2">
+                                <div class="product-image-container">
+                                    <img src="${product.image_path}" alt="Product Image" class="product-image">
+                                </div>
                                 ${product.product_name}
                             </td>
                             <td>${product.quantity}</td>
@@ -519,8 +515,10 @@
                         
                         <td><?= htmlspecialchars($newOrder['id']) ?></td>
                         <td>
-                            <img src="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>" 
-                                alt="Product Image" width="50" height="50" class="rounded me-2">
+                            <div class="product-image-container">
+                                <img src="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>" 
+                                    alt="Product Image" class="product-image">
+                            </div>
                             <?= htmlspecialchars($newOrder['product_name']) ?>
                         </td>
                         <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
@@ -604,6 +602,39 @@
         height: 100%; 
     }
 }
+</style>
+
+<style>
+    .product-image-container {
+    background-color: #f0f0f0;  /* Light gray background */
+    border-radius: 8px;        /* Rounded corners */
+    padding: 2px;              /* Space around the image */
+    display: inline-block;       /* Wraps around the image */
+    }
+
+    .product-image {
+        width: 40px;                /* Adjust image size */
+        height: 40px;               /* Adjust image size */
+        /* border-radius: 8px;         Rounded corners of the image */
+    }
+
+    .table td {
+        vertical-align: middle; /* Keep text vertically centered */
+        text-align: left;       /* Align text to the left */
+    }
+
+    .table td:nth-child(2) {
+        display: flex;          
+        align-items: center;    
+        justify-content: flex-start;
+        border: none; /* Ensure no extra bold effect */
+        font-weight: normal; /* Ensure text weight is the same */
+    }
+
+
+    .product-image-container {
+        margin-right: 10px;     /* Space between image and text */
+    }
 </style>
 
 
