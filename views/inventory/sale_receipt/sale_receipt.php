@@ -29,45 +29,25 @@
 
 <div class="container d-flex flex-row">
     <!-- Total Profit Sold Product -->
-    <div class="col-md-6 mb-4 d-flex">
-        <div class="card p-3 flex-grow-1 d-flex flex-column">
-            <div class="d-flex align-items-start">
-                <div class="icon-right me-3">
-                    <i class="fas fa-credit-card text-success fa-lg"></i>
-                </div>
-                <h5 class="h6 text-dark">Sold Profit</h5>
-            </div>
-            <div class="value text-dark" style="font-size: 1.5rem;">
-                $
-            </div>
-            <div class="orders text-dark" style="font-size: 0.9rem;">
-                The total profit for this month in sales.
-            </div>
-            <a href="/arrived_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
-                <i class="fas fa-eye"></i>
-            </a>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-3 text-center" style="background-color: #d4edda;">
+                <p class="text-muted mt-2 mb-1" style="color: #28a745;">Total Price</p>
+            <h5 class="fw-bold" id="totalPrice" style="color: #28a745;">$0.00
+                <i class="bi bi-cash-stack fs-3 text-success me-2"></i>
+            </h5>
         </div>
+    
     </div>
 
     <!-- Total Sold Items -->
-    <div class="col-md-6 mb-4 d-flex">
-        <div class="card p-3 flex-grow-1 d-flex flex-column">
-            <div class="d-flex align-items-start">
-                <div class="icon-right me-3">
-                    <i class="fas fa-box-open text-danger fa-lg"></i>
-                </div>
-                <h5 class="h6 text-dark">Sold Product</h5>
-            </div>
-            <div class="value text-dark" style="font-size: 1.5rem;">
-                Items
-            </div>
-            <div class="orders text-dark" style="font-size: 0.9rem;">
-                Total items sold successfully.
-            </div>
-            <a href="/sold_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
-                <i class="fas fa-eye"></i>
-            </a>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-3 text-center" style="background-color: #ffe6e6;">
+                <p class="text-muted mt-2 mb-1" style="color: #ff4d4d;">Total Discount</p>
+            <h5 class="fw-bold" id="discountText" style="color: #ff4d4d;">$0.00
+                <i class="bi bi-tags fs-3 text-danger me-2"></i>
+            </h5>
         </div>
+
     </div>
 </div>
 
