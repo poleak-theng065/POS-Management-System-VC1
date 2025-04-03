@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2025 at 01:18 PM
+-- Generation Time: Mar 28, 2025 at 12:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -173,9 +173,9 @@ CREATE TABLE `order_products` (
 --
 
 INSERT INTO `order_products` (`id`, `product_name`, `barcode`, `brand`, `expected_delivery`, `order_date`, `status`, `category`, `model`, `supplier`, `product_status`, `base_price_usd`, `base_price_kh`, `quantity`, `exchange_rate`) VALUES
-(1, 'Phone', 'IP33333333333333333333', 'Moon Store', 'Arrived', '2025-03-28', 'Ready', '5', 'New Model', 'Samsung', 'First Hand', 2.00, 8000.00, 2, 0.00),
-(2, 'hello', '12121212121212121', 'OPPO', 'Delivery', '2025-03-19', 'Pending', '5', 'ffff', 'Oppo', 'First Hand', 3.00, 12000.00, 3, 0.00),
-(3, 'ewew', '676767676', 'OPPO', 'Order', '2025-03-28', 'Ready', '5', 'New Model', 'Oppo', 'First Hand', 3.00, 12000.00, 3, 0.00);
+(1, 'iPhone 13 Pro', 'IP13PRO123456', 'Apple', '', '2025-03-25', 'Pending', 'Phone', 'A2636', 'Apple Inc.', 'New', 999.99, 4099960.00, 5, 4100.00),
+(2, 'Samsung Galaxy S22 Ultra', 'SGS22U987654', 'Samsung', '', '2025-03-26', 'Pending', 'Phone', 'SM-S908B', 'Samsung Electronics', 'New', 1199.99, 4919960.00, 3, 4100.00),
+(3, 'Google Pixel 7', 'GPX7123456', 'Google', '', '2025-03-24', 'Pending', 'Phone', 'G7-128GB', 'Google LLC', 'New', 599.99, 2459960.00, 4, 4100.00);
 
 -- --------------------------------------------------------
 
@@ -223,7 +223,7 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`product_id`, `name`, `description`, `barcode`, `category_id`, `unit_price`, `cost_price`, `stock_quantity`, `low_stock_threshold`, `created_at`, `status`, `brand`, `model`, `type`) VALUES
 (19, 'Noelani Logan', 'Wi-Fi-enabled smart light bulb with adjustable brightness and color temperature.', 'Velit ipsam sunt err', 5, 0.00, 0.00, 80, 50, '2025-03-11 04:15:00', 'first-hand', 'Possimus numquam co', 'Omnis nulla reiciend', 'Nulla fugiat dolore sds'),
 (22, 'Kitty', NULL, 'pnc-983489', 1, 123.00, 345.00, 5, 5, '2025-03-24 02:26:38', 'new', 'Oppo', 'A2025', '7356'),
-(23, 'fifakjdkaei', NULL, '1234564', 1, 0.00, 0.00, 0, 5, '2025-03-24 02:27:16', 'new', 'iPhone', 'shytrsh', 'gsrg');
+(23, 'fifakjdkaei', NULL, '12345642542544524542', 1, 324.00, 23.00, 0, 5, '2025-03-24 02:27:16', 'new', 'iPhone', 'shytrsh', 'gsrg');
 
 -- --------------------------------------------------------
 

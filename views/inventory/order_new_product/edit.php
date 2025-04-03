@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Product Title <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="productName" value="<?= htmlspecialchars($newOrder['name']); ?>" placeholder="Enter product title">
+                            <input type="text" class="form-control" name="productName" value="<?= htmlspecialchars($newOrder['product_name']); ?>" placeholder="Enter product title">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Barcode <span class="text-danger">*</span></label>
