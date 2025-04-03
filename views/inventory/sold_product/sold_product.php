@@ -27,6 +27,7 @@
     }
 </style>
 
+
 <div class="container d-flex flex-row">
     <!-- Total Profit Sold Product -->
     <div class="col-md-6 mb-4 d-flex">
@@ -73,6 +74,7 @@
     </div>
 
 </div>
+
 
 <!-- View sold product list -->
 <div class="container mt-4">
