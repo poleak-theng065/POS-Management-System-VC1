@@ -42,9 +42,18 @@ class OrderNewProductController extends BaseController {
         $exchangeRate = $_POST['exchangeRate'];
         $totalPriceUSD = $_POST['totalPriceUSD'];
         $totalPriceKHR = $_POST['totalPriceKHR'];
+
+        if (isset($_FILES['image']) && isset($_FILES['image']['name']) && isset($_FILES['image']['tmp_name'])) {
+            $image = $_FILES['image']['name'];
+
+            // Move the uploaded file to a specific directory
+            move_uploaded_file($_FILES['image']['tmp_name'], "assets/img/upload/" . $image);
+        } else {
+            $image = null; // Handle the case where no image is uploaded
+        }
         
         $this->newOrders->addNewOrder($productName, $barCode, $brand, $expectedDelivery, $orderDate, $status, 
-        $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, $exchangeRate, $totalPriceUSD , $totalPriceKHR);
+        $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, $exchangeRate, $totalPriceUSD , $totalPriceKHR, $image);
         $this->redirect('/order_new_product');
     }
 

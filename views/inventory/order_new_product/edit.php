@@ -136,7 +136,7 @@
 
                 <!-- Submit Button -->
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a> <!-- Cancel Button -->
+                    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a> 
                     <button type="submit" class="btn btn-primary">Submit Product</button>
                 </div>
             </form>

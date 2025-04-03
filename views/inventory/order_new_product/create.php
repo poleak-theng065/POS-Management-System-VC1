@@ -41,6 +41,11 @@
                                 <option value="Pending">Pending</option>
                             </select>
                         </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">Upload Image <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" name="image" required>
+                            <small class="form-text text-muted">Upload an image of the product (PNG, JPG, JPEG).</small>
+                        </div>
                     </div>
                 </div>
 
@@ -137,7 +142,7 @@
 
                 <!-- Submit Button -->
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a> <!-- Cancel Button -->
+                    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a> 
                     <button type="submit" class="btn btn-primary">Submit Product</button>
                 </div>
             </form>

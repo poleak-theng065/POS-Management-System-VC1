@@ -14,15 +14,15 @@ class OrderNewProductModel {
     }
 
     public function addNewOrder($productName, $barCode, $brand, $expectedDelivery, $orderDate, $status, 
-    $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, $exchangeRate, $totalPriceUSD , $totalPriceKHR)
+    $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, $exchangeRate, $totalPriceUSD , $totalPriceKHR, $image)
     {
         try {
             $this->db->query(
                 "INSERT INTO order_products (product_name, barcode, brand, expected_delivery, order_date, status, 
-                category, model, supplier, product_status, base_price_usd, base_price_kh, quantity, exchange_rate, total_price_usd, total_price_kh)
+                category, model, supplier, product_status, base_price_usd, base_price_kh, quantity, exchange_rate, total_price_usd, total_price_kh, image_path)
                 VALUES (:product_name, :barcode, :brand, :expected_delivery, :order_date, :status,
                 :category, :model, :supplier, :product_status, :base_price_usd, :base_price_kh,
-                :quantity, :exchange_rate, :total_price_usd, :total_price_kh)",
+                :quantity, :exchange_rate, :total_price_usd, :total_price_kh, :image_path)",
                 [
                     ':product_name' => $productName,
                     ':barcode' => $barCode,
@@ -39,7 +39,8 @@ class OrderNewProductModel {
                     ':quantity' => $quantity,
                     ':exchange_rate' => $exchangeRate,
                     ':total_price_usd' => $totalPriceUSD,
-                    ':total_price_kh' => $totalPriceKHR
+                    ':total_price_kh' => $totalPriceKHR,
+                    ':image_path' => $image,
                 ]);
         } catch (PDOException $e) {
             // Handle error (log it, show a friendly message, etc.)
