@@ -34,7 +34,8 @@
 
                     <!-- Order Form -->
                     <form id="newOrderForm" action="/sale_form/store" method="post">
-                        <div id="productList" class="mb-4"></div>
+                        <div id="productList" class="mb-4" style="max-height: 250px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+                        </div>
 
                         <div class="row mt-4">
                             <div class="col-md-6">
@@ -158,19 +159,19 @@
                         discount: parseFloat(discountInput) || 0
                     };
 
-                    console.log("New Product:", newProduct); // Debugging
-
                     // Check if product already exists by barcode
                     const existingProductIndex = productList.findIndex(p => p.barcode === newProduct.barcode);
                     if (existingProductIndex !== -1) {
                         // Same product, increase quantity
                         productList[existingProductIndex].quantity += 1;
+                        // Scroll to the updated product
+                        updateProductListUI(productList, existingProductIndex);
                     } else {
                         // Different product, add new
                         productList.push(newProduct);
+                        // Scroll to the newly added product
+                        updateProductListUI(productList, productList.length - 1);
                     }
-
-                    updateProductListUI(productList);
                 });
 
                 document.getElementById('addSaleBtn').addEventListener('click', function(e) {
@@ -298,28 +299,44 @@
                     });
                 });
 
-                function updateProductListUI(products) {
+                // Update the updateProductListUI function
+                function updateProductListUI(products, scrollToIndex) {
                     const productListElement = document.getElementById('productList');
                     productListElement.innerHTML = '';
 
                     let totalDiscount = 0;
                     let totalPrice = 0;
 
-                    products.forEach(product => {
+                    products.forEach((product, index) => {
                         const productTotal = (product.price - product.discount) * product.quantity;
                         totalDiscount += product.discount * product.quantity;
                         totalPrice += productTotal;
 
-                        productListElement.innerHTML += `
-                            <div class="d-flex align-items-center gap-4 p-3 rounded mb-4" style="background-color: rgb(222, 238, 255);">
-                                <img src="${product.imageUrl}" alt="Product Image" class="rounded" style="width: 70px; height: 70px;" />
-                                <div class="d-flex flex-column">
-                                    <p class="mb-1"><strong>Product Name:</strong> <span class="text-dark">${product.name}</span></p>
-                                    <p class="mb-1"><strong>Quantity:</strong> <span class="text-dark">${product.quantity}</span></p>
-                                    <p class="mb-0"><strong>Price:</strong> <span class="text-primary fw-bold">$${productTotal.toFixed(2)}</span></p>
-                                </div>
+                        const productDiv = document.createElement('div');
+                        productDiv.className = "d-flex align-items-center gap-3 p-3 mb-3 rounded";
+                        productDiv.style.backgroundColor = "#e7f3ff";
+                        productDiv.style.border = "1px solid #b3d7ff";
+                        productDiv.style.borderRadius = "8px";
+
+                        productDiv.innerHTML = `
+                            <img src="${product.imageUrl}" alt="Product Image" class="rounded" style="width: 70px; height: 70px; object-fit: cover;" />
+                            <div class="flex-grow-1">
+                                <p class="mb-1" style="font-weight: 600; font-size: 1.1em; color: #333;">
+                                    <strong>${product.name}</strong>
+                                </p>
+                                <p class="mb-0" style="font-size: 0.9em; color: #555;">
+                                    <strong>Quantity:</strong> <span class="text-dark">${product.quantity}</span> | 
+                                    <strong>Price:</strong> <span class="text-success fw-bold">$${productTotal.toFixed(2)}</span>
+                                </p>
                             </div>
                         `;
+
+                        productListElement.appendChild(productDiv);
+
+                        // Scroll to the specific product if it's one that was just added or updated
+                        if (index === scrollToIndex) {
+                            productDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                        }
                     });
 
                     document.getElementById('discountText').innerHTML = 
@@ -327,6 +344,8 @@
                     document.getElementById('totalPrice').innerHTML = 
                         `$${totalPrice.toFixed(2)} <i class="bi bi-cash-stack fs-3 text-success me-2"></i>`;
                 }
+
+
 
                 document.getElementById('barcode').addEventListener('change', function() {
                     const selectedOption = this.options[this.selectedIndex];

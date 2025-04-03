@@ -257,7 +257,7 @@
                                                     <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
                                                         {
                                                             "id": "<?= htmlspecialchars($newOrder['id']) ?>",
-                                                            "product_name": "<?= htmlspecialchars($newOrder['name']) ?>",
+                                                            "product_name": "<?= htmlspecialchars($newOrder['product_name']) ?>",
                                                             "quantity": "<?= htmlspecialchars($newOrder['quantity']) ?>",
                                                             "order_date": "<?= htmlspecialchars($newOrder['order_date']) ?>",
                                                             "supplier": "<?= htmlspecialchars($newOrder['supplier']) ?>" <!-- Added supplier -->
@@ -372,7 +372,7 @@
                             <?php if ($newOrder['expected_delivery'] === 'Order'): ?>
                                 {
                                     "id": "<?= htmlspecialchars($newOrder['id']) ?>",
-                                    "product_name": "<?= htmlspecialchars($newOrder['name']) ?>",
+                                    "product_name": "<?= htmlspecialchars($newOrder['product_name']) ?>",
                                     "quantity": "<?= htmlspecialchars($newOrder['quantity']) ?>",
                                     "order_date": "<?= htmlspecialchars($newOrder['order_date']) ?>",
                                     "supplier": "<?= htmlspecialchars($newOrder['supplier']) ?>"
@@ -477,7 +477,7 @@
                     <?php foreach($newOrders as $newOrder): ?>
                     <tr class="border-bottom" 
                         data-id="<?= htmlspecialchars($newOrder['id']) ?>" 
-                        data-product-name="<?= htmlspecialchars($newOrder['name']) ?>" 
+                        data-product-name="<?= htmlspecialchars($newOrder['product_name']) ?>" 
                         data-quantity="<?= htmlspecialchars($newOrder['quantity']) ?>" 
                         data-base-price-usd="<?= htmlspecialchars($newOrder['base_price_usd']) ?>"
                         data-total-price-usd="<?= htmlspecialchars($newOrder['total_price_usd']) ?>"
@@ -488,7 +488,7 @@
                         style="cursor: pointer;">
                         
                         <td><?= htmlspecialchars($newOrder['id']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['name']) ?></td>
+                        <td><?= htmlspecialchars($newOrder['product_name']) ?></td>
                         <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
                         <td><?= htmlspecialchars($newOrder['base_price_usd']) ?></td>
                         <td><?= htmlspecialchars($newOrder['total_price_usd']) ?></td>
@@ -517,7 +517,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['product_name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
                                             <i class="bi bi-trash"></i> Delete
                                         </a>
                                     </li>

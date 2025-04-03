@@ -27,10 +27,16 @@
     }
 </style>
 
+<div class="container">
+    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block"
+        style="border-left: 8px solid #198754; background-color: #f8f9fa;">
+        <i class="bi bi-cart-check text-success me-2"></i> Sales List - Sold Items
+    </h1>
+</div>
 
 <div class="container d-flex flex-row">
     <!-- Total Profit Sold Product -->
-    <div class="col-md-6 mb-4 d-flex">
+    <div class="col-md-6 d-flex">
         <div class="card p-3 flex-grow-1 d-flex flex-column">
             <div class="d-flex align-items-start">
                 <div class="icon-right me-3">
@@ -52,7 +58,7 @@
     </div>
 
     <!-- Total Sold Items -->
-    <div class="col-md-6 mb-4 d-flex">
+    <div class="col-md-6 d-flex">
         <div class="card p-3 flex-grow-1 d-flex flex-column">
             <div class="d-flex align-items-start">
                 <div class="icon-right me-3">
@@ -75,13 +81,8 @@
 
 </div>
 
-
 <!-- View sold product list -->
 <div class="container mt-4">
-    <h1 class="fw-bold px-4 py-3 rounded shadow-sm d-inline-block"
-        style="border-left: 8px solid #198754; background-color: #f8f9fa;">
-        <i class="bi bi-cart-check text-success me-2"></i> Sales List - Sold Items
-    </h1>
 
     <div class="card p-5 bg-white shadow-lg border-0">
         <div class="table-responsive">
