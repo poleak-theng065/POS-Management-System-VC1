@@ -29,7 +29,7 @@
             </thead>
             <tbody id="switchTableBody">
                 <?php foreach ($categories as $index => $category): ?>
-                    <tr>
+                    <tr class="search">
                         <td><?= $index + 1 ?></td>
                         <td><?= $category['name'] ?></td>
                         <td><?= !empty($category['total_brands']) ? $category['total_brands'] : 0 ?></td>

@@ -432,164 +432,165 @@
             <i class="bi bi-box-arrow-in-down text-primary me-2"></i> Import Product - Items to be Imported
         </h1> -->
 
-    <div class="card p-5 bg-white shadow-lg border-0">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-                <input type="text" class="form-control me-2" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
-                <select class="form-select" id="filterSelect" onchange="filterOrders()" style="width: 200px;">
-                    <option value="">Filter by Status</option>
-                    <option value="Delivery">Delivery</option>
-                    <option value="Arrived">Arrived</option>
-                    <option value="Order">Order</option>
-                </select>
-            </div>
-             <!-- Buttons and Export Dropdown -->
-            <div class="d-flex align-items-center">
-                <div class="btn-group me-2">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="exportButton">
-                        <li>
-                            <form method="POST">
-                                <button type="submit" name="export_excel" class="dropdown-item">
-                                    <i class="bi bi-file-earmark-excel me-2"></i> Export to Excel
-                                </button>
-                            </form>
-                        </li>
-                        <li>
-                            <form method="POST">
-                                <button type="submit" name="export_pdf" class="dropdown-item">
-                                    <i class="bi bi-file-earmark-pdf me-2"></i> Export to PDF
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+        <div class="card p-5 bg-white shadow-lg border-0">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex">
+                    <input type="text" class="form-control me-2" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
+                    <select class="form-select" id="filterSelect" onchange="filterOrders()" style="width: 200px;">
+                        <option value="">Filter by Status</option>
+                        <option value="Delivery">Delivery</option>
+                        <option value="Arrived">Arrived</option>
+                        <option value="Order">Order</option>
+                    </select>
                 </div>
+                <!-- Buttons and Export Dropdown -->
+                <div class="d-flex align-items-center">
+                    <div class="btn-group me-2">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="exportButton">
+                            <li>
+                                <form method="POST">
+                                    <button type="submit" name="export_excel" class="dropdown-item">
+                                        <i class="bi bi-file-earmark-excel me-2"></i> Export to Excel
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form method="POST">
+                                    <button type="submit" name="export_pdf" class="dropdown-item">
+                                        <i class="bi bi-file-earmark-pdf me-2"></i> Export to PDF
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
 
-                <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
-            </div>
-            
-        </div>
-
-        <!-- <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
-                <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
-            </div>
-            <button type="submit" class="btn btn-success mt-2">Upload</button>
-        </form> -->
-
-
-
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle" id="orderTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price USD</th>
-                        <th>Total USD</th>
-                        <th>Order Date</th>
-                        <th>Expected Delivery</th>
-                        <th>Supplier</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="switchTableBody">
-                    <?php foreach($newOrders as $newOrder): ?>
-                    <tr class="border-bottom" 
-                        data-id="<?= htmlspecialchars($newOrder['id']) ?>" 
-                        data-product-name="<?= htmlspecialchars($newOrder['product_name']) ?>" 
-                        data-image="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>"
-                        data-quantity="<?= htmlspecialchars($newOrder['quantity']) ?>" 
-                        data-base-price-usd="<?= htmlspecialchars($newOrder['base_price_usd']) ?>"
-                        data-total-price-usd="<?= htmlspecialchars($newOrder['total_price_usd']) ?>"
-                        data-order-date="<?= htmlspecialchars($newOrder['order_date']) ?>" 
-                        data-expected-delivery="<?= htmlspecialchars($newOrder['expected_delivery']) ?>" 
-                        data-supplier="<?= htmlspecialchars($newOrder['supplier']) ?>"
-                        onclick="showProductDetails(event)"
-                        style="cursor: pointer;">
-                        
-                        <td><?= htmlspecialchars($newOrder['id']) ?></td>
-                        <td>
-                            <div class="product-image-container">
-                                <img src="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>" 
-                                    alt="Product Image" class="product-image">
-                            </div>
-                            <?= htmlspecialchars($newOrder['product_name']) ?>
-                        </td>
-                        <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['base_price_usd']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['total_price_usd']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['order_date']) ?></td>
-                        <td>
-                            <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
-                                <span class="badge bg-info">Delivery</span>
-                            <?php elseif ($newOrder['expected_delivery'] === 'Arrived'): ?>
-                                <span class="badge bg-success">Arrived</span>
-                            <?php elseif ($newOrder['expected_delivery'] === 'Order'): ?>
-                                <span class="badge bg-primary">Order</span>
-                            <?php else: ?>
-                                <span class="badge bg-secondary"><?= htmlspecialchars($newOrder['expected_delivery']) ?></span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?= htmlspecialchars($newOrder['supplier']) ?></td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical fs-5"></i>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item text-warning" href="/order_new_product/edit/<?= $newOrder['id'] ?>">
-                                            <i class="bi bi-pencil-square"></i> Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['product_name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <!-- Pagination Component -->
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div id="entriesInfo" class="text-muted">
-                    Showing 1 to <?= count($newOrders) ?> of <?= count($newOrders) ?> entries
+                    <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
                 </div>
-                <nav>
-                    <ul class="pagination" id="pagination">
-                        <li class="page-item disabled" id="prevPage">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item active" aria-current="page" id="page1">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item" id="page2">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item" id="nextPage">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                
+            </div>
+
+            <!-- <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
+                    <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
+                </div>
+                <button type="submit" class="btn btn-success mt-2">Upload</button>
+            </form> -->
+
+
+
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="orderTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price USD</th>
+                            <th>Total USD</th>
+                            <th>Order Date</th>
+                            <th>Expected Delivery</th>
+                            <th>Supplier</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="switchTableBody">
+                        <?php foreach($newOrders as $newOrder): ?>
+                        <tr class="border-bottom search" 
+                            data-id="<?= htmlspecialchars($newOrder['id']) ?>" 
+                            data-product-name="<?= htmlspecialchars($newOrder['product_name']) ?>" 
+                            data-image="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>"
+                            data-quantity="<?= htmlspecialchars($newOrder['quantity']) ?>" 
+                            data-base-price-usd="<?= htmlspecialchars($newOrder['base_price_usd']) ?>"
+                            data-total-price-usd="<?= htmlspecialchars($newOrder['total_price_usd']) ?>"
+                            data-order-date="<?= htmlspecialchars($newOrder['order_date']) ?>" 
+                            data-expected-delivery="<?= htmlspecialchars($newOrder['expected_delivery']) ?>" 
+                            data-supplier="<?= htmlspecialchars($newOrder['supplier']) ?>"
+                            onclick="showProductDetails(event)"
+                            style="cursor: pointer;">
+                            
+                            <td><?= htmlspecialchars($newOrder['id']) ?></td>
+                            <td>
+                                <div class="product-image-container">
+                                    <img src="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>" 
+                                        alt="Product Image" class="product-image">
+                                </div>
+                                <?= htmlspecialchars($newOrder['product_name']) ?>
+                            </td>
+                            <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
+                            <td><?= htmlspecialchars($newOrder['base_price_usd']) ?></td>
+                            <td><?= htmlspecialchars($newOrder['total_price_usd']) ?></td>
+                            <td><?= htmlspecialchars($newOrder['order_date']) ?></td>
+                            <td>
+                                <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
+                                    <span class="badge bg-info">Delivery</span>
+                                <?php elseif ($newOrder['expected_delivery'] === 'Arrived'): ?>
+                                    <span class="badge bg-success">Arrived</span>
+                                <?php elseif ($newOrder['expected_delivery'] === 'Order'): ?>
+                                    <span class="badge bg-primary">Order</span>
+                                <?php else: ?>
+                                    <span class="badge bg-secondary"><?= htmlspecialchars($newOrder['expected_delivery']) ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= htmlspecialchars($newOrder['supplier']) ?></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical fs-5"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a class="dropdown-item text-warning" href="/order_new_product/edit/<?= $newOrder['id'] ?>">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['product_name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+                <!-- Pagination Component -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div id="entriesInfo" class="text-muted">
+                        Showing 1 to <?= count($newOrders) ?> of <?= count($newOrders) ?> entries
+                    </div>
+                    <nav>
+                        <ul class="pagination" id="pagination">
+                            <li class="page-item disabled" id="prevPage">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active" aria-current="page" id="page1">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item" id="page2">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item" id="nextPage">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
 </div>
+
 
 <style>
  @media (min-width: 768px) and (max-width: 1024px) {
