@@ -95,6 +95,7 @@ $route->post("/return_product/store", [ReturnProductController::class, 'store'])
 $route->get("/return_product/edit/{id}", [ReturnProductController::class, 'edit']);
 $route->put("/return_product/update/{id}", [ReturnProductController::class, 'update']);
 $route->delete("/return_product/delete/{id}", [ReturnProductController::class, 'delete']);
+$route->post("/return_product/upload", [ReturnProductController::class, 'upload']);
 
 /**
  * Arrived Product Routes

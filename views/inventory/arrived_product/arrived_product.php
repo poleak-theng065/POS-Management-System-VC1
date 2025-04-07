@@ -360,7 +360,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                 <tbody id="switchTableBody">
                     <?php foreach($arrivedProducts as $arrivedProduct): ?>
                         <?php if ($arrivedProduct['expected_delivery'] === 'Arrived'): ?>
-                            <tr class="border-bottom" onclick="showProductDetails(
+                            <tr class="border-bottom search" onclick="showProductDetails(
                                 '<?= htmlspecialchars($arrivedProduct['id']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['product_name']) ?>',
                                 '<?= !empty($arrivedProduct['image_path']) ? 'assets/img/upload/' . $arrivedProduct['image_path'] : '/path/to/default/image.png' ?>,
