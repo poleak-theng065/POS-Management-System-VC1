@@ -45,19 +45,22 @@
             justify-content: center;
             gap: 10px;
         }
+
         .plus-icon {
-            color: #3498db; /* Blue color */
-            font-size: 32px; /* Slightly bigger */
+            color: #3498db;
+            font-size: 32px;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
         }
+
         .plus-icon:hover {
-            transform: scale(1.2); /* Slight animation */
-            color: #2980b9; /* Darker blue on hover */
+            transform: scale(1.2);
+            color: #2980b9;
         }
+
         h1::after {
             content: '';
-            width:5%;
+            width: 5%;
             height: 3px;
             background: #3498db;
             position: absolute;
@@ -83,7 +86,7 @@
 
         .controls button {
             padding: 8px 16px;
-            background-color:#696cff;
+            background-color: #696cff;
             color: white;
             border: none;
             border-radius: 5px;
@@ -99,7 +102,7 @@
             width: 100%;
             border-collapse: collapse;
             background-color: #f8f9fa;
-            table-layout: fixed; /* Ensure columns don't stretch unnecessarily */
+            table-layout: fixed;
         }
 
         .user-table th, .user-table td {
@@ -113,13 +116,12 @@
             color: white;
         }
 
-        /* Set specific widths for columns */
         .user-table th:nth-child(1), .user-table td:nth-child(1) {
-            width: 70%; /* User column takes most of the space */
+            width: 70%;
         }
 
         .user-table th:nth-child(2), .user-table td:nth-child(2) {
-            width: 30%; /* Role column is more compact */
+            width: 30%;
         }
 
         .user-table tr:hover {
@@ -160,6 +162,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
         }
 
         .role-badge {
@@ -209,6 +212,47 @@
             color: #3498db;
         }
 
+        /* Dropdown Menu Styling */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-width: 120px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-item.edit {
+            color: #f1c40f;
+        }
+
+        .dropdown-item.delete {
+            color: #e74c3c;
+        }
+
         @media (max-width: 600px) {
             body {
                 flex-direction: column;
@@ -240,6 +284,14 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 5px;
+            }
+
+            .dots {
+                left: 0;
+            }
+
+            .dropdown-menu {
+                right: -10px;
             }
         }
     </style>
@@ -294,6 +346,14 @@
                                         </span>
                                         <span class="dots" aria-label="User options menu">
                                             <i class="fa-solid fa-ellipsis"></i>
+                                            <div class="dropdown-menu">
+                                                <div class="dropdown-item edit">
+                                                    <i class="fa-solid fa-pen"></i> Edit
+                                                </div>
+                                                <div class="dropdown-item delete">
+                                                    <i class="fa-solid fa-trash"></i> Delete
+                                                </div>
+                                            </div>
                                         </span>
                                     </div>
                                 </td>
@@ -391,6 +451,14 @@
                         </span>
                         <span class="dots" aria-label="User options menu">
                             <i class="fa-solid fa-ellipsis"></i>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item edit">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </div>
+                                <div class="dropdown-item delete">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </div>
+                            </div>
                         </span>
                     </div>
                 </td>
@@ -402,10 +470,83 @@
             filterAccounts();
         }
 
-        // Initialize the dropdown with existing roles when the page loads
+        // Dropdown menu toggle functionality
         document.addEventListener('DOMContentLoaded', function() {
             updateFilterDropdown();
+
+            const dots = document.querySelectorAll('.dots');
+            dots.forEach(dot => {
+                dot.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const dropdown = this.querySelector('.dropdown-menu');
+                    // Close all other dropdowns
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        if (menu !== dropdown) {
+                            menu.classList.remove('active');
+                        }
+                    });
+                    // Toggle the clicked dropdown
+                    dropdown.classList.toggle('active');
+                });
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dots')) {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.classList.remove('active');
+                    });
+                }
+            });
+
+            // Add event listeners for Edit and Delete actions
+            document.querySelectorAll('.dropdown-item.edit').forEach(item => {
+                item.addEventListener('click', function() {
+                    const username = this.closest('tr').querySelector('.name').textContent;
+                    alert(`Edit user: ${username}`);
+                    // Add your edit logic here (e.g., redirect to an edit page)
+                });
+            });
+
+            document.querySelectorAll('.dropdown-item.delete').forEach(item => {
+                item.addEventListener('click', function() {
+                    const username = this.closest('tr').querySelector('.name').textContent;
+                    if (confirm(`Are you sure you want to delete user: ${username}?`)) {
+                        this.closest('tr').remove();
+                        updateFilterDropdown();
+                        filterAccounts();
+                    }
+                });
+            });
         });
     </script>
+
+    <!-- Edit -->
+
+    <script>
+        document.querySelectorAll('.dropdown-item.edit').forEach(item => {
+            item.addEventListener('click', function () {
+                const row = this.closest('tr');
+                const userId = row.getAttribute('data-id'); // Add this attribute in your PHP foreach
+
+                window.location.href = `/user_account/edit/${userId}`;
+            });
+        });
+
+        document.querySelectorAll('.dropdown-item.delete').forEach(item => {
+            item.addEventListener('click', function () {
+                const row = this.closest('tr');
+                const userId = row.getAttribute('data-id');
+                const username = row.querySelector('.name').textContent;
+
+                if (confirm(`Are you sure you want to delete user: ${username}?`)) {
+                    window.location.href = `/user_account/delete/${userId}`;
+                }
+            });
+        });
+
+    </script>
+
+
 </body>
 </html>

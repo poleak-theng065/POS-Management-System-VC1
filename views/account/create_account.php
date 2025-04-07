@@ -129,7 +129,7 @@
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.50rem;
             border: 1px solid var(--border);
             border-radius: 5px;
             font-size: 1rem;
@@ -161,8 +161,9 @@
         }
 
         .btn-exit {
-            background: #dc3545;
+            background:rgb(235, 16, 38);
             border: none;
+            color: white;
         }
 
         .btn-exit:hover {

@@ -44,9 +44,12 @@ $route->get("/forgot-password", [AuthController::class, 'forgotPassword']);
  */
 $route->get("/create_account", [CreateAccountController::class, 'create_account']);
 $route->get("/user_account", [UserAccountController::class, 'user_account']);
-
 // routes.php or your route configuration file
 $route->post("/create-account/store", [CreateAccountController::class, 'store']);
+// Update user account (edit form submission)
+$route->post("/user-account/update", [UserAccountController::class, 'update']); 
+// Delete user account
+$route->post("/user-account/delete", [UserAccountController::class, 'delete']);
 
 
 /**
