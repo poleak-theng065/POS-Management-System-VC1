@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Product Title <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="productName" value="<?= htmlspecialchars($newOrder['name']); ?>" placeholder="Enter product title">
+                            <input type="text" class="form-control" name="productName" value="<?= htmlspecialchars($newOrder['product_name']); ?>" placeholder="Enter product title">
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Barcode <span class="text-danger">*</span></label>
@@ -40,6 +40,20 @@
                                 <option value="Pending" <?= $newOrder['status'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
                             </select>
                         </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" name="image">
+                            <small class="form-text text-muted">Upload a new product image (PNG, JPG, JPEG).</small>
+                            
+                            <?php if (!empty($newOrder['image'])): ?>
+                                <div class="mt-2">
+                                    <p>Current Image:</p>
+                                    <img src="/uploads/<?= htmlspecialchars($newOrder['image_path']); ?>" alt="Product Image" class="img-thumbnail" width="150">
+                                    <input type="hidden" name="oldImage" value="<?= htmlspecialchars($newOrder['image_path']); ?>">
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
                     </div>
                 </div>
 
@@ -136,8 +150,8 @@
 
                 <!-- Submit Button -->
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a> <!-- Cancel Button -->
-                    <button type="submit" class="btn btn-primary">Submit Product</button>
+                    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a> 
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>

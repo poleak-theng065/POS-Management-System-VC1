@@ -1,10 +1,14 @@
 <div class="container mt-4">
     <div class="card p-4 bg-light shadow-sm border-0">
         <h3 class="card-title">Create New Order</h3>
-        <form id="returnForm" action="/return_product/store" method="post">
+        <form id="returnForm" action="/return_product/store" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="productName" class="form-label">Product Name</label>
                 <input type="text" class="form-control" id="productName" name="product_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="productImage" class="form-label">Product Image</label>
+                <input type="file" class="form-control" id="productImage" name="product_image" accept="image/*" required>
             </div>
             <div class="mb-3">
                 <label for="quantity" class="form-label">Quantity</label>
@@ -31,6 +35,7 @@
         </form>
     </div>
 </div>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
