@@ -8,7 +8,9 @@ require_once "Controllers/BaseController.php";
 require_once "Database/Database.php";
 
 // Dashboard Controller
-require_once "Controllers/DashboardController.php";
+require_once "Controllers/dashbord/DashboardController.php";
+require_once "Controllers/dashbord/TotalSoldController.php";
+
 
 // Inventory Controllers
 require_once "Controllers/inventory/ProductListController.php";
@@ -26,6 +28,8 @@ require_once "Controllers/inventory/SaleReceiptController.php";
 require_once "Controllers/auth/LoginController.php";
 require_once "Controllers/auth/CreateAccountController.php";
 require_once "Controllers/auth/UserAccountController.php";
+
+
 
 
 
@@ -49,6 +53,8 @@ $route->get("/user_account", [UserAccountController::class, 'user_account']);
  * Dashboard Routes
  */
 $route->get("/", [DashboardController::class, 'dashboard']);
+$route->get("/_totalSold", [TotalSoldController::class, 'index']);
+
 
 /**
  * Category Routes
