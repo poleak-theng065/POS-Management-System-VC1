@@ -3,6 +3,20 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
+
+<style>
+    /* text in each stay at the center of row */
+    .table td {
+        vertical-align: middle;
+        text-align: left; 
+    }
+
+    .table td:nth-child(2) {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
 <div class="container mt-4">
 
     <!-- Summary Panel -->
@@ -349,13 +363,18 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                             <tr class="border-bottom" onclick="showProductDetails(
                                 '<?= htmlspecialchars($arrivedProduct['id']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['product_name']) ?>',
+                                '<?= !empty($arrivedProduct['image_path']) ? 'assets/img/upload/' . $arrivedProduct['image_path'] : '/path/to/default/image.png' ?>,
                                 '<?= htmlspecialchars($arrivedProduct['quantity']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['order_date']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['supplier']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['status']) ?>'
                             )" style="cursor: pointer;">
                                 <td><?= htmlspecialchars($arrivedProduct['id']) ?></td>
-                                <td><?= htmlspecialchars($arrivedProduct['product_name']) ?></td>
+                                <td>
+                                    <img src="<?= !empty($arrivedProduct['image_path']) ? 'assets/img/upload/' . $arrivedProduct['image_path'] : '/path/to/default/image.png' ?>" 
+                                        alt="Product Image" width="50" height="50" class="rounded me-2">
+                                    <?= htmlspecialchars($arrivedProduct['product_name']) ?>
+                                </td>
                                 <td><?= htmlspecialchars($arrivedProduct['quantity']) ?></td>
                                 <td><?= htmlspecialchars($arrivedProduct['order_date']) ?></td>
                                 <td>
