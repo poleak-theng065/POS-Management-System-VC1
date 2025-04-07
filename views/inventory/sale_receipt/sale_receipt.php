@@ -71,10 +71,75 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
+                <tbody id="salesTableBody">
+                <?php foreach ($sales as $index => $sale): ?>
+
+                <tr class="border-bottom" 
+                        data-sale-id="<?= htmlspecialchars($sale['sale_id']) ?>" 
+                        data-customer-name="<?= htmlspecialchars($sale['customer_name']) ?>" 
+                        data-sale-date="<?= htmlspecialchars($sale['sale_date']) ?>" 
+                        data-sale-time="<?= htmlspecialchars($sale['sale_time']) ?>"
+                        data-total-price="<?= htmlspecialchars($sale['total_price']) ?>"
+                        onclick="showProductDetails(event)"
+                        style="cursor: pointer;">
+                        
+                        <td><?= htmlspecialchars($sale['sale_id']) ?></td>
+                        <td><?= htmlspecialchars($sale['customer_name']) ?></td>
+                        <td><?= htmlspecialchars($sale['sale_date']) ?></td>
+                        <td><?= htmlspecialchars($sale['total_price']) ?></td>
+
+            
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical fs-5"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a class="dropdown-item text-warning" href="/order_new_product/edit/<?= $sale['sale_id'] ?>">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($sale['customer_name']) ?>', '/sale_receipt/delete/<?= $sale['sale_id'] ?>')">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                        
+                    <div class="dropdown">
+                        <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton<?= $sale['sale_id'] ?>" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical fs-5"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $sale['sale_id'] ?>">
+                            <li>
+                                <a href="/sales/view/<?= $sale['sale_id'] ?>" class="dropdown-item text-primary">
+                                    <i class="bi bi-eye fs-5"></i> View
+                                </a>
+                            </li>
+                            <li>
+                                    <a href="/sales/edit/<?= $sale['sale_id'] ?>" class="dropdown-item text-warning">
+                                    <i class="bi bi-pencil-square fs-5"></i> Edit
+                                 </a>
+                                </li>
+                                <li>
+                                <a href="#" class="dropdown-item text-danger deleteSaleBtn"
+                                     data-id="<?= $sale['sale_id'] ?>"
+                                     data-name="<?= htmlspecialchars($sale['customer_name']) ?>"
+                                     data-bs-toggle="modal" data-bs-target="#deleteSaleModal">
+                                     <i class="bi bi-trash fs-5"></i> Delete
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        </tbody>
+    </table>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mt-3">
