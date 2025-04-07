@@ -295,7 +295,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     return new bootstrap.Tooltip(tooltipTriggerEl);
                 });
             </script>
-        </div>
+    </div>
 
 
         <div class="row g-4 mb-4 mt-1">
@@ -370,7 +370,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     </thead>
                     <tbody id="switchTableBody">
                         <?php foreach ($products as $index => $product): ?>
-                            <tr class="border-bottom clickable-row" data-product-id="<?= $product['product_id'] ?>"
+                            <tr class="border-bottom search clickable-row" data-product-id="<?= $product['product_id'] ?>"
                                 data-barcode="<?= $product['barcode'] ?>"
                                 data-image="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
                                 data-name="<?= $product['name'] ?>"
@@ -437,6 +437,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     </tbody>
                 </table>
             </div>
+            <!-- Pagination Component -->
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <div id="entriesInfo" class="text-muted">
                     Showing 1 to <?= count($products) ?> of <?= count($products) ?> entries
@@ -448,8 +449,11 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item active" id="page1">
+                        <li class="page-item active" aria-current="page" id="page1">
                             <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item" id="page2">
+                            <a class="page-link" href="#">2</a>
                         </li>
                         <li class="page-item" id="nextPage">
                             <a class="page-link" href="#" aria-label="Next">
@@ -460,7 +464,6 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                 </nav>
             </div>
         </div>
-    </div>
 </div>
 
 

@@ -1,61 +1,101 @@
-let currentPage = 1; // Start on the first page
-let entriesPerPage = 10; // Number of entries per page
-const entries = Array.from(document.querySelectorAll('#switchTableBody tr')); // Get all rows in the table body
-const totalEntries = entries.length;
+document.addEventListener('DOMContentLoaded', function () {
+    let currentPage = 1;
+    const entriesPerPage = 10;
 
-// Function to update the table display based on the current page
-function updateTable() {
-    // Hide all entries
-    entries.forEach((row, index) => {
-        row.style.display = 'none';
-        if (index < currentPage * entriesPerPage && index >= (currentPage - 1) * entriesPerPage) {
-            row.style.display = ''; // Show the current page's entries
+    const entries = Array.from(document.querySelectorAll('tbody tr.search'));
+    const totalEntries = entries.length;
+    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+    function updateTable() {
+        const start = (currentPage - 1) * entriesPerPage;
+        const end = start + entriesPerPage;
+
+        // Show or hide rows based on the current page
+        entries.forEach((row, index) => {
+            row.style.display = (index >= start && index < end) ? '' : 'none';
+        });
+
+        // Update entries information display
+        const startEntry = start + 1;
+        const endEntry = Math.min(end, totalEntries);
+        document.getElementById('entriesInfo').innerText = `Showing ${startEntry} to ${endEntry} of ${totalEntries} entries`;
+
+        // Update pagination buttons
+        updatePagination();
+    }
+
+    function updatePagination() {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = ''; // Clear existing pagination buttons
+
+        // Create the "previous" button
+        const prevBtn = createPageButton('«', currentPage - 1, currentPage > 1);
+        pagination.appendChild(prevBtn);
+
+        // Create the page number buttons dynamically
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                const pageBtn = createPageButton(i, i, true, i === currentPage);
+                pagination.appendChild(pageBtn);
+            } else if (i === currentPage - 2 || i === currentPage + 2) {
+                const ellipsis = document.createElement('li');
+                ellipsis.className = 'page-item disabled';
+                ellipsis.innerHTML = '<span class="page-link">...</span>';
+                pagination.appendChild(ellipsis);
+            }
         }
-    });
 
-    // Update entries info
-    const start = (currentPage - 1) * entriesPerPage + 1;
-    const end = Math.min(currentPage * entriesPerPage, totalEntries);
-    document.getElementById('entriesInfo').innerText = `Showing ${start} to ${end} of ${totalEntries} entries`;
+        // Create the "next" button
+        const nextBtn = createPageButton('»', currentPage + 1, currentPage < totalPages);
+        pagination.appendChild(nextBtn);
+    }
 
-    // Update pagination buttons
-    document.getElementById('prevPage').classList.toggle('disabled', currentPage === 1);
-    document.getElementById('nextPage').classList.toggle('disabled', currentPage * entriesPerPage >= totalEntries);
-    document.querySelectorAll('.page-item').forEach(item => item.classList.remove('active'));
-    document.getElementById(`page${currentPage}`).classList.add('active');
-}
+    function createPageButton(text, page, isActive, isCurrent) {
+        const pageItem = document.createElement('li');
+        pageItem.className = `page-item ${isActive ? '' : 'disabled'} ${isCurrent ? 'active' : ''}`;
+        const pageLink = document.createElement('a');
+        pageLink.className = 'page-link';
+        pageLink.href = '#';
+        pageLink.innerText = text;
 
-// Function to change the page
-function changePage(page) {
-    currentPage = page;
+        pageLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (isActive) {
+                currentPage = page;
+                updateTable();
+            }
+        });
+
+        pageItem.appendChild(pageLink);
+        return pageItem;
+    }
+
+    // Listen to "prev" and "next" button clicks for navigation
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+
+    // The prev button should update the currentPage and call updateTable
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                updateTable(); // Update the table after changing the page
+            }
+        });
+    }
+
+    // The next button should update the currentPage and call updateTable
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTable(); // Update the table after changing the page
+            }
+        });
+    }
+
+    // Initial call to populate the table and pagination
     updateTable();
-}
-
-// Event listeners for pagination buttons
-document.getElementById('prevPage').addEventListener('click', function (e) {
-    e.preventDefault();
-    if (currentPage > 1) {
-        changePage(currentPage - 1);
-    }
 });
-
-document.getElementById('nextPage').addEventListener('click', function (e) {
-    e.preventDefault();
-    if (currentPage * entriesPerPage < totalEntries) {
-        changePage(currentPage + 1);
-    }
-});
-
-// Assuming you have page buttons for page 1 and page 2
-document.getElementById('page1').addEventListener('click', function (e) {
-    e.preventDefault();
-    changePage(1);
-});
-
-document.getElementById('page2').addEventListener('click', function (e) {
-    e.preventDefault();
-    changePage(2);
-});
-
-// Initial table update
-updateTable();
