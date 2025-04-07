@@ -1,9 +1,7 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 1;
-    const entriesPerPage = 5;
+    const entriesPerPage = 10;
 
-    // Make sure you are selecting rows with class 'search'
     const entries = Array.from(document.querySelectorAll('tbody tr.search'));
     const totalEntries = entries.length;
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
@@ -12,67 +10,92 @@ document.addEventListener('DOMContentLoaded', function () {
         const start = (currentPage - 1) * entriesPerPage;
         const end = start + entriesPerPage;
 
+        // Show or hide rows based on the current page
         entries.forEach((row, index) => {
-            if (index >= start && index < end) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            row.style.display = (index >= start && index < end) ? '' : 'none';
         });
 
+        // Update entries information display
         const startEntry = start + 1;
         const endEntry = Math.min(end, totalEntries);
         document.getElementById('entriesInfo').innerText = `Showing ${startEntry} to ${endEntry} of ${totalEntries} entries`;
 
-        // Set active page button
+        // Update pagination buttons
+        updatePagination();
+    }
+
+    function updatePagination() {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = ''; // Clear existing pagination buttons
+
+        // Create the "previous" button
+        const prevBtn = createPageButton('«', currentPage - 1, currentPage > 1);
+        pagination.appendChild(prevBtn);
+
+        // Create the page number buttons dynamically
         for (let i = 1; i <= totalPages; i++) {
-            const pageBtn = document.getElementById(`page${i}`);
-            if (pageBtn) {
-                pageBtn.classList.remove('active');
-                if (i === currentPage) pageBtn.classList.add('active');
+            if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                const pageBtn = createPageButton(i, i, true, i === currentPage);
+                pagination.appendChild(pageBtn);
+            } else if (i === currentPage - 2 || i === currentPage + 2) {
+                const ellipsis = document.createElement('li');
+                ellipsis.className = 'page-item disabled';
+                ellipsis.innerHTML = '<span class="page-link">...</span>';
+                pagination.appendChild(ellipsis);
             }
         }
 
-        // Toggle prev/next button disabled state
-        document.getElementById('prevPage').classList.toggle('disabled', currentPage === 1);
-        document.getElementById('nextPage').classList.toggle('disabled', currentPage === totalPages);
+        // Create the "next" button
+        const nextBtn = createPageButton('»', currentPage + 1, currentPage < totalPages);
+        pagination.appendChild(nextBtn);
     }
 
-    // Page buttons
-    for (let i = 1; i <= totalPages; i++) {
-        const pageBtn = document.getElementById(`page${i}`);
-        if (pageBtn) {
-            pageBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                currentPage = i;
+    function createPageButton(text, page, isActive, isCurrent) {
+        const pageItem = document.createElement('li');
+        pageItem.className = `page-item ${isActive ? '' : 'disabled'} ${isCurrent ? 'active' : ''}`;
+        const pageLink = document.createElement('a');
+        pageLink.className = 'page-link';
+        pageLink.href = '#';
+        pageLink.innerText = text;
+
+        pageLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (isActive) {
+                currentPage = page;
                 updateTable();
-            });
-        }
+            }
+        });
+
+        pageItem.appendChild(pageLink);
+        return pageItem;
     }
 
-    // Prev button
+    // Listen to "prev" and "next" button clicks for navigation
     const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+
+    // The prev button should update the currentPage and call updateTable
     if (prevBtn) {
         prevBtn.addEventListener('click', function (e) {
             e.preventDefault();
             if (currentPage > 1) {
                 currentPage--;
-                updateTable();
+                updateTable(); // Update the table after changing the page
             }
         });
     }
 
-    // Next button
-    const nextBtn = document.getElementById('nextPage');
+    // The next button should update the currentPage and call updateTable
     if (nextBtn) {
         nextBtn.addEventListener('click', function (e) {
             e.preventDefault();
             if (currentPage < totalPages) {
                 currentPage++;
-                updateTable();
+                updateTable(); // Update the table after changing the page
             }
         });
     }
 
-    updateTable(); // initial call
+    // Initial call to populate the table and pagination
+    updateTable();
 });

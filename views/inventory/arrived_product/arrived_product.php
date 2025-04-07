@@ -4,18 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
-<style>
-    /* text in each stay at the center of row */
-    .table td {
-        vertical-align: middle;
-        text-align: left; 
-    }
-
-    .table td:nth-child(2) {
-        display: flex;
-        align-items: center;
-    }
-</style>
 
 <div class="container mt-4">
 
@@ -86,7 +74,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                             </thead>
                             <tbody>
                                 <?php foreach ($arrivedProductsGroupedByName as $product): ?>
-                                    <tr>
+                                    <tr class="border-bottom">
                                         <td><?= htmlspecialchars($product['product_name']) ?></td>
                                         <td><?= htmlspecialchars($product['quantity']) ?></td>
                                         <td><?= htmlspecialchars($product['supplier']) ?></td>
@@ -168,7 +156,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                             </thead>
                             <tbody>
                                 <?php foreach ($readyProductsGroupedByName as $product): ?>
-                                    <tr>
+                                    <tr class="border-bottom">
                                         <td><?= htmlspecialchars($product['product_name']) ?></td>
                                         <td><?= htmlspecialchars($product['quantity']) ?></td>
                                         <td><?= htmlspecialchars($product['supplier']) ?></td>
@@ -251,7 +239,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                             </thead>
                             <tbody>
                                 <?php foreach ($pendingProductsGroupedByName as $product): ?>
-                                    <tr>
+                                    <tr class="border-bottom">
                                         <td><?= htmlspecialchars($product['product_name']) ?></td>
                                         <td><?= htmlspecialchars($product['quantity']) ?></td>
                                         <td><?= htmlspecialchars($product['supplier']) ?></td>
@@ -361,18 +349,21 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     <?php foreach($arrivedProducts as $arrivedProduct): ?>
                         <?php if ($arrivedProduct['expected_delivery'] === 'Arrived'): ?>
                             <tr class="border-bottom search" onclick="showProductDetails(
+                                event,
                                 '<?= htmlspecialchars($arrivedProduct['id']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['product_name']) ?>',
-                                '<?= !empty($arrivedProduct['image_path']) ? 'assets/img/upload/' . $arrivedProduct['image_path'] : '/path/to/default/image.png' ?>,
+                                '<?= !empty($arrivedProduct['image_path']) ? 'assets/img/upload/' . $arrivedProduct['image_path'] : '/path/to/default/image.png' ?>',
                                 '<?= htmlspecialchars($arrivedProduct['quantity']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['order_date']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['supplier']) ?>',
                                 '<?= htmlspecialchars($arrivedProduct['status']) ?>'
-                            )" style="cursor: pointer;">
+                                )" style="cursor: pointer;">
                                 <td><?= htmlspecialchars($arrivedProduct['id']) ?></td>
                                 <td>
-                                    <img src="<?= !empty($arrivedProduct['image_path']) ? 'assets/img/upload/' . $arrivedProduct['image_path'] : '/path/to/default/image.png' ?>" 
-                                        alt="Product Image" width="50" height="50" class="rounded me-2">
+                                    <div class="product-image-container">
+                                        <img src="<?= !empty($arrivedProduct['image_path']) ? 'assets/img/upload/' . $arrivedProduct['image_path'] : '/path/to/default/image.png' ?>" 
+                                            alt="Product Image" class="product-image">
+                                    </div>
                                     <?= htmlspecialchars($arrivedProduct['product_name']) ?>
                                 </td>
                                 <td><?= htmlspecialchars($arrivedProduct['quantity']) ?></td>
@@ -447,22 +438,77 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 </div>
 
 
+<style>
+    .product-image-container {
+    background-color: #f0f0f0;  /* Light gray background */
+    border-radius: 8px;        /* Rounded corners */
+    padding: 2px;              /* Space around the image */
+    display: inline-block;       /* Wraps around the image */
+    }
+
+    .product-image {
+        width: 40px;                /* Adjust image size */
+        height: 40px;               /* Adjust image size */
+        /* border-radius: 8px;         Rounded corners of the image */
+    }
+
+    .table td {
+        vertical-align: middle; /* Keep text vertically centered */
+        text-align: left;       /* Align text to the left */
+    }
+
+    .table td:nth-child(2) {
+        display: flex;          
+        align-items: center;    
+        justify-content: flex-start;
+        border: none; /* Ensure no extra bold effect */
+        font-weight: normal; /* Ensure text weight is the same */
+    }
+
+
+    .product-image-container {
+        margin-right: 10px;     /* Space between image and text */
+    }
+</style>
+
+
 <!-- Bootstrap Modal -->
 <div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="productDetailsLabel">Product Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white fw-bold" id="productDetailsLabel">Product Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            <!-- Body -->
             <div class="modal-body">
-                <p><strong>Order ID:</strong> <span id="modal-order-id"></span></p>
-                <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
-                <p><strong>Quantity:</strong> <span id="modal-quantity"></span></p>
-                <p><strong>Order Date:</strong> <span id="modal-order-date"></span></p>
-                <p><strong>Supplier:</strong> <span id="modal-supplier"></span></p>
-                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                <div class="row g-4">
+
+                    <!-- Left: Image Section -->
+                    <div class="col-md-5">
+                        <div id="modal-image-container" class="text-center">
+                            <!-- Image will be appended here -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Product Details -->
+                    <div class="col-md-7 d-flex flex-column">
+                        <div class="card border-0 shadow-sm p-3 flex-fill">
+                            <h4 class="text-primary fw-bold mb-3" id="modal-product-name"></h4>
+                            <p class="mb-2"><strong>Order ID:</strong> <span id="modal-order-id"></span></p>
+                            <p class="mb-2"><strong>Quantity:</strong> <span id="modal-quantity"></span></p>
+                            <p class="mb-2"><strong>Order Date:</strong> <span id="modal-order-date"></span></p>
+                            <p class="mb-2"><strong>Supplier:</strong> <span id="modal-supplier"></span></p>
+                            <p class="mb-2"><strong>Status:</strong> <span id="modal-status"></span></p>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
+            <!-- Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
@@ -471,8 +517,9 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 </div>
 
 
-<script>
-function showProductDetails(id, productName, quantity, orderDate, supplier, status) {
+
+<<script>
+function showProductDetails(event, id, productName, imagePath, quantity, orderDate, supplier, status) {
     // Prevent clicking on the dropdown button or link
     if (event.target.closest(".dropdown") || event.target.closest("button") || event.target.closest("a")) {
         return;
@@ -486,11 +533,29 @@ function showProductDetails(id, productName, quantity, orderDate, supplier, stat
     document.getElementById("modal-supplier").textContent = supplier;
     document.getElementById("modal-status").textContent = status;
 
+    // Create the product image dynamically
+    const imageContainer = document.getElementById("modal-image-container");
+    imageContainer.innerHTML = ''; // Clear any existing image
+
+    const img = document.createElement("img");
+    img.src = imagePath;
+    img.alt = "Product Image";
+    img.className = "img-fluid rounded";
+    img.style.maxHeight = "250px";
+    img.style.objectFit = "cover";
+
+    imageContainer.appendChild(img);
+
     // Show the modal using Bootstrap's modal API
-    let modal = new bootstrap.Modal(document.getElementById('productDetailsModal'));
+    const modal = new bootstrap.Modal(document.getElementById('productDetailsModal'));
     modal.show();
 }
 </script>
+
+
+
+
+
 
 <?php else: ?>
     <?php $this->redirect('/login'); ?>
