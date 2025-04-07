@@ -51,18 +51,6 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     /* Ensure the icon stays in the top-right */
                 }
 
-                /*  */
-                .table td {
-                    vertical-align: middle;
-                    text-align: left; /* Align text to the start */
-                }
-
-                .table td:nth-child(2) {
-                    display: flex;
-                    align-items: center;
-                }
-
-
             </style>
 
             <div class="col-md-3 mb-4">
@@ -106,14 +94,16 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                                 <tbody>
                                     <?php foreach ($products as $product): ?>
                                         <?php if ($product['stock_quantity'] == 0): ?>
-                                            <tr>
+                                            <tr class="border-bottom">
                                                 <td><?= htmlspecialchars($product['barcode']) ?></td>
                                                 <td>
-                                                    <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>" 
-                                                        alt="Product Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 8px;">
+                                                    <div class="product-image-container">
+                                                        <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>" 
+                                                            alt="Product Image" class="product-image">
+                                                    </div>
                                                     <?= htmlspecialchars($product['name']) ?>
                                                 </td>
-                                                <td><?= $product['stock_quantity'] ?></td>
+                                                <td><span class="text-danger"><?= $product['stock_quantity'] ?></span></td>
                                                 <td><?= !empty($product['category_name']) ? htmlspecialchars($product['category_name']) : 'No category' ?></td>
                                             </tr>
                                         <?php endif; ?>
@@ -174,14 +164,16 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                                 <tbody>
                                     <?php foreach ($products as $product): ?>
                                         <?php if ($product['stock_quantity'] <= $lowStockThreshold && $product['stock_quantity'] > 0): ?>
-                                            <tr>
+                                            <tr  class="border-bottom">
                                             <td><?= htmlspecialchars($product['barcode']) ?></td>
                                             <td>
-                                                <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>" 
-                                                    alt="Product Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 8px;">
+                                                <div class="product-image-container">
+                                                    <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>" 
+                                                        alt="Product Image" class="product-image">
+                                                </div>
                                                 <span><?= htmlspecialchars($product['name']) ?></span>
                                             </td>
-                                            <td><?= $product['stock_quantity'] ?></td>
+                                            <td><span class="text-warning"><?= $product['stock_quantity'] ?></span></td>
                                             <td><?= !empty($product['category_name']) ? htmlspecialchars($product['category_name']) : 'No category' ?></td>
 
                                             </tr>
@@ -303,7 +295,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     return new bootstrap.Tooltip(tooltipTriggerEl);
                 });
             </script>
-        </div>
+    </div>
 
 
         <div class="row g-4 mb-4 mt-1">
@@ -356,7 +348,6 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                         </ul>
                     </div>
 
-
                     <a href="/product_list/create" class="btn btn-primary ms-2">+ Add Product</a>
                 </div>
 
@@ -368,7 +359,6 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     <thead>
                         <tr>
                             <th>Barcode</th>
-                            <!-- <th>Image</th> -->
                             <th>Name</th>
                             <th>Brand</th>
                             <th>Type</th>
@@ -380,7 +370,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     </thead>
                     <tbody id="switchTableBody">
                         <?php foreach ($products as $index => $product): ?>
-                            <tr class="clickable-row" data-product-id="<?= $product['product_id'] ?>"
+                            <tr class="border-bottom search clickable-row" data-product-id="<?= $product['product_id'] ?>"
                                 data-barcode="<?= $product['barcode'] ?>"
                                 data-image="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
                                 data-name="<?= $product['name'] ?>"
@@ -394,16 +384,19 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
 
                                 <!-- Combined image and name in one column -->
                                 <td>
-                                    <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
-                                        alt="Product Image" width="50" height="50" style="object-fit: cover; border-radius: 5px; display: inline-block; margin-right: 8px;">
-                                    <?php if ($product['stock_quantity'] == 0): ?>
-                                        <i class="bi bi-x-circle-fill text-danger"></i> <!-- Out of stock icon -->
-                                    <?php elseif ($product['stock_quantity'] <= 5): ?>
-                                        <i class="bi bi-exclamation-circle-fill text-warning"></i> <!-- Low stock icon -->
-                                    <?php endif; ?>
-                                    <?= $product['name'] ?>
-                                </td>
+                                    <div class="product-image-container">
+                                        <img src="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>"
+                                            alt="Product Image" class="product-image">
+                                    </div>
 
+                                    <?php if ($product['stock_quantity'] == 0): ?>
+                                        <i class="bi bi-x-circle-fill text-danger" style="margin-right: 3px;"></i> 
+                                    <?php elseif ($product['stock_quantity'] <= 5): ?>
+                                        <i class="bi bi-exclamation-circle-fill text-warning" style="margin-right: 3px;"></i> 
+                                    <?php endif; ?>
+
+                                    <?= htmlspecialchars($product['name']) ?>
+                                </td>
                                 <td><?= $product['brand'] ?></td>
                                 <td><?= $product['type'] ?></td>
                                 <td><?= $product['status'] ?></td>
@@ -444,6 +437,7 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                     </tbody>
                 </table>
             </div>
+            <!-- Pagination Component -->
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <div id="entriesInfo" class="text-muted">
                     Showing 1 to <?= count($products) ?> of <?= count($products) ?> entries
@@ -455,8 +449,11 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item active" id="page1">
+                        <li class="page-item active" aria-current="page" id="page1">
                             <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item" id="page2">
+                            <a class="page-link" href="#">2</a>
                         </li>
                         <li class="page-item" id="nextPage">
                             <a class="page-link" href="#" aria-label="Next">
@@ -467,47 +464,78 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
                 </nav>
             </div>
         </div>
-    </div>
+</div>
 
 
-<!-- Modal display data in each row -->
-<div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+<!-- style for image in each row -->
+<style>
+    .product-image-container {
+    background-color: #f0f0f0;  
+    border-radius: 8px;       
+    padding: 2px;             
+    display: inline-block;      
+    }
+
+    .product-image {
+        width: 40px;               
+        height: 40px;              
+        /* border-radius: 8px;  Rounded corners of the image */
+    }
+
+    .table td {
+        vertical-align: middle; 
+        text-align: left;       
+    }
+
+    .table td:nth-child(2) {
+        display: flex;          
+        align-items: center;    
+        justify-content: flex-start;
+        border:none;
+        font-weight: normal; 
+    }
+
+
+    .product-image-container {
+        margin-right: 10px;    
+    }
+</style>
+
+
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Header -->
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title text-white" id="productDetailsModalLabel">Product Details</h5>
+                <h5 class="modal-title text-white fw-bold" id="productDetailsLabel">Product Details</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Body -->
             <div class="modal-body">
-                <div class="row g-4 align-items-center">
-                    <!-- Image Section -->
-                    <div class="col-md-5 text-center">
-                        <div id="modal-image-container" class="border rounded p-3 bg-light">
+                <div class="row g-4">
+                    
+                    <!-- Left: Image Section -->
+                    <div class="col-md-5">
+                        <div id="modal-image-container" class="text-center">
                             <!-- Image will be appended here -->
                         </div>
                     </div>
 
-                    <!-- Product Details -->
-                    <div class="col-md-7">
-                        <h4 class="text-primary fw-bold mb-3" id="modal-name"></h4>
-                        <div class="row">
-                        <!-- First Column: Important Details First -->
-                        <div class="col-6 order-1">
+
+                    <!-- Right: Product Details -->
+                    <div class="col-md-7 d-flex flex-column">
+                        <div class="border-0 shadow-sm p-3 flex-fill">
+                            <h4 class="text-primary fw-bold mb-3" id="modal-name"></h4>
                             <p class="mb-2"><strong>Stock:</strong> <span id="modal-stock"></span></p>
                             <p class="mb-2"><strong>Status:</strong> <span id="modal-status"></span></p>
                             <p class="mb-2"><strong>Category:</strong> <span id="modal-category"></span></p>
-                        </div>
-
-                        <!-- Second Column: Other Details -->
-                        <div class="col-6 order-2">
                             <p class="mb-2"><strong>Barcode:</strong> <span id="modal-barcode"></span></p>
                             <p class="mb-2"><strong>Brand:</strong> <span id="modal-brand"></span></p>
                             <p class="mb-2"><strong>Type:</strong> <span id="modal-type"></span></p>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -520,57 +548,76 @@ if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
     </div>
 </div>
 
+<style>
+    #modal-image-container {
+    display: flex;               
+    justify-content: center;     
+    align-items: center;       
+    height: 100%;                
+    }
 
-    <!-- Script display data in each row -->
-    <script>
+    #modal-image-container img {
+        max-width: 100%;            
+        height: auto;              
+    }
+</style>
+
+
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Add event listener for each clickable row
-        document.querySelectorAll('.clickable-row').forEach(function(row) {
-            row.addEventListener('click', function(event) {
-                // Check if the click target is not part of the dropdown button or its menu
-                if (!event.target.closest('.dropdown')) {
-                    // Get product details from the data attributes
-                    const barcode = row.getAttribute('data-barcode');
-                    const name = row.getAttribute('data-name');
-                    const brand = row.getAttribute('data-brand');
-                    const type = row.getAttribute('data-type');
-                    const status = row.getAttribute('data-status');
-                    const stock = row.getAttribute('data-stock');
-                    const category = row.getAttribute('data-category');
-                    const image = row.getAttribute('data-image'); // Get image path
+    document.querySelectorAll('.clickable-row').forEach(function(row) {
+        row.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                // Get product details from the data attributes
+                const barcode = row.getAttribute('data-barcode');
+                const name = row.getAttribute('data-name');
+                const brand = row.getAttribute('data-brand');
+                const type = row.getAttribute('data-type');
+                const status = row.getAttribute('data-status');
+                const stock = row.getAttribute('data-stock');
+                const category = row.getAttribute('data-category');
+                const image = row.getAttribute('data-image');
 
-                    // Set modal data
-                    document.getElementById('modal-barcode').textContent = barcode;
-                    document.getElementById('modal-name').textContent = name;
-                    document.getElementById('modal-brand').textContent = brand;
-                    document.getElementById('modal-type').textContent = type;
-                    document.getElementById('modal-status').textContent = status;
-                    document.getElementById('modal-stock').textContent = stock;
-                    document.getElementById('modal-category').textContent = category;
+                // Set modal data
+                document.getElementById('modal-barcode').textContent = barcode;
+                document.getElementById('modal-name').textContent = name;
+                document.getElementById('modal-brand').textContent = brand;
+                document.getElementById('modal-type').textContent = type;
+                document.getElementById('modal-status').textContent = status;
+                document.getElementById('modal-stock').textContent = stock;
+                document.getElementById('modal-category').textContent = category;
 
-                    // Set the product image
-                    const modalImageContainer = document.getElementById('modal-image-container');
-                    modalImageContainer.innerHTML = ''; // Clear any existing image
+                // Set the product image
+                const modalImageContainer = document.getElementById('modal-image-container');
+                modalImageContainer.innerHTML = ""; // Clear previous image
 
-                    // Create new image element
+                if (image) { // Check if image exists
                     const modalImage = document.createElement('img');
                     modalImage.src = image;
                     modalImage.alt = name;
-                    modalImage.classList.add('img-fluid'); // Responsive image
-                    modalImage.style.borderRadius = '8px'; // Rounded corners for a softer look
-                    modalImage.style.maxHeight = '250px'; // Set a max height for consistency
+                    modalImage.classList.add('modal-image'); // Add a CSS class for styling
                     modalImageContainer.appendChild(modalImage);
-
-                    modalImageContainer.appendChild(modalImage); // Append the new image
-
-                    // Show the Bootstrap modal
-                    let modal = new bootstrap.Modal(document.getElementById('productDetailsModal'));
-                    modal.show();
                 }
-            });
+
+                // Show the modal
+                new bootstrap.Modal(document.getElementById('productDetailsModal')).show();
+            }
         });
     });
+});
+
 </script>
+<style>
+    .modal-image {
+    width: 100%; /* Make sure the image fits the card */
+    height: 220px; /* Fixed height for uniformity */
+    object-fit: cover; /* Ensures images are cropped properly without distortion */
+    border-radius: 8px; /* Smooth rounded corners */
+    display: block;
+    margin: 0 auto; /* Center the image */
+}
+
+</style>
 
 
     <!-- Display cursor pointer in each column -->
