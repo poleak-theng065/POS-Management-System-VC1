@@ -14,15 +14,15 @@ class OrderNewProductModel {
     }
 
     public function addNewOrder($productName, $barCode, $brand, $expectedDelivery, $orderDate, $status, 
-    $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, $exchangeRate, $totalPriceUSD , $totalPriceKHR)
+    $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, $exchangeRate, $totalPriceUSD , $totalPriceKHR, $image)
     {
         try {
             $this->db->query(
                 "INSERT INTO order_products (product_name, barcode, brand, expected_delivery, order_date, status, 
-                category, model, supplier, product_status, base_price_usd, base_price_kh, quantity, exchange_rate, total_price_usd, total_price_kh)
+                category, model, supplier, product_status, base_price_usd, base_price_kh, quantity, exchange_rate, total_price_usd, total_price_kh, image_path)
                 VALUES (:product_name, :barcode, :brand, :expected_delivery, :order_date, :status,
                 :category, :model, :supplier, :product_status, :base_price_usd, :base_price_kh,
-                :quantity, :exchange_rate, :total_price_usd, :total_price_kh)",
+                :quantity, :exchange_rate, :total_price_usd, :total_price_kh, :image_path)",
                 [
                     ':product_name' => $productName,
                     ':barcode' => $barCode,
@@ -39,7 +39,8 @@ class OrderNewProductModel {
                     ':quantity' => $quantity,
                     ':exchange_rate' => $exchangeRate,
                     ':total_price_usd' => $totalPriceUSD,
-                    ':total_price_kh' => $totalPriceKHR
+                    ':total_price_kh' => $totalPriceKHR,
+                    ':image_path' => $image,
                 ]);
         } catch (PDOException $e) {
             // Handle error (log it, show a friendly message, etc.)
@@ -57,49 +58,60 @@ class OrderNewProductModel {
     
 
     public function updateNewOrder($id, $productName, $barCode, $brand, $expectedDelivery, $orderDate,
-    $status, $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, 
-    $exchangeRate, $totalPriceUSD, $totalPriceKHR) 
-    {
-        try {
-            // SQL query to update an order
-            $sql = "UPDATE order_products 
-                    SET product_name = :product_name, barcode = :barcode, brand = :brand, expected_delivery = :expected_delivery,
-                        order_date = :order_date, status = :status, 
-                        category = :category, model = :model, supplier = :supplier, product_status = :product_status, 
-                        base_price_usd = :base_price_usd, base_price_kh = :base_price_kh, 
-                        quantity = :quantity, exchange_rate = :exchange_rate, 
-                        total_price_usd = :total_price_usd, total_price_kh = :total_price_kh 
-                    WHERE id = :id";
-            
-            // Parameters to bind to the SQL query
-            $params = [
-                ':id' => $id,
-                ':product_name' => $productName,
-                ':barcode' => $barCode,
-                ':brand' => $brand,
-                ':expected_delivery' => $expectedDelivery,
-                ':order_date' => $orderDate,
-                ':status' => $status,
-                ':category' => $category,
-                ':model' => $model,
-                ':supplier' => $supplier,
-                ':product_status' => $productStatus,
-                ':base_price_usd' => $basePriceUSD,
-                ':base_price_kh' => $basePriceKHR,
-                ':quantity' => $quantity,
-                ':exchange_rate' => $exchangeRate,
-                ':total_price_usd' => $totalPriceUSD,
-                ':total_price_kh' => $totalPriceKHR,
-            ];
+        $status, $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, 
+        $exchangeRate, $totalPriceUSD, $totalPriceKHR, $image = null) 
+        {
+            try {
+                // Start SQL query
+                $sql = "UPDATE order_products 
+                        SET product_name = :product_name, barcode = :barcode, brand = :brand, 
+                            expected_delivery = :expected_delivery, order_date = :order_date, 
+                            status = :status, category = :category, model = :model, 
+                            supplier = :supplier, product_status = :product_status, 
+                            base_price_usd = :base_price_usd, base_price_kh = :base_price_kh, 
+                            quantity = :quantity, exchange_rate = :exchange_rate, 
+                            total_price_usd = :total_price_usd, total_price_kh = :total_price_kh";
 
-            // Execute the query using the Database class's query method
-            $this->db->query($sql, $params);
-        } catch (PDOException $e) {
-            // Log or display the error message more clearly
-            echo "Error updating order: " . $e->getMessage();
-            // Optionally log to a file or redirect to an error page
+                // If a new image is uploaded, update the image field
+                if ($image !== null) {
+                    $sql .= ", image_path = :image_path";
+                }
+
+                $sql .= " WHERE id = :id";
+
+                // Parameters to bind
+                $params = [
+                    ':id' => $id,
+                    ':product_name' => $productName,
+                    ':barcode' => $barCode,
+                    ':brand' => $brand,
+                    ':expected_delivery' => $expectedDelivery,
+                    ':order_date' => $orderDate,
+                    ':status' => $status,
+                    ':category' => $category,
+                    ':model' => $model,
+                    ':supplier' => $supplier,
+                    ':product_status' => $productStatus,
+                    ':base_price_usd' => $basePriceUSD,
+                    ':base_price_kh' => $basePriceKHR,
+                    ':quantity' => $quantity,
+                    ':exchange_rate' => $exchangeRate,
+                    ':total_price_usd' => $totalPriceUSD,
+                    ':total_price_kh' => $totalPriceKHR
+                ];
+
+                // If new image is uploaded, add it to params
+                if ($image !== null) {
+                    $params[':image_path'] = $image;
+                }
+
+                // Execute the query
+                $this->db->query($sql, $params);
+            } catch (PDOException $e) {
+                echo "Error updating order: " . $e->getMessage();
+            }
         }
-    }
+
 
     
     
