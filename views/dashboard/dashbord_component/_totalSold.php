@@ -1,4 +1,3 @@
-
 <div class="col-lg-4 col-md-4 order-1">
     <div class="row">
         <!-- Total of profit -->
@@ -21,10 +20,8 @@
                     </div>
                     <span class="fw-semibold d-block mb-1">Profit</span>
                     <div class="value text-dark" style="font-size: 1.5rem;">
-                        <strong>Profit: </strong>
-                        $<?php echo number_format(isset($totalProfit) && is_numeric($totalProfit) ? $totalProfit : 0, 2); ?>
+                        $<?= number_format(isset($totalProfit) ? $totalProfit : 0, 2) ?>
                     </div>
-                    <!-- TODO: Replace with dynamic calculation -->
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
                 </div>
             </div>
@@ -51,9 +48,8 @@
                     <span>Total Cost</span>
                     <div class="value text-dark" style="font-size: 1.5rem;">
                         <strong>Cost Price: </strong>
-                        $<?php echo number_format(isset($totalCostPrice) && is_numeric($totalCostPrice) ? $totalCostPrice : 0, 2); ?>
+                        $<?= number_format(isset($totalCostPrice) ? $totalCostPrice : 0, 2) ?>
                     </div>
-                    <!-- TODO: Replace with dynamic calculation -->
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
                 </div>
             </div>
