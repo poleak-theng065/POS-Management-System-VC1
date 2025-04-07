@@ -6,6 +6,7 @@ class CreateUserModels {
 
     public function __construct() {
         try {
+            // Use environment variables or config file in production
             $this->db = new Database("localhost", "pos-system", "root", "");
             $this->db->query("SELECT 1");
             error_log("Database connection test successful");
@@ -16,36 +17,58 @@ class CreateUserModels {
     }
 
     public function getUsers() {
-        $result = $this->db->query("SELECT * FROM users");
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $result = $this->db->query("SELECT * FROM users");
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error in getUsers(): " . $e->getMessage());
+            throw new Exception("Error fetching users: " . $e->getMessage());
+        }
     }
 
     public function getUserById($user_id) {
-        $result = $this->db->query("SELECT * FROM users WHERE user_id = :user_id", ['user_id' => $user_id]);
-        return $result->fetch(PDO::FETCH_ASSOC);
+        try {
+            $result = $this->db->query("SELECT * FROM users WHERE user_id = :user_id", ['user_id' => $user_id]);
+            return $result->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error in getUserById($user_id): " . $e->getMessage());
+            throw new Exception("Error fetching user: " . $e->getMessage());
+        }
     }
 
     public function emailExists($email) {
-        $query = "SELECT COUNT(*) FROM users WHERE email = :email";
-        $result = $this->db->query($query, ['email' => $email]);
-        $count = $result->fetchColumn();
-        error_log("emailExists($email): Count = $count");
-        return $count > 0;
+        try {
+            $query = "SELECT COUNT(*) FROM users WHERE email = :email";
+            $result = $this->db->query($query, ['email' => $email]);
+            $count = $result->fetchColumn();
+            error_log("emailExists($email): Count = $count");
+            return $count > 0;
+        } catch (PDOException $e) {
+            error_log("Error in emailExists($email): " . $e->getMessage());
+            throw new Exception("Error checking email: " . $e->getMessage());
+        }
     }
 
-    public function addUser($username, $password_hash, $role, $email, $image) {
+    public function addUser($username, $hashedPassword, $role, $email, $image) {
         try {
-            $query = "INSERT INTO users (username, password_hash, role, email, image) VALUES (:username, :password_hash, :role, :email, :image)";
+            if (empty($username) || empty($hashedPassword) || empty($email)) {
+                throw new Exception("Required fields cannot be empty");
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                throw new Exception("Invalid email format");
+            }
+            $query = "INSERT INTO users (username, password_hash, role, email, image) 
+                      VALUES (:username, :password_hash, :role, :email, :image)";
             $params = [
                 ':username' => $username,
-                ':password_hash' => $password_hash,
+                ':password_hash' => $hashedPassword,
                 ':role' => $role,
                 ':email' => $email,
                 ':image' => $image
             ];
-            error_log("Executing query: $query with params: " . print_r($params, true));
-            $this->db->query($query, $params);
+            $result = $this->db->query($query, $params);
             error_log("User inserted successfully into database");
+            return $this->db->lastInsertId();
         } catch (PDOException $e) {
             error_log("Error in addUser(): " . $e->getMessage());
             throw new Exception("Error adding user: " . $e->getMessage());
@@ -53,11 +76,16 @@ class CreateUserModels {
     }
 
     public function getUserByEmail($email) {
-        $query = "SELECT * FROM users WHERE email = :email";
-        $result = $this->db->query($query, ['email' => $email]);
-        $user = $result->fetch(PDO::FETCH_ASSOC);
-        error_log("getUserByEmail($email): " . print_r($user, true));
-        return $user;
+        try {
+            $query = "SELECT * FROM users WHERE email = :email";
+            $result = $this->db->query($query, ['email' => $email]);
+            $user = $result->fetch(PDO::FETCH_ASSOC);
+            error_log("getUserByEmail($email): " . print_r($user, true));
+            return $user;
+        } catch (PDOException $e) {
+            error_log("Error in getUserByEmail($email): " . $e->getMessage());
+            throw new Exception("Error fetching user by email: " . $e->getMessage());
+        }
     }
 
     public function setUserStatusActive($userId) {
@@ -75,3 +103,4 @@ class CreateUserModels {
         }
     }
 }
+?>

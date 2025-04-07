@@ -2,144 +2,144 @@
 ob_start();
 require_once "Models/auth/CreateUserModels.php";
 
-class CreateAccountController extends BaseController {
-    private $CreateUserModels;
+class CreateAccountController { // Assuming BaseController is not needed if not provided
+    private $userModel;
 
     public function __construct() {
-        $this->CreateUserModels = new CreateUserModels();
+        $this->userModel = new CreateUserModels();
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
     }
 
     public function create_account() {
+        session_start();
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
         $data = [
             'title' => 'Create Account',
             'errors' => [],
-            'form_data' => []
+            'form_data' => [],
+            'csrf_token' => $_SESSION['csrf_token']
         ];
         $this->view('account/create_account', $data);
     }
 
+    private function validatePassword($password) {
+        if (empty($password)) return 'Password is required';
+        if (strlen($password) < 8) return 'Password must be at least 8 characters long';
+        if (!preg_match('/[A-Z]/', $password)) return 'Must include one uppercase letter';
+        if (!preg_match('/[a-z]/', $password)) return 'Must include one lowercase letter';
+        if (!preg_match('/[0-9]/', $password)) return 'Must include one number';
+        if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) return 'Must include one special character';
+        return null;
+    }
+
     public function store() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            error_log("store() method called");
+        session_start();
 
-            // Sanitize input data
-            $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-            $password = $_POST['password'] ?? '';
-            $role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_STRING);
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-
-            error_log("Input Data: " . print_r($_POST, true));
-            error_log("File Data: " . print_r($_FILES, true));
-
-            // Initialize errors array
-            $errors = [];
-
-            // Handle file upload for image (make it optional)
-            $image = null;
-            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = 'uploads/users/';
-                if (!file_exists($uploadDir) && !mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
-                    error_log("Failed to create upload directory: $uploadDir");
-                } else {
-                    $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
-                    $imagePath = $uploadDir . $imageName;
-                    if (move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
-                        $image = $imagePath;
-                        error_log("Image uploaded successfully: $imagePath");
-                    } else {
-                        error_log("Failed to upload image: " . print_r($_FILES['image'], true));
-                    }
-                }
-            } else {
-                error_log("No image uploaded or upload error: " . ($_FILES['image']['error'] ?? 'No image field'));
-            }
-
-            // Validation
-            if (empty($username)) {
-                $errors['username'] = 'Username is required';
-            }
-
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = 'Valid email is required';
-            } elseif ($this->CreateUserModels->emailExists($email)) {
-                $errors['email'] = 'Email already exists';
-            }
-
-            if (empty($password)) {
-                $errors['password'] = 'Password is required';
-            } elseif (strlen($password) < 12) {
-                $errors['password'] = 'Password must be at least 12 characters long';
-            } elseif (preg_match('/\s/', $password)) {
-                $errors['password'] = 'Password cannot contain spaces';
-            } elseif (!preg_match('/[A-Z]/', $password)) {
-                $errors['password'] = 'Password must contain at least one uppercase letter';
-            } elseif (!preg_match('/[a-z]/', $password)) {
-                $errors['password'] = 'Password must contain at least one lowercase letter';
-            } elseif (!preg_match('/[0-9]/', $password)) {
-                $errors['password'] = 'Password must contain at least one number';
-            } elseif (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
-                $errors['password'] = 'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>)';
-            }
-
-            if (empty($role)) {
-                $errors['role'] = 'Role is required';
-            }
-
-            if (!empty($errors)) {
-                error_log("Validation Errors: " . print_r($errors, true));
-                $data = [
-                    'title' => 'Create Account',
-                    'errors' => $errors,
-                    'form_data' => [
-                        'username' => $username,
-                        'role' => $role,
-                        'email' => $email
-                    ]
-                ];
-                $this->view('account/create_account', $data);
-                return;
-            }
-
-            // Hash the password before storing
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            error_log("Password hashed: $hashedPassword");
-
-            // Add the user to the database
-            try {
-                error_log("Attempting to add user: username=$username, email=$email, role=$role, image=$image");
-                $this->CreateUserModels->addUser($username, $hashedPassword, $role, $email, $image);
-                error_log("User added successfully: $email");
-
-                // Set user status to active
-                $newUser = $this->CreateUserModels->getUserByEmail($email);
-                if ($newUser && is_array($newUser) && isset($newUser['user_id'])) {
-                    $this->CreateUserModels->setUserStatusActive($newUser['user_id']);
-                    error_log("User status set to active: " . $newUser['user_id']);
-                } else {
-                    error_log("Failed to retrieve new user: " . print_r($newUser, true));
-                }
-
-                header('Location: /user_account?success=Account created successfully');
-                exit();
-            } catch (Exception $e) {
-                error_log("Error in store(): " . $e->getMessage());
-                $data = [
-                    'title' => 'Create Account',
-                    'errors' => ['general' => 'Error creating account: ' . $e->getMessage()],
-                    'form_data' => [
-                        'username' => $username,
-                        'role' => $role,
-                        'email' => $email
-                    ]
-                ];
-                $this->view('account/create_account', $data);
-            }
-        } else {
-            error_log("Invalid request method: " . $_SERVER['REQUEST_METHOD']);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /create-account');
             exit();
         }
+
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $data = [
+                'title' => 'Create Account',
+                'errors' => ['general' => 'Invalid CSRF token'],
+                'form_data' => []
+            ];
+            $this->view('account/create_account', $data);
+            return;
+        }
+
+        $username = htmlspecialchars(trim($_POST['username'] ?? ''));
+        $password = $_POST['password'] ?? '';
+        $role = htmlspecialchars(trim($_POST['role'] ?? ''));
+        $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+        $errors = [];
+        $image = null;
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = 'uploads/users/';
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $maxSize = 5 * 1024 * 1024;
+
+            if (!in_array($_FILES['image']['type'], $allowedTypes)) {
+                $errors['image'] = 'Only JPEG, PNG, and GIF files are allowed';
+            } elseif ($_FILES['image']['size'] > $maxSize) {
+                $errors['image'] = 'Image must be less than 5MB';
+            } else {
+                if (!file_exists($uploadDir)) mkdir($uploadDir, 0777, true);
+                $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
+                $imagePath = $uploadDir . $imageName;
+                if (!move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
+                    $errors['image'] = 'Failed to upload image';
+                } else {
+                    $image = $imagePath;
+                }
+            }
+        } elseif (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $errors['image'] = 'Error uploading image: ' . $_FILES['image']['error'];
+        }
+
+        if (empty($username)) $errors['username'] = 'Username is required';
+        $passwordError = $this->validatePassword($password);
+        if ($passwordError) $errors['password'] = $passwordError;
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Valid email is required';
+        } elseif ($this->userModel->emailExists($email)) {
+            $errors['email'] = 'Email already exists';
+        }
+        $validRoles = ['admin', 'cashier', 'employee']; // Match form options
+        if (empty($role) || !in_array($role, $validRoles)) $errors['role'] = 'Please select a valid role';
+
+        if (!empty($errors)) {
+            $data = [
+                'title' => 'Create Account',
+                'errors' => $errors,
+                'form_data' => [
+                    'username' => $username,
+                    'role' => $role,
+                    'email' => $email
+                ],
+                'csrf_token' => $_SESSION['csrf_token']
+            ];
+            $this->view('account/create_account', $data);
+            return;
+        }
+
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        try {
+            $userId = $this->userModel->addUser($username, $hashedPassword, $role, $email, $image);
+            $newUser = $this->userModel->getUserByEmail($email);
+            if ($newUser && isset($newUser['user_id'])) {
+                $this->userModel->setUserStatusActive($newUser['user_id']);
+            }
+            header('Location: /user_account?success=Account created successfully');
+            exit();
+        } catch (Exception $e) {
+            error_log("Exception in store(): " . $e->getMessage());
+            $data = [
+                'title' => 'Create Account',
+                'errors' => ['general' => 'Error creating account: ' . $e->getMessage()],
+                'form_data' => [
+                    'username' => $username,
+                    'role' => $role,
+                    'email' => $email
+                ],
+                'csrf_token' => $_SESSION['csrf_token']
+            ];
+            $this->view('account/create_account', $data);
+        }
+    }
+
+    // Placeholder for view method (assuming it renders a template)
+    private function view($view, $data) {
+        extract($data);
+        require_once "views/$view.php"; // Adjust path as needed
     }
 }
-
-ob_end_flush();
+?>

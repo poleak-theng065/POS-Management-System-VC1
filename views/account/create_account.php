@@ -1,202 +1,267 @@
-<style>
-/* Ensure the content wrapper has proper spacing */
-.content-wrapper {
-    padding: 1.5rem;
-}
 
-/* Style the card body */
-.card-body {
-    padding: 2rem;
-}
+<!-- Improved Create Account Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #696cff;
+            --primary-hover: #595cd9;
+            --secondary: #566a7f;
+            --error: #ff3e1d;
+            --border: #d9dee3;
+            --background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
 
-/* Form styling */
-form {
-    max-width: 100%;
-    margin: 0 auto;
-}
+        body {
+            background: var(--background);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+        }
 
-/* Form group styling */
-form div {
-    margin-bottom: 1.25rem;
-}
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-.row-form {
-    display: flex;
-    gap: 20px;
-}
+        .content-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 56px);
+        }
 
-/* Label styling */
-form label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    color: #566a7f;
-}
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: #fff;
+        }
 
-/* Input styling */
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form input[type="file"],
-form select {
-    display: block;
-    width: 520px;
-    padding: 0.5rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    border: 1px solid #d9dee3;
-    border-radius: 0.375rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
+        .card-header {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            position: relative;
+        }
 
-form input[type="file"] {
-    width: 100%;
-    height: 100px;
-}
+        .card-header::after {
+            content: '';
+            width: 5%;
+            height: 3px;
+            background: var(--primary);
+            position: absolute;
+            bottom: 0;
+            left: 1.5rem;
+        }
 
-/* Input focus state */
-form input[type="text"]:focus,
-form input[type="email"]:focus,
-form input[type="password"]:focus,
-form select:focus {
-    outline: 0;
-    border-color: #696cff;
-    box-shadow: 0 0 0 0.2rem rgba(105, 108, 255, 0.25);
-}
+        .card-body {
+            padding: 2rem;
+        }
 
-/* Error message styling */
-.error {
-    display: block;
-    color: #ff3e1d;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-}
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
 
-/* Text muted styling */
-.text-muted {
-    color: #566a7f;
-    font-size: 0.875rem;
-}
+        .avatar-section img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
 
-/* Button styling */
-form button[type="submit"] {
-    display: inline-block;
-    padding: 0.5rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #fff;
-    background-color: #696cff;
-    border: none;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    transition: background-color 0.15s ease-in-out;
-}
+        .button-wrapper .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
 
-form button[type="submit"]:hover {
-    background-color: #595cd9;
-}
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+        }
 
-/* Match the upload button styling */
-.button-wrapper .btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.9375rem;
-}
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
 
-/* Ensure the image preview stays aligned */
-#uploadedAvatar {
-    object-fit: cover;
-}
+        .btn-outline-secondary {
+            border-color: var(--border);
+            color: var(--secondary);
+        }
 
-/* Responsive adjustments */
-@media (max-width: 576px) {
-    .card-body {
-        padding: 1rem;
-    }
-    
-    .d-flex.align-items-start {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .button-wrapper {
-        width: 100%;
-    }
-}
-</style>
+        .btn-outline-secondary:hover {
+            background: #f8f9fa;
+        }
 
-<div class="content-wrapper">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mb-4">
-                    <h5 class="card-header">Profile Details</h5>
-                    <div class="card-body">
-                        <div class="d-flex align-items-start align-items-sm-center gap-4">
-                            <img src="../assets/img/avatars/1.png" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
-                            <div class="button-wrapper">
-                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                    <span class="d-none d-sm-block">Upload new photo</span>
-                                    <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input type="file" id="upload" name="image" class="account-file-input" hidden accept="image/png, image/jpeg" />
-                                </label>
-                                <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
-                                    <i class="bx bx-reset d-block d-sm-none"></i>
-                                    <span class="d-none d-sm-block">Reset</span>
-                                </button>
-                                <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+        .text-muted {
+            color: var(--secondary);
+            font-size: 0.875rem;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(105, 108, 255, 0.25);
+        }
+
+        .error {
+            display: block;
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-actions .btn {
+            padding: 0.75rem 2rem;
+        }
+
+        .btn-exit {
+            background: #dc3545;
+            border: none;
+        }
+
+        .btn-exit:hover {
+            background: #c82333;
+        }
+
+        @media (max-width: 576px) {
+            .content-wrapper {
+                padding: 1rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .avatar-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .button-wrapper {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <h5 class="card-header">Create New Account</h5>
+                        <div class="card-body">
+                            <div class="avatar-section">
+                                <img src="../assets/img/avatars/1.png" alt="user-avatar" id="uploadedAvatar" />
+                                <div class="button-wrapper">
+                                    <label for="upload" class="btn btn-primary me-2">
+                                        <span>Upload new photo</span>
+                                        <input type="file" id="upload" name="image" class="account-file-input" hidden accept="image/png, image/jpeg" />
+                                    </label>
+                                    <button type="button" class="btn btn-outline-secondary account-image-reset">
+                                        Reset
+                                    </button>
+                                    <p class="text-muted mb-0">Allowed JPG or PNG. Max size of 5MB</p>
+                                </div>
                             </div>
+                            <form method="POST" action="/create-account/store" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Username</label>
+                                        <input type="text" name="username" value="<?= htmlspecialchars($form_data['username'] ?? '') ?>">
+                                        <?php if (isset($errors['username'])): ?>
+                                            <span class="error"><?= $errors['username'] ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" name="email" value="<?= htmlspecialchars($form_data['email'] ?? '') ?>">
+                                        <?php if (isset($errors['email'])): ?>
+                                            <span class="error"><?= $errors['email'] ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" name="password">
+                                        <p class="text-muted mb-0">Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character.</p>
+                                        <?php if (isset($errors['password'])): ?>
+                                            <span class="error"><?= $errors['password'] ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Role</label>
+                                        <select name="role">
+                                            <option value="">Select Role</option>
+                                            <option value="admin" <?= ($form_data['role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
+                                            <option value="cashier" <?= ($form_data['role'] ?? '') === 'cashier' ? 'selected' : '' ?>>Cashier</option>
+                                            <option value="employee" <?= ($form_data['role'] ?? '') === 'employee' ? 'selected' : '' ?>>Employee</option>
+                                        </select>
+                                        <?php if (isset($errors['role'])): ?>
+                                            <span class="error"><?= $errors['role'] ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <?php if (isset($errors['general'])): ?>
+                                    <span class="error"><?= $errors['general'] ?></span>
+                                <?php endif; ?>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Create Account</button>
+                                    <a href="/user_account" class="btn btn-exit">Exit</a>
+                                </div>
+                            </form>
                         </div>
-                    </div>
-                    <hr class="my-0" />
-                    <div class="card-body">
-                        <form method="POST" action="/user_account" enctype="multipart/form-data">
-                            <div class="row-form">
-                                <div>
-                                    <label>Username</label>
-                                    <input type="text" name="username" value="<?= htmlspecialchars($data['form_data']['username'] ?? '') ?>">
-                                    <?php if (isset($data['errors']['username'])): ?>
-                                        <span class="error"><?= $data['errors']['username'] ?></span>
-                                    <?php endif; ?>
-                                </div>
-                                <div>
-                                    <label>Email</label>
-                                    <input type="email" name="email" value="<?= htmlspecialchars($data['form_data']['email'] ?? '') ?>">
-                                    <?php if (isset($data['errors']['email'])): ?>
-                                        <span class="error"><?= $data['errors']['email'] ?></span>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <div class="row-form">
-                                <div>
-                                    <label>Password</label>
-                                    <input type="password" name="password">
-                                    <p class="text-muted mb-0">Password must be at least 12 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character (!@#$%^&*(),.?":{}|<>), with no spaces.</p>
-                                    <?php if (isset($data['errors']['password'])): ?>
-                                        <span class="error"><?= $data['errors']['password'] ?></span>
-                                    <?php endif; ?>
-                                </div>
-                                <div>
-                                    <label>Role</label>
-                                    <select name="role">
-                                        <option value="">Select Role</option>
-                                        <option value="admin" <?= ($data['form_data']['role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
-                                        <option value="cashier" <?= ($data['form_data']['role'] ?? '') === 'cashier' ? 'selected' : '' ?>>Cashier</option>
-                                    </select>
-                                    <?php if (isset($data['errors']['role'])): ?>
-                                        <span class="error"><?= $data['errors']['role'] ?></span>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <?php if (isset($data['errors']['general'])): ?>
-                                <span class="error"><?= $data['errors']['general'] ?></span>
-                            <?php endif; ?>
-                            <button type="submit">Create Account</button>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

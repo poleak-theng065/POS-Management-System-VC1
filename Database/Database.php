@@ -61,4 +61,8 @@ class Database
     {
         return $this->db->rollBack();
     }
+
+    public function lastInsertId() {
+        return $this->db->lastInsertId();
+    }
 }
