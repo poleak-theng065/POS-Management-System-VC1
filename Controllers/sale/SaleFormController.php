@@ -1,5 +1,5 @@
 <?php
-require_once("Models/inventory/SaleFormModel.php");
+require_once("Models/sale/SaleFormModel.php");
 
 class SaleFormController extends BaseController
 {
@@ -14,7 +14,7 @@ class SaleFormController extends BaseController
     {
         $products = $this->sales->getProducts();
         $saleItems = $this->sales->getSaleItems();
-        $this->view("inventory/sale_form/sale_form", [
+        $this->view("sale/sale_form/sale_form", [
             "products" => $products,
             "saleItems" => $saleItems
         ]);
@@ -88,5 +88,13 @@ class SaleFormController extends BaseController
             }
             exit();
         }
+    }
+
+    public function receipt()
+    {
+        $saleItems = $this->sales->getSaleItems();
+        $this->view("sale/sale_form/receipt", [
+            "saleItems" => $saleItems
+        ]);
     }
 }

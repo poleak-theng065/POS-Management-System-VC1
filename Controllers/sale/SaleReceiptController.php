@@ -1,6 +1,6 @@
 <?php
 
-require_once("Models/inventory/SaleReceiptModel.php");
+require_once("Models/sale/SaleReceiptModel.php");
 
 class SaleReceiptController extends BaseController
 {

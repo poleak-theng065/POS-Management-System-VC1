@@ -13,14 +13,17 @@ require_once "Controllers/DashboardController.php";
 // Inventory Controllers
 require_once "Controllers/inventory/ProductListController.php";
 require_once "Controllers/inventory/CategoryListController.php";
-require_once "Controllers/inventory/SoldProductController.php";
 require_once "Controllers/inventory/LowStockProductController.php";
 require_once "Controllers/inventory/RunOutOfStockController.php";
 require_once "Controllers/inventory/ReturnProductController.php";
 require_once "Controllers/inventory/ArrivedProductController.php";
 require_once "Controllers/inventory/OrderNewProductController.php";
-require_once "Controllers/inventory/SaleFormController.php";
-require_once "Controllers/inventory/SaleReceiptController.php";
+
+// Sale Controllers
+require_once "Controllers/sale/SaleFormController.php";
+require_once "Controllers/sale/SaleReceiptController.php";
+require_once "Controllers/sale/SoldProductController.php";
+
 
 // Authentication Controllers
 require_once "Controllers/auth/LoginController.php";
@@ -130,6 +133,7 @@ $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::cla
 $route->get("/sale_form", [SaleFormController::class, 'index']);
 $route->get("/sale_form/create", [SaleFormController::class, 'create']);
 $route->post("/sale_form/store", [SaleFormController::class, 'store']);
+$route->get("/sale_form/receipt", [SaleFormController::class, 'receipt']);
 
 // Execute the routing
 $route->route();
