@@ -30,8 +30,10 @@ a {
 .login-root {
     background: #fff;
     display: flex;
-    width: 100%;
-    min-height: 100vh;
+    width: 95%;
+    /* min-height: 50vh; */
+    position: relative;
+    bottom: 50px;
     overflow: hidden;
 }
 .loginbackground {

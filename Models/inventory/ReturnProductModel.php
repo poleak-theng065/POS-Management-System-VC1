@@ -69,10 +69,16 @@ class ReturnProductModel {
     {
         try {
             $this->db->query("DELETE FROM return_products WHERE return_id = :return_id", [':return_id' => $id]);
-        } catch (PDOException $e) {
+        } catch (PDOException $e) { 
             echo "Error deleting product: " . $e->getMessage();
         }
     }
+
+
+    
+
+
+
     
 
 }

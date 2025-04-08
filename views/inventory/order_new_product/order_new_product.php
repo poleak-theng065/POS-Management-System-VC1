@@ -103,7 +103,7 @@
                                     <tbody>
                                         <?php foreach ($lowAndOutOfStockProducts as $product): ?>
                                             <?php if ($product['stock_quantity'] <= 5 && $product['stock_quantity'] > 0): ?>
-                                                <tr  class="border-bottom">
+                                                <tr class="border-bottom">
                                                     <td><?= htmlspecialchars($product['barcode']) ?></td>
                                                     <td>
                                                         <div class="product-image-container">
@@ -432,164 +432,160 @@
             <i class="bi bi-box-arrow-in-down text-primary me-2"></i> Import Product - Items to be Imported
         </h1> -->
 
-    <div class="card p-5 bg-white shadow-lg border-0">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-                <input type="text" class="form-control me-2" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
-                <select class="form-select" id="filterSelect" onchange="filterOrders()" style="width: 200px;">
-                    <option value="">Filter by Status</option>
-                    <option value="Delivery">Delivery</option>
-                    <option value="Arrived">Arrived</option>
-                    <option value="Order">Order</option>
-                </select>
-            </div>
-             <!-- Buttons and Export Dropdown -->
-            <div class="d-flex align-items-center">
-                <div class="btn-group me-2">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="exportButton">
-                        <li>
-                            <form method="POST">
-                                <button type="submit" name="export_excel" class="dropdown-item">
-                                    <i class="bi bi-file-earmark-excel me-2"></i> Export to Excel
-                                </button>
-                            </form>
-                        </li>
-                        <li>
-                            <form method="POST">
-                                <button type="submit" name="export_pdf" class="dropdown-item">
-                                    <i class="bi bi-file-earmark-pdf me-2"></i> Export to PDF
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+        <div class="card p-5 bg-white shadow-lg border-0">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex">
+                    <input type="text" class="form-control me-2" placeholder="Search Product" id="searchOrderInput" onkeyup="searchOrders()" style="width: 200px;">
+                    <select class="form-select" id="filterSelect" onchange="filterOrders()" style="width: 200px;">
+                        <option value="">Filter by Status</option>
+                        <option value="Delivery">Delivery</option>
+                        <option value="Arrived">Arrived</option>
+                        <option value="Order">Order</option>
+                    </select>
                 </div>
+                <!-- Buttons and Export Dropdown -->
+                <div class="d-flex align-items-center">
+                    <div class="btn-group me-2">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-file-earmark-arrow-down me-2"></i> Export
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="exportButton">
+                            <li>
+                                <form method="POST">
+                                    <button type="submit" name="export_excel" class="dropdown-item">
+                                        <i class="bi bi-file-earmark-excel me-2"></i> Export to Excel
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form method="POST">
+                                    <button type="submit" name="export_pdf" class="dropdown-item">
+                                        <i class="bi bi-file-earmark-pdf me-2"></i> Export to PDF
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
 
-                <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
-            </div>
-            
-        </div>
-
-        <!-- <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
-                <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
-            </div>
-            <button type="submit" class="btn btn-success mt-2">Upload</button>
-        </form> -->
-
-
-
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle" id="orderTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price USD</th>
-                        <th>Total USD</th>
-                        <th>Order Date</th>
-                        <th>Expected Delivery</th>
-                        <th>Supplier</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="switchTableBody">
-                    <?php foreach($newOrders as $newOrder): ?>
-                    <tr class="border-bottom" 
-                        data-id="<?= htmlspecialchars($newOrder['id']) ?>" 
-                        data-product-name="<?= htmlspecialchars($newOrder['product_name']) ?>" 
-                        data-image="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>"
-                        data-quantity="<?= htmlspecialchars($newOrder['quantity']) ?>" 
-                        data-base-price-usd="<?= htmlspecialchars($newOrder['base_price_usd']) ?>"
-                        data-total-price-usd="<?= htmlspecialchars($newOrder['total_price_usd']) ?>"
-                        data-order-date="<?= htmlspecialchars($newOrder['order_date']) ?>" 
-                        data-expected-delivery="<?= htmlspecialchars($newOrder['expected_delivery']) ?>" 
-                        data-supplier="<?= htmlspecialchars($newOrder['supplier']) ?>"
-                        onclick="showProductDetails(event)"
-                        style="cursor: pointer;">
-                        
-                        <td><?= htmlspecialchars($newOrder['id']) ?></td>
-                        <td>
-                            <div class="product-image-container">
-                                <img src="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>" 
-                                    alt="Product Image" class="product-image">
-                            </div>
-                            <?= htmlspecialchars($newOrder['product_name']) ?>
-                        </td>
-                        <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['base_price_usd']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['total_price_usd']) ?></td>
-                        <td><?= htmlspecialchars($newOrder['order_date']) ?></td>
-                        <td>
-                            <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
-                                <span class="badge bg-info">Delivery</span>
-                            <?php elseif ($newOrder['expected_delivery'] === 'Arrived'): ?>
-                                <span class="badge bg-success">Arrived</span>
-                            <?php elseif ($newOrder['expected_delivery'] === 'Order'): ?>
-                                <span class="badge bg-primary">Order</span>
-                            <?php else: ?>
-                                <span class="badge bg-secondary"><?= htmlspecialchars($newOrder['expected_delivery']) ?></span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?= htmlspecialchars($newOrder['supplier']) ?></td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical fs-5"></i>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item text-warning" href="/order_new_product/edit/<?= $newOrder['id'] ?>">
-                                            <i class="bi bi-pencil-square"></i> Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['product_name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <!-- Pagination Component -->
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div id="entriesInfo" class="text-muted">
-                    Showing 1 to <?= count($newOrders) ?> of <?= count($newOrders) ?> entries
+                    <a href="/order_new_product/create" class="btn btn-primary">+ Add New Order</a>
                 </div>
-                <nav>
-                    <ul class="pagination" id="pagination">
-                        <li class="page-item disabled" id="prevPage">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item active" aria-current="page" id="page1">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item" id="page2">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item" id="nextPage">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                
+            </div>
+
+            <!-- <form action="/order_new_product/upload" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
+                    <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
+                </div>
+                <button type="submit" class="btn btn-success mt-2">Upload</button>
+            </form> -->
+
+
+
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="orderTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price USD</th>
+                            <th>Total USD</th>
+                            <th>Order Date</th>
+                            <th>Expected Delivery</th>
+                            <th>Supplier</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="switchTableBody">
+                        <?php foreach($newOrders as $newOrder): ?>
+                            <tr class="border-bottom search" 
+                                data-id="<?= htmlspecialchars($newOrder['id']) ?>" 
+                                data-product-name="<?= htmlspecialchars($newOrder['product_name']) ?>" 
+                                data-image="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>"
+                                data-quantity="<?= htmlspecialchars($newOrder['quantity']) ?>" 
+                                data-base-price-usd="<?= htmlspecialchars($newOrder['base_price_usd']) ?>"
+                                data-total-price-usd="<?= htmlspecialchars($newOrder['total_price_usd']) ?>"
+                                data-order-date="<?= htmlspecialchars($newOrder['order_date']) ?>" 
+                                data-expected-delivery="<?= htmlspecialchars($newOrder['expected_delivery']) ?>" 
+                                data-supplier="<?= htmlspecialchars($newOrder['supplier']) ?>"
+
+                               
+                                data-brand="<?= htmlspecialchars($newOrder['brand']) ?>"
+                                data-category="<?= htmlspecialchars($newOrder['category']) ?>"
+                                data-model="<?= htmlspecialchars($newOrder['model']) ?>"
+                                data-product-status="<?= htmlspecialchars($newOrder['product_status']) ?>"
+                                data-base-price-kh="<?= htmlspecialchars($newOrder['base_price_kh']) ?>"
+                                data-total-price-kh="<?= htmlspecialchars($newOrder['total_price_kh']) ?>"
+
+                                onclick="showProductDetails(event, this)"
+                                style="cursor: pointer;">
+
+                            
+                            <td><?= htmlspecialchars($newOrder['id']) ?></td>
+                            <td>
+                                <div class="product-image-container">
+                                    <img src="<?= !empty($newOrder['image_path']) ? 'assets/img/upload/' . $newOrder['image_path'] : '/path/to/default/image.png' ?>" 
+                                        alt="Product Image" class="product-image">
+                                </div>
+                                <?= htmlspecialchars($newOrder['product_name']) ?>
+                            </td>
+                            <td><?= htmlspecialchars($newOrder['quantity']) ?></td>
+                            <td><?= htmlspecialchars($newOrder['base_price_usd']) ?></td>
+                            <td><?= htmlspecialchars($newOrder['total_price_usd']) ?></td>
+                            <td><?= htmlspecialchars($newOrder['order_date']) ?></td>
+                            <td>
+                                <?php if ($newOrder['expected_delivery'] === 'Delivery'): ?>
+                                    <span class="badge bg-info">Delivery</span>
+                                <?php elseif ($newOrder['expected_delivery'] === 'Arrived'): ?>
+                                    <span class="badge bg-success">Arrived</span>
+                                <?php elseif ($newOrder['expected_delivery'] === 'Order'): ?>
+                                    <span class="badge bg-primary">Order</span>
+                                <?php else: ?>
+                                    <span class="badge bg-secondary"><?= htmlspecialchars($newOrder['expected_delivery']) ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= htmlspecialchars($newOrder['supplier']) ?></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-muted p-0 m-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical fs-5"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a class="dropdown-item text-warning" href="/order_new_product/edit/<?= $newOrder['id'] ?>">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="openDeleteModal('<?= htmlspecialchars($newOrder['product_name']) ?>', '/order_new_product/delete/<?= $newOrder['id'] ?>')">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+                <!-- Pagination Component -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div id="entriesInfo" class="text-muted">
+                        Showing 1 to <?= count($newOrders) ?> of <?= count($newOrders) ?> entries
+                    </div>
+                    <nav>
+                        <ul class="pagination" id="pagination">
+                            <!-- Dynamic pagination will be injected here -->
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
 </div>
+
 
 <style>
  @media (min-width: 768px) and (max-width: 1024px) {
@@ -651,7 +647,7 @@
             <!-- Body -->
             <div class="modal-body">
                 <div class="row g-4">
-                    <!-- Left: Image & Order Info -->
+                    <!-- Left: Image & Basic Order Info -->
                     <div class="col-md-5">
                         <div class="card border-0 shadow-sm p-3">
                             <img id="modal-product-image" src="" alt="Product Image" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
@@ -660,19 +656,33 @@
                         </div>
                     </div>
 
-                                      <!-- Right: Detailed Information -->
+                    <!-- Right: Detailed Information -->
                     <div class="col-md-7 d-flex flex-column">
                         <div class="border-0 shadow-sm p-3 flex-fill">
+                            <!-- Order Info Group -->
                             <p class="mb-2"><strong>Quantity:</strong> <span id="modal-quantity"></span></p>
                             <p class="mb-2"><strong>Order Date:</strong> <span id="modal-order-date"></span></p>
                             <p class="mb-2"><strong>Expected Delivery:</strong> <span id="modal-expected-delivery"></span></p>
                             <p class="mb-2"><strong>Supplier:</strong> <span id="modal-supplier"></span></p>
+
+                            <!-- Pricing Info Group -->
+                            <hr class="my-3">
                             <p class="mb-2"><strong>Base Price (USD):</strong> <span id="modal-base_price_usd"></span></p>
-                            <p class="mb-2 text-danger fw-bold fs-5"><strong>Total Price (USD):</strong> <span id="modal-total_price_usd"></span></p>
+                            <p class="mb-2 text-danger"><strong>Total Price (USD):</strong> <span id="modal-total_price_usd"></span></p>
+                            <p class="mb-2"><strong>Base Price (KHR):</strong> <span id="modal-base-price-kh"></span></p>
+                            <p class="mb-2 text-danger"><strong>Total Price (KHR):</strong> <span id="modal-total-price-kh"></span></p>
+
+                            <!-- Product Info Group -->
+                            <hr class="my-3">
+                            <p class="mb-2"><strong>Brand:</strong> <span id="modal-brand"></span></p>
+                            <p class="mb-2"><strong>Category ID:</strong> <span id="modal-category"></span></p>
+                            <p class="mb-2"><strong>Model:</strong> <span id="modal-model"></span></p>
+                            <p class="mb-2"><strong>Status:</strong> <span id="modal-product-status"></span></p>
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <!-- Footer -->
             <div class="modal-footer">
@@ -684,34 +694,35 @@
 
 <!-- JavaScript -->
 <script>
-function showProductDetails(event) {
-    let target = event.target;
-
-    // Prevent click on dropdown menu from triggering modal
-    if (target.closest(".dropdown") || target.closest("button") || target.closest("a")) {
+function showProductDetails(event, row) {
+    if (event.target.closest(".dropdown") || event.target.closest("button") || event.target.closest("a")) {
         return;
     }
 
-    let row = target.closest("tr");
-    if (row) {
-        // Set modal data
-        document.getElementById("modal-order-id").textContent = row.getAttribute("data-id");
-        document.getElementById("modal-product-name").textContent = row.getAttribute("data-product-name");
-        document.getElementById("modal-quantity").textContent = row.getAttribute("data-quantity");
-        document.getElementById("modal-order-date").textContent = row.getAttribute("data-order-date");
-        document.getElementById("modal-expected-delivery").textContent = row.getAttribute("data-expected-delivery");
-        document.getElementById("modal-supplier").textContent = row.getAttribute("data-supplier");
-        document.getElementById("modal-base_price_usd").textContent = row.getAttribute("data-base-price-usd");
-        document.getElementById("modal-total_price_usd").textContent = row.getAttribute("data-total-price-usd");
+    // Existing fields
+    document.getElementById("modal-order-id").textContent = row.dataset.id;
+    document.getElementById("modal-product-name").textContent = row.dataset.productName;
+    document.getElementById("modal-quantity").textContent = row.dataset.quantity;
+    document.getElementById("modal-order-date").textContent = row.dataset.orderDate;
+    document.getElementById("modal-expected-delivery").textContent = row.dataset.expectedDelivery;
+    document.getElementById("modal-supplier").textContent = row.dataset.supplier;
+    document.getElementById("modal-base_price_usd").textContent = row.dataset.basePriceUsd;
+    document.getElementById("modal-total_price_usd").textContent = row.dataset.totalPriceUsd;
+    document.getElementById("modal-product-image").src = row.dataset.image;
 
-        // Set the product image
-        document.getElementById("modal-product-image").src = row.getAttribute("data-image");
+    // New hidden fields
+    document.getElementById("modal-brand").textContent = row.dataset.brand || 'N/A';
+    document.getElementById("modal-category").textContent = row.dataset.category || 'N/A';
+    document.getElementById("modal-model").textContent = row.dataset.model || 'N/A';
+    document.getElementById("modal-product-status").textContent = row.dataset.productStatus || 'N/A';
+    document.getElementById("modal-base-price-kh").textContent = row.dataset.basePriceKh || '0';
+    document.getElementById("modal-total-price-kh").textContent = row.dataset.totalPriceKh || '0';
 
-        // Show the Bootstrap modal
-        let modal = new bootstrap.Modal(document.getElementById('productDetailsModal'));
-        modal.show();
-    }
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('productDetailsModal'));
+    modal.show();
 }
+
 </script>
 
 

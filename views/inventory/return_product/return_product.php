@@ -37,8 +37,17 @@ foreach ($returnProducts as $returnProduct) {
             <a href="/return_product/create" class="btn btn-primary ms-2">+ Add Return</a>
         </div>
 
+        <!-- <form action="/return_product/upload" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="fileUpload" class="form-label">Upload Orders (Excel Only)</label>
+                <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
+            </div>
+            <button type="submit" class="btn btn-success">Upload</button>
+        </form> -->
+
+
         <!-- Collapsible Text Section -->
-        <div class="mb-3">
+        <div class="mb-3 mt-3">
             <button class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#returnCounts" aria-expanded="false" aria-controls="returnCounts">
                 <i class="bi bi-chevron-down"></i> View Return Counts
             </button>
@@ -48,8 +57,6 @@ foreach ($returnProducts as $returnProduct) {
                 <p><strong>Damaged Returns:</strong> <?= $damagedReturns ?></p>
             </div>
         </div>
-
-
 
         <div class="table-responsive">
             <table class="table table-hover align-middle" id="productTable">
@@ -66,7 +73,7 @@ foreach ($returnProducts as $returnProduct) {
                 </thead>
                 <tbody id="switchTableBody">
                     <?php foreach($returnProducts as $returnProduct): ?>
-                    <tr class="border-bottom" 
+                    <tr class="border-bottom search" 
                         data-return-id="<?= htmlspecialchars($returnProduct['return_id']) ?>" 
                         data-product-name="<?= htmlspecialchars($returnProduct['product_name']) ?>" 
                         data-quantity="<?= htmlspecialchars($returnProduct['quantity']) ?>" 
@@ -112,9 +119,6 @@ foreach ($returnProducts as $returnProduct) {
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
-
-
-
             </table>
 
             <!-- Pagination Component -->
@@ -263,6 +267,7 @@ document.getElementById('confirmDeleteButton').addEventListener('click', functio
     window.location.href = deleteUrl; // Redirect to the delete URL
 });
 </script>
+
 
 <?php else: ?>
     <?php $this->redirect('/login'); ?>

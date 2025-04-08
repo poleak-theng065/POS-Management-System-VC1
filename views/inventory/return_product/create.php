@@ -6,10 +6,10 @@
                 <label for="productName" class="form-label">Product Name</label>
                 <input type="text" class="form-control" id="productName" name="product_name" required>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label for="productImage" class="form-label">Product Image</label>
                 <input type="file" class="form-control" id="productImage" name="product_image" accept="image/*" required>
-            </div>
+            </div> -->
             <div class="mb-3">
                 <label for="quantity" class="form-label">Quantity</label>
                 <input type="number" class="form-control" id="quantity" name="quantity" required min="1">

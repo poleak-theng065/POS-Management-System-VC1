@@ -48,6 +48,10 @@ $route->get("/forgot-password", [AuthController::class, 'forgotPassword']);
 $route->get("/create_account", [CreateAccountController::class, 'create_account']);
 $route->get("/user_account", [UserAccountController::class, 'user_account']);
 
+// routes.php or your route configuration file
+$route->post("/create-account/store", [CreateAccountController::class, 'store']);
+
+
 /**
  * Dashboard Routes
  */
@@ -98,6 +102,7 @@ $route->post("/return_product/store", [ReturnProductController::class, 'store'])
 $route->get("/return_product/edit/{id}", [ReturnProductController::class, 'edit']);
 $route->put("/return_product/update/{id}", [ReturnProductController::class, 'update']);
 $route->delete("/return_product/delete/{id}", [ReturnProductController::class, 'delete']);
+$route->post("/return_product/upload", [ReturnProductController::class, 'upload']);
 
 /**
  * Arrived Product Routes
