@@ -24,23 +24,6 @@ class AuthModel {
         return $result->fetchColumn() > 0; // Return true if count is greater than 0
     }
 
-    public function addUser($username, $password_hash, $role, $email, $image) {
-        try {
-            $this->db->query(
-                "INSERT INTO users (username, password_hash, role, email, image) VALUES (:username, :password_hash, :role, email, :image)",
-                [
-                    ':username' => $username,
-                    ':password_hash' => $password_hash,
-                    ':role' => $role,
-                    ':email' => $email,
-                    ':image' => $image
-                ]
-            );
-        } catch (PDOException $e) {
-            echo "Error adding user: " . $e->getMessage();
-        }
-    }
-
     public function updateUser($user_id , $username, $password_hash, $role,$email, $image) {
         try {
             // Prepare the SQL update statement
