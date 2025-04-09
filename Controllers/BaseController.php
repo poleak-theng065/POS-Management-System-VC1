@@ -27,4 +27,5 @@ class BaseController
         header("Location: $url");
         exit;
     }
+    
 }

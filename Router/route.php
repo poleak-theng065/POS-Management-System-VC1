@@ -44,12 +44,24 @@ $route->get("/forgot-password", [AuthController::class, 'forgotPassword']);
  */
 $route->get("/create_account", [CreateAccountController::class, 'create_account']);
 $route->get("/user_account", [UserAccountController::class, 'user_account']);
-// routes.php or your route configuration file
 $route->post("/create-account/store", [CreateAccountController::class, 'store']);
-// Update user account (edit form submission)
-$route->post("/user-account/update", [UserAccountController::class, 'update']); 
-// Delete user account
-$route->post("/user-account/delete", [UserAccountController::class, 'delete']);
+$route->post("/user-account/update", [UserAccountController::class, 'update']);
+$route->post("/user-account/update", [UserAccountController::class, 'update_user']);
+// Add these lines:
+$route->get("/user_account/edit/{id}", [UserAccountController::class, 'edit_user_form']);
+$route->get("/user_account/view/{id}", [UserAccountController::class, 'view_user']);
+
+// Show the Change Password form (GET)
+$route->get("/user_account/change_password/{id}", [UserAccountController::class, 'change_password_form']);
+
+// Handle the form submission (POST)
+// In your router or route file (e.g., Router.php)
+$route->get('/account/change_password', [UserAccountController::class, 'changePassword']);
+$route->post('/account/change_password', [UserAccountController::class, 'updatePassword']);
+
+
+
+
 
 
 /**

@@ -49,4 +49,12 @@ class Router {
         $router->post('/create-account/store', ['CreateAccountController', 'store']);
         $router->route();
     }
+
+    public function view($view, $data = []) {
+        // Extract data variables for use in the view
+        extract($data);
+    
+        // Load the view file
+        require "views/{$view}.php"; // Line 15
+    }
 }

@@ -315,12 +315,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($data['users'])): ?>
-                        <?php foreach ($data['users'] as $user): ?>
-                            <tr class="user <?= $user['role'] === 'superadmin' ? 'superadmin' : ($user['role'] === 'admin' ? 'admin' : ($user['role'] === 'manager' ? 'manager' : ($user['role'] === 'cashier' ? 'cashier' : 'employee'))) ?>">
+                    <?php foreach ($data['users'] as $user): ?>
+                            <tr class="user <?= htmlspecialchars($user['role']) ?>" data-id="<?= htmlspecialchars($user['user_id']) ?>">
                                 <td>
                                     <div class="user-info">
-                                        <img src="<?= htmlspecialchars($user['image'] ? $user['image'] : 'https://via.placeholder.com/50') ?>" 
+                                        <img src="<?= htmlspecialchars($user['image'] ?: 'https://via.placeholder.com/50') ?>" 
                                             alt="Profile picture of <?= htmlspecialchars($user['username']) ?>">
                                         <div class="user-details">
                                             <p class="name"><?= htmlspecialchars($user['username']) ?></p>
@@ -347,6 +346,9 @@
                                         <span class="dots" aria-label="User options menu">
                                             <i class="fa-solid fa-ellipsis"></i>
                                             <div class="dropdown-menu">
+                                                <div class="dropdown-item view">
+                                                    <i class="fa-solid fa-eye"></i> View Profile
+                                                </div>
                                                 <div class="dropdown-item edit">
                                                     <i class="fa-solid fa-pen"></i> Edit
                                                 </div>
@@ -359,11 +361,6 @@
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="2">No users found.</td>
-                        </tr>
-                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -470,15 +467,61 @@
             filterAccounts();
         }
 
-        // Dropdown menu toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            updateFilterDropdown();
+        </script>
 
-            const dots = document.querySelectorAll('.dots');
-            dots.forEach(dot => {
-                dot.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const dropdown = this.querySelector('.dropdown-menu');
+<!-- Edit -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to update the filter dropdown with unique roles
+        function updateFilterDropdown() {
+            const filterSelect = document.getElementById('filterSelect');
+            const users = document.getElementsByClassName('user');
+            const roles = new Set();
+
+            while (filterSelect.options.length > 1) {
+                filterSelect.remove(1);
+            }
+
+            Array.from(users).forEach(user => {
+                const role = user.querySelector('.role-badge').textContent.trim();
+                roles.add(role);
+            });
+
+            roles.forEach(role => {
+                const option = document.createElement('option');
+                option.value = role;
+                option.textContent = role;
+                filterSelect.appendChild(option);
+            });
+        }
+
+        // Function to filter accounts based on the selected role
+        function filterAccounts() {
+            const filterValue = document.getElementById('filterSelect').value;
+            const users = document.getElementsByClassName('user');
+
+            Array.from(users).forEach(user => {
+                const role = user.querySelector('.role-badge').textContent.trim();
+                
+                if (filterValue === '' || role === filterValue) {
+                    user.style.display = '';
+                } else {
+                    user.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize the filter dropdown
+        updateFilterDropdown();
+
+        // Dropdown menu toggle functionality
+        const dots = document.querySelectorAll('.dots');
+        console.log('Dots elements found:', dots.length); // Debug: Check if .dots elements are found
+        dots.forEach(dot => {
+            dot.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.querySelector('.dropdown-menu');
+                if (dropdown) {
                     // Close all other dropdowns
                     document.querySelectorAll('.dropdown-menu').forEach(menu => {
                         if (menu !== dropdown) {
@@ -487,65 +530,85 @@
                     });
                     // Toggle the clicked dropdown
                     dropdown.classList.toggle('active');
-                });
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.dots')) {
-                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                        menu.classList.remove('active');
-                    });
+                } else {
+                    console.error('Dropdown menu not found for dot:', dot);
                 }
             });
-
-            // Add event listeners for Edit and Delete actions
-            document.querySelectorAll('.dropdown-item.edit').forEach(item => {
-                item.addEventListener('click', function() {
-                    const username = this.closest('tr').querySelector('.name').textContent;
-                    alert(`Edit user: ${username}`);
-                    // Add your edit logic here (e.g., redirect to an edit page)
-                });
-            });
-
-            document.querySelectorAll('.dropdown-item.delete').forEach(item => {
-                item.addEventListener('click', function() {
-                    const username = this.closest('tr').querySelector('.name').textContent;
-                    if (confirm(`Are you sure you want to delete user: ${username}?`)) {
-                        this.closest('tr').remove();
-                        updateFilterDropdown();
-                        filterAccounts();
-                    }
-                });
-            });
         });
-    </script>
 
-    <!-- Edit -->
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dots')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
+        });
 
-    <script>
-        document.querySelectorAll('.dropdown-item.edit').forEach(item => {
+        // View Profile
+        const viewItems = document.querySelectorAll('.dropdown-item.view');
+        console.log('View items found:', viewItems.length); // Debug: Check if .dropdown-item.view elements are found
+        viewItems.forEach(item => {
             item.addEventListener('click', function () {
                 const row = this.closest('tr');
-                const userId = row.getAttribute('data-id'); // Add this attribute in your PHP foreach
-
-                window.location.href = `/user_account/edit/${userId}`;
+                const userId = row.getAttribute('data-id');
+                if (userId) {
+                    window.location.href = `/user_account/view/${userId}`;
+                } else {
+                    console.error('User ID not found for row:', row);
+                }
             });
         });
 
-        document.querySelectorAll('.dropdown-item.delete').forEach(item => {
+        // Edit
+        const editItems = document.querySelectorAll('.dropdown-item.edit');
+        console.log('Edit items found:', editItems.length); // Debug: Check if .dropdown-item.edit elements are found
+        editItems.forEach(item => {
+            item.addEventListener('click', function () {
+                const row = this.closest('tr');
+                const userId = row.getAttribute('data-id');
+                if (userId) {
+                    window.location.href = `/user_account/edit/${userId}`;
+                } else {
+                    console.error('User ID not found for row:', row);
+                }
+            });
+        });
+
+        // Delete
+        const deleteItems = document.querySelectorAll('.dropdown-item.delete');
+        console.log('Delete items found:', deleteItems.length); // Debug: Check if .dropdown-item.delete elements are found
+        deleteItems.forEach(item => {
             item.addEventListener('click', function () {
                 const row = this.closest('tr');
                 const userId = row.getAttribute('data-id');
                 const username = row.querySelector('.name').textContent;
-
-                if (confirm(`Are you sure you want to delete user: ${username}?`)) {
-                    window.location.href = `/user_account/delete/${userId}`;
+                if (userId) {
+                    if (confirm(`Are you sure you want to delete user: ${username}?`)) {
+                        fetch('/user-account/delete', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: `id=${userId}`
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.href = '/user_account?success=User+deleted+successfully';
+                            } else {
+                                window.location.href = '/user_account?error=Failed+to+delete+user';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            window.location.href = '/user_account?error=Failed+to+delete+user';
+                        });
+                    }
+                } else {
+                    console.error('User ID not found for row:', row);
                 }
             });
         });
-
-    </script>
+    });
+</script>
 
 
 </body>
