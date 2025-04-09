@@ -9,7 +9,6 @@ require_once "Database/Database.php";
 
 // Dashboard Controller
 require_once "Controllers/dashbord/DashboardController.php";
-require_once "Controllers/dashbord/TotalSoldController.php";
 
 
 // Inventory Controllers
@@ -52,8 +51,17 @@ $route->get("/user_account", [UserAccountController::class, 'user_account']);
 /**
  * Dashboard Routes
  */
+// $route->get("/", [DashboardController::class, 'dashboard']);
+
+require_once "Controllers/dashbord/DashboardController.php";
+require_once "Controllers/dashbord/TotalSoldController.php";
+
+
+// Define routes
 $route->get("/", [DashboardController::class, 'dashboard']);
-$route->get("/_totalSold", [TotalSoldController::class, 'index']);
+
+// Route for sold products
+$route->get("/_totalSold", [DashboardController::class, 'soldProduct']);
 
 
 /**

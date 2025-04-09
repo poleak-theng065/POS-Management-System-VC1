@@ -1,7 +1,6 @@
-<!-- Content wrapper -->
 <?php session_start(); ?>
 <?php if (isset($_SESSION['users']) && $_SESSION['users'] === true): ?>
-  <di class="content-wrapper">
+  <div class="content-wrapper">
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -33,12 +32,16 @@
             </div>
           </div>
         </div>
-        <!-- Total Sold -->
+
+        <!-- Total Sold, Total Profit, and Total Cost Price -->
         <?php include_once 'dashbord_component/_totalSold.php'; ?>
+
         <!-- Total Revenue -->
         <?php include_once 'dashbord_component/_totalRevenue.php'; ?>
-        <!--/ Total Profit Report -->
+
+        <!-- Total Profit Report -->
         <?php include_once 'dashbord_component/_totalProfitReport.php'; ?>
+
       </div>
       <div class="row">
         <!-- Order Statistics -->
