@@ -153,51 +153,75 @@ class UserAccountController extends BaseController {
             $new_password = $_POST['new_password'];
             $confirm_password = $_POST['confirm_password'];
     
-            // Validate the old password
-            if (!$this->authModel->verifyPassword($user_id, $old_password)) {
-                // If old password is incorrect, pass an error message to the view
-                $error_message = "Incorrect old password";
-                // Re-render the change password page with the error message
+            // Check if fields are empty
+            if (empty($old_password) || empty($new_password) || empty($confirm_password)) {
+                $error_message = "All fields are required.";
                 $data = [
                     'error_message' => $error_message,
                     'user_id' => $user_id
                 ];
-                $this->view('user_account/change_password', $data);
+                $this->view('account/change_password', $data);
+                return;
+            }
+    
+            // Validate the old password
+            if (!$this->authModel->verifyPassword($user_id, $old_password)) {
+                // If old password is incorrect, pass an error message to the view
+                $error_message = "Incorrect old password.";
+                $data = [
+                    'error_message' => $error_message,
+                    'user_id' => $user_id
+                ];
+                $this->view('account/change_password', $data);
                 return;
             }
     
             // Check if new password and confirm password match
             if ($new_password !== $confirm_password) {
                 // If passwords don't match, pass an error message to the view
-                $error_message = "New password and confirmation do not match";
+                $error_message = "New password and confirmation do not match.";
                 $data = [
                     'error_message' => $error_message,
                     'user_id' => $user_id
                 ];
-                $this->view('user_account/change_password', $data);
+                $this->view('account/change_password', $data);
+                return;
+            }
+    
+            // Check password strength
+            if (strlen($new_password) < 8) {
+                $error_message = "Password must be at least 8 characters long.";
+                $data = [
+                    'error_message' => $error_message,
+                    'user_id' => $user_id
+                ];
+                $this->view('account/change_password', $data);
                 return;
             }
     
             // Update the password in the database
             if ($this->authModel->changePassword($user_id, $new_password)) {
                 // If password is successfully updated, redirect with success message
-                $success_message = "Password updated successfully";
+                $success_message = "Password updated successfully.";
                 $data = [
                     'success_message' => $success_message,
                     'user_id' => $user_id
                 ];
-                $this->view('user_account/change_password', $data);
+                $this->view('account/change_password', $data);
+                return;
             } else {
                 // If there's an error in updating, pass an error message to the view
-                $error_message = "Error updating password";
+                $error_message = "Error updating password.";
                 $data = [
                     'error_message' => $error_message,
                     'user_id' => $user_id
                 ];
-                $this->view('user_account/change_password', $data);
+                $this->view('account/change_password', $data);
             }
         }
     }
+    
+    
     
     
 }

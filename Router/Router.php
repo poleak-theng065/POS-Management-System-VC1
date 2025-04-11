@@ -47,6 +47,9 @@ class Router {
         $router = new self();
         $router->get('/create-account', ['CreateAccountController', 'create_account']);
         $router->post('/create-account/store', ['CreateAccountController', 'store']);
+        $router->get('/user_account/change_password/{id}', ['UserAccountController', 'change_password_form']); // Show form
+        $router->post('/account/change_password', ['UserAccountController', 'update_password']); // Handle form submission
+
         $router->route();
     }
 

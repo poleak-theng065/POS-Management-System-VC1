@@ -26,23 +26,32 @@ class AuthModel {
 
     public function verifyPassword($user_id, $password) {
         try {
-            $query = "SELECT password_hash FROM users WHERE user_id = $user_id";
-            $result = $this->db->query($query);
+            // Prepare and execute the query to get the password hash
+            $query = "SELECT password_hash FROM users WHERE user_id = :user_id";
+            $result = $this->db->query($query, ['user_id' => $user_id]);
+            
+            // Check if the user exists
             $user = $result->fetch(PDO::FETCH_ASSOC);
-    
-            if ($user && password_verify($password, $user['password_hash'])) {
-                return true;
+            
+            if ($user === false) {
+                // If no user is found, handle this gracefully
+                return false; // User doesn't exist
             }
-            return false;
+    
+            // Verify the password using the hash from the database
+            if (password_verify($password, $user['password_hash'])) {
+                return true; // Password is correct
+            }
+    
+            return false; // Password is incorrect
         } catch (PDOException $e) {
-            echo "Error verifying password: " . $e->getMessage();
-            return false;
+            // Log the error if the query fails
+            error_log("Error verifying password: " . $e->getMessage());
+            return false; // Return false in case of an exception
         }
     }
     
 
-
-    
     public function updateUser($user_id, $username, $password, $role, $email, $image) {
         try {
             $params = [
@@ -71,6 +80,7 @@ class AuthModel {
             return false;
         }
     }
+
     public function deleteUser($user_id) {
         try {
             $this->db->query("DELETE FROM users WHERE user_id = :user_id", ['user_id' => $user_id]);
@@ -140,8 +150,12 @@ class AuthModel {
             $hashedPassword = password_hash($new_password, PASSWORD_BCRYPT);
             
             // Update the password hash in the database
-            $query = "UPDATE users SET password_hash = '$hashedPassword' WHERE user_id = $user_id";
-            $this->db->query($query);
+            $query = "UPDATE users SET password_hash = :password_hash WHERE user_id = :user_id";
+            $params = [
+                ':password_hash' => $hashedPassword,
+                ':user_id' => $user_id
+            ];
+            $this->db->query($query, $params);
             
             return true;
         } catch (PDOException $e) {
@@ -149,7 +163,5 @@ class AuthModel {
             return false;
         }
     }
-    
-
     
 }
