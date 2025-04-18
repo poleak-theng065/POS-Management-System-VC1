@@ -10,26 +10,42 @@ class UserAccountController extends BaseController {
 
     // Display the user account page (form + user list)
     public function user_account() {
+        
         $data = [
             'title' => 'User Accounts',
             'users' => $this->authModel->getUsers(), // Fetch all users
             'errors' => [],
             'form_data' => [],
-            'success' => isset($_GET['success']) ? $_GET['success'] : null // Get success message if exists
+            'success' => isset($_GET['success']) ? $_GET['success'] : null, // Get success message if exists
         ];
         $this->view('account/user_account', $data);
     }
 
-        // In UserAccountController.php
-    public function delete_user($id) {
-        if ($this->authModel->deleteUser($id)) {
-            header("Location: /user_account?success=User+deleted+successfully");
-            exit();
-        } else {
-            header("Location: /user_account?error=Failed+to+delete+user");
+        // Delete UserAccount
+        public function delete_user() {
+            $id = $_POST['id'] ?? null;
+        
+            if (!$id) {
+                header("Location: /user_account?error=No+User+ID+Provided");
+                exit();
+            }
+        
+            $user = $this->authModel->getUserById($id);
+        
+            if (!$user) {
+                header("Location: /user_account?error=User+not+found");
+                exit();
+            }
+        
+            if ($this->authModel->deleteUser($id)) {
+                header("Location: /user_account?success=User+deleted+successfully");
+            } else {
+                header("Location: /user_account?error=Failed+to+delete+user");
+            }
             exit();
         }
-    }
+        
+        
 
     public function edit_user_form($id) {
         if (empty($id) || !is_numeric($id)) {
@@ -125,101 +141,7 @@ class UserAccountController extends BaseController {
         $this->view('account/view', $data);
     }
 
-    public function change_password_form($id) {
-        if (empty($id) || !is_numeric($id)) {
-            header("Location: /user_account?error=Invalid+user+ID");
-            exit();
-        }
     
-        $user = $this->authModel->getUserById($id);
-        if (!$user) {
-            header("Location: /user_account?error=User+not+found");
-            exit();
-        }
-    
-        $data = [
-            'title' => 'Change Password',
-            'user' => $user
-        ];
-    
-        $this->view('account/change_password', $data);
-    }
-    
-    public function update_password() {
-        // Check if the form is submitted
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user_id = $_POST['user_id']; // Get user ID from hidden form input
-            $old_password = $_POST['old_password'];
-            $new_password = $_POST['new_password'];
-            $confirm_password = $_POST['confirm_password'];
-    
-            // Check if fields are empty
-            if (empty($old_password) || empty($new_password) || empty($confirm_password)) {
-                $error_message = "All fields are required.";
-                $data = [
-                    'error_message' => $error_message,
-                    'user_id' => $user_id
-                ];
-                $this->view('account/change_password', $data);
-                return;
-            }
-    
-            // Validate the old password
-            if (!$this->authModel->verifyPassword($user_id, $old_password)) {
-                // If old password is incorrect, pass an error message to the view
-                $error_message = "Incorrect old password.";
-                $data = [
-                    'error_message' => $error_message,
-                    'user_id' => $user_id
-                ];
-                $this->view('account/change_password', $data);
-                return;
-            }
-    
-            // Check if new password and confirm password match
-            if ($new_password !== $confirm_password) {
-                // If passwords don't match, pass an error message to the view
-                $error_message = "New password and confirmation do not match.";
-                $data = [
-                    'error_message' => $error_message,
-                    'user_id' => $user_id
-                ];
-                $this->view('account/change_password', $data);
-                return;
-            }
-    
-            // Check password strength
-            if (strlen($new_password) < 8) {
-                $error_message = "Password must be at least 8 characters long.";
-                $data = [
-                    'error_message' => $error_message,
-                    'user_id' => $user_id
-                ];
-                $this->view('account/change_password', $data);
-                return;
-            }
-    
-            // Update the password in the database
-            if ($this->authModel->changePassword($user_id, $new_password)) {
-                // If password is successfully updated, redirect with success message
-                $success_message = "Password updated successfully.";
-                $data = [
-                    'success_message' => $success_message,
-                    'user_id' => $user_id
-                ];
-                $this->view('account/change_password', $data);
-                return;
-            } else {
-                // If there's an error in updating, pass an error message to the view
-                $error_message = "Error updating password.";
-                $data = [
-                    'error_message' => $error_message,
-                    'user_id' => $user_id
-                ];
-                $this->view('account/change_password', $data);
-            }
-        }
-    }
     
     
     

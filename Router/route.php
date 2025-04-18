@@ -27,6 +27,8 @@ require_once "Controllers/inventory/SaleReceiptController.php";
 require_once "Controllers/auth/LoginController.php";
 require_once "Controllers/auth/CreateAccountController.php";
 require_once "Controllers/auth/UserAccountController.php";
+require_once "Controllers/auth/ChangePasswordController.php";
+
 
 
 
@@ -50,18 +52,18 @@ $route->get("/user_account", [UserAccountController::class, 'user_account']);
 $route->post("/create-account/store", [CreateAccountController::class, 'store']);
 $route->post("/user-account/update", [UserAccountController::class, 'update']);
 $route->post("/user-account/update", [UserAccountController::class, 'update_user']);
+$route->post("/user-account/delete", [UserAccountController::class, 'delete_user']);
 // Add these lines:
 $route->get("/user_account/edit/{id}", [UserAccountController::class, 'edit_user_form']);
 $route->get("/user_account/view/{id}", [UserAccountController::class, 'view_user']);
+$route->post("/user-account/delete", [UserAccountController::class, 'delete_user']);
+
+
 
 // In your router (e.g., Router.php)
-$route->get('/user_account/change_password/{id}', [UserAccountController::class, 'change_password_form']);
-$route->post('/account/change_password', [UserAccountController::class, 'update_password']);
 
-
-
-
-
+$route->get('/user_account/change_password/{id}', [ChangePasswordController::class, 'change_password_page']);
+$route->post('/account/change_password', [ChangePasswordController::class, 'update_password']);
 
 /**
  * Dashboard Routes

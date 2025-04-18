@@ -66,8 +66,9 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 25px;
             flex: 1;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
+            
         }
 
         .breadcrumb {
@@ -114,8 +115,10 @@
 
         .profile-details {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            gap: 16px;
+            margin-bottom: 16px;
+            /* border: solid 1px; */
+            margin-left: 200px;
         }
 
         .profile-item {
@@ -124,12 +127,20 @@
             gap: 15px;
         }
 
-        .profile-item img {
-            width: 80px;
-            height: 80px;
+        .img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* Circular like screenshot */
+            object-fit: cover;
+            margin-top: 50px;
+            border: solid 1px blue;
+        }
+
+        .img img {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #3498db;
         }
 
         .profile-item div {
@@ -275,42 +286,46 @@
             <h1><i class="fa-solid fa-user"></i> User Profile</h1>
 
             <div class="profile-details">
-                <div class="profile-item">
+                <div class="img">
                     <img src="<?= htmlspecialchars($user['image'] ?: 'https://via.placeholder.com/80') ?>" 
-                         alt="Profile picture of <?= htmlspecialchars($user['username']) ?>">
-                    <div>
-                        <label>Username</label>
-                        <span><?= htmlspecialchars($user['username']) ?></span>
-                    </div>
+                    alt="Profile picture of <?= htmlspecialchars($user['username']) ?>">
                 </div>
+                
+                <div class="email_role">
+                    <div class="profile-item">
+                        <div>
+                            <!-- <label>Username</label> -->
+                            <span style="font-weight: bold; font-size:32px;"><?= htmlspecialchars($user['username']) ?></span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <div>
+                            <label>Email</label>
+                            <span style="flex-direction: column; display:flex;"><?= htmlspecialchars($user['email']) ?></span>
+                        </div>
+                    </div>
 
-                <div class="profile-item">
-                    <div>
-                        <label>Email</label>
-                        <span><?= htmlspecialchars($user['email']) ?></span>
+                    <div class="profile-item">
+                        <div>
+                            <label>Role</label>
+                            <span class="role-badge <?= htmlspecialchars($user['role']) ?>">
+                                <?php if ($user['role'] === 'superadmin'): ?>
+                                    <i class="fa-solid fa-crown"></i>
+                                <?php elseif ($user['role'] === 'admin'): ?>
+                                    <i class="fa-solid fa-user-shield"></i>
+                                <?php elseif ($user['role'] === 'manager'): ?>
+                                    <i class="fa-solid fa-user-tie"></i>
+                                <?php elseif ($user['role'] === 'cashier'): ?>
+                                    <i class="fa-solid fa-cash-register"></i>
+                                <?php else: ?>
+                                    <i class="fa-solid fa-user"></i>
+                                <?php endif; ?>
+                                <?= htmlspecialchars($user['role']) ?>
+                            </span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="profile-item">
-                    <div>
-                        <label>Role</label>
-                        <span class="role-badge <?= htmlspecialchars($user['role']) ?>">
-                            <?php if ($user['role'] === 'superadmin'): ?>
-                                <i class="fa-solid fa-crown"></i>
-                            <?php elseif ($user['role'] === 'admin'): ?>
-                                <i class="fa-solid fa-user-shield"></i>
-                            <?php elseif ($user['role'] === 'manager'): ?>
-                                <i class="fa-solid fa-user-tie"></i>
-                            <?php elseif ($user['role'] === 'cashier'): ?>
-                                <i class="fa-solid fa-cash-register"></i>
-                            <?php else: ?>
-                                <i class="fa-solid fa-user"></i>
-                            <?php endif; ?>
-                            <?= htmlspecialchars($user['role']) ?>
-                        </span>
-                    </div>
-                </div>
             </div>
+        </div>
 
             <div class="actions">
             <button class="nav-btn" onclick="window.location.href='/user_account/change_password/<?= htmlspecialchars($user['user_id']) ?>'">Change Password</button>

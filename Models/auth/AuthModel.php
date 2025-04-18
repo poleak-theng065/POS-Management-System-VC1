@@ -10,6 +10,7 @@ class AuthModel {
 
     public function getUsers() {
         $result = $this->db->query("SELECT * FROM users");
+        
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -81,15 +82,16 @@ class AuthModel {
         }
     }
 
-    public function deleteUser($user_id) {
-        try {
-            $this->db->query("DELETE FROM users WHERE user_id = :user_id", ['user_id' => $user_id]);
-            return true;
-        } catch (PDOException $e) {
-            echo "Error deleting user: " . $e->getMessage();
-            return false;
-        }
-    }
+
+// Method to delete a user by ID
+public function deleteUser($id) {
+    $id = (int)$id; // Cast to integer for safety
+    $result = $this->db->query("DELETE FROM users WHERE user_id = $id");
+    return $result !== false;
+}
+
+
+
 
     public function getUserByEmail($email) {
         $result = $this->db->query("SELECT * FROM users WHERE email = :email", ['email' => $email]);

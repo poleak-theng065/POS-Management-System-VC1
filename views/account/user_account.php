@@ -249,10 +249,29 @@
             color: #f1c40f;
         }
 
-        .dropdown-item.delete {
-            color: #e74c3c;
+                /* Style the delete button inside the form */
+        form.delete-form button {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
+            color: #e74c3c; /* Red color for delete */
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
         }
 
+        /* Style the trash icon inside the button */
+        form.delete-form button i {
+            margin-right: 8px; /* Space between icon and text */
+        }
+
+        /* Hover effect for the button */
+        form.delete-form button:hover {
+            background-color: #f8d7da; /* Light red background on hover */
+            color: #c0392b;
+        }
         @media (max-width: 600px) {
             body {
                 flex-direction: column;
@@ -346,15 +365,15 @@
                                         <span class="dots" aria-label="User options menu">
                                             <i class="fa-solid fa-ellipsis"></i>
                                             <div class="dropdown-menu">
-                                                <div class="dropdown-item view">
-                                                    <i class="fa-solid fa-eye"></i> View Profile
-                                                </div>
                                                 <div class="dropdown-item edit">
-                                                    <i class="fa-solid fa-pen"></i> Edit
+                                                    <i class="fa-solid fa-pen"></i> Edit Account
                                                 </div>
-                                                <div class="dropdown-item delete">
-                                                    <i class="fa-solid fa-trash"></i> Delete
-                                                </div>
+                                                <form class="delete-form" action="/user-account/delete" method="POST">
+                                                    <input type="hidden" name="id" value="<?= $user['user_id']; ?>">
+                                                    <button type="submit">
+                                                        <i class="fa-solid fa-trash"></i> Delete
+                                                    </button>
+                                                </form>
                                             </div>
                                         </span>
                                     </div>
@@ -575,39 +594,49 @@
             });
         });
 
+
+    });
         // Delete
-        const deleteItems = document.querySelectorAll('.dropdown-item.delete');
-        console.log('Delete items found:', deleteItems.length); // Debug: Check if .dropdown-item.delete elements are found
-        deleteItems.forEach(item => {
-            item.addEventListener('click', function () {
-                const row = this.closest('tr');
-                const userId = row.getAttribute('data-id');
-                const username = row.querySelector('.name').textContent;
-                if (userId) {
-                    if (confirm(`Are you sure you want to delete user: ${username}?`)) {
-                        fetch('/user-account/delete', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: `id=${userId}`
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                window.location.href = '/user_account?success=User+deleted+successfully';
-                            } else {
-                                window.location.href = '/user_account?error=Failed+to+delete+user';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            window.location.href = '/user_account?error=Failed+to+delete+user';
-                        });
-                    }
-                } else {
-                    console.error('User ID not found for row:', row);
-                }
-            });
+    // Wait until page is fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+    const deleteForms = document.querySelectorAll('.delete-form');
+
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            const row = this.closest('tr');
+            const username = row ? row.querySelector('.name')?.textContent.trim() : 'this user';
+
+            const confirmed = confirm(`Are you sure you want to delete ${username}?`);
+
+            if (!confirmed) {
+                e.preventDefault();  // 🛑 Stop form from submitting if cancel
+                console.log('Delete cancelled.');
+            }
         });
     });
+});
+
+
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Make each user row clickable
+    const userRows = document.querySelectorAll('.user');
+
+    userRows.forEach(row => {
+        row.style.cursor = 'pointer'; // Change cursor on hover
+        row.addEventListener('click', function () {
+            const userId = this.getAttribute('data-id');
+            if (userId) {
+                window.location.href = `/user_account/view/${userId}`;
+            } else {
+                console.error('User ID not found for this row');
+            }
+        });
+    });
+});
 </script>
 
 
