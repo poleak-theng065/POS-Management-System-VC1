@@ -3,337 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
+    <title>User Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
+        .sidebar-link {
+            transition: all 0.3s ease;
         }
-
-        body {
-            display: flex;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        .sidebar-link:hover {
+            transform: translateX(5px);
         }
+        .profile-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-        .sidebar {
-            width: 250px;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-right: 1px solid #ddd;
         }
-
-        .sidebar h2 {
-            font-size: 24px;
-            color: #2c3e50;
-            margin-bottom: 20px;
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-
-        .sidebar ul {
-            list-style: none;
+        .btn {
+            transition: all 0.3s ease;
         }
-
-        .sidebar ul li {
-            margin-bottom: 15px;
-        }
-
-        .sidebar ul li a {
-            text-decoration: none;
-            color: #7f8c8d;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar ul li a:hover {
-            color: #3498db;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 25px;
-            flex: 1;
-            max-width: 800px;
-            margin: 0 auto;
-            
-        }
-
-        .breadcrumb {
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-
-        .breadcrumb a {
-            color: #3498db;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            color: #2c3e50;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            color: #2c3e50;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        h1::after {
-            content: '';
-            width: 5%;
-            height: 3px;
-            background: #3498db;
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .profile-details {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-            /* border: solid 1px; */
-            margin-left: 200px;
-        }
-
-        .profile-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%; /* Circular like screenshot */
-            object-fit: cover;
-            margin-top: 50px;
-            border: solid 1px blue;
-        }
-
-        .img img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .profile-item div {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .profile-item label {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 14px;
-        }
-
-        .profile-item span {
-            color: #7f8c8d;
-            font-size: 16px;
-        }
-
-        .role-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 12px;
-        }
-
-        .admin .role-badge {
-            background: #ffeaa7;
-            color: #e67e22;
-        }
-
-        .cashier .role-badge {
-            background: #74b9ff;
-            color: white;
-        }
-
-        .employee .role-badge {
-            background: #dfe6e9;
-            color: #636e72;
-        }
-
-        .superadmin .role-badge {
-            background: #ff6f61;
-            color: white;
-        }
-
-        .manager .role-badge {
-            background: #a29bfe;
-            color: white;
-        }
-
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .actions button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .actions .edit-btn {
-            background-color: #696cff;
-            color: white;
-        }
-
-        .actions .edit-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .actions .back-btn {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .actions .back-btn:hover {
-            background-color: #c0392b;
-        }
-
-        .actions .nav-btn {
-            background-color: #3498db;
-            color: white;
-        }
-
-        .actions .nav-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .actions .nav-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        @media (max-width: 600px) {
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #ddd;
-            }
-
-            .main-content {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 15px;
-            }
-
-            .profile-item img {
-                width: 60px;
-                height: 60px;
-            }
-
-            .actions {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .actions button {
-                width: 100%;
-            }
+        .btn:hover {
+            transform: translateY(-2px);
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 flex min-h-screen font-['Inter',sans-serif]">
+    <!-- <aside class="w-64 bg-gray-900 text-white p-6 fixed h-full shadow-xl">
+        <div class="flex items-center gap-3 mb-8">
+            <i class="fa-solid fa-shield-halved text-2xl text-blue-400"></i>
+            <h2 class="text-xl font-bold">Admin Panel</h2>
+        </div>
+        <ul class="space-y-2">
+            <li>
+                <a href="/dashboard" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white">
+                    <i class="fa-solid fa-home"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/user_account" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white">
+                    <i class="fa-solid fa-users"></i> User Accounts
+                </a>
+            </li>
+            <li>
+                <a href="/settings" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white">
+                    <i class="fa-solid fa-cog"></i> Settings
+                </a>
+            </li>
+        </ul>
+    </aside> -->
 
-<div class="main-content">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="/dashboard">Dashboard</a> > 
-                <a href="/user_account">User Account</a> > 
-                <span>View Profile</span> > 
-                <span><?= htmlspecialchars($user['user_id']) ?></span>
+    <main class="flex-1 ml-64 p-8">
+        <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8 profile-card">
+            <nav class="text-sm text-gray-500 mb-6 flex items-center gap-2">
+                <a href="/dashboard" class="hover:text-blue-600 transition-colors">Dashboard</a>
+                <i class="fa-solid fa-angle-right text-xs"></i>
+                <a href="/user_account" class="hover:text-blue-600 transition-colors">User Account</a>
+                <i class="fa-solid fa-angle-right text-xs"></i>
+                <span class="text-gray-700">Profile</span>
+            </nav>
+
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                    <i class="fa-solid fa-user text-blue-600"></i> User Profile
+                </h1>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                    <?php if ($user['role'] === 'superadmin'): ?> bg-red-100 text-red-800
+                    <?php elseif ($user['role'] === 'admin'): ?> bg-yellow-100 text-yellow-800
+                    <?php elseif ($user['role'] === 'manager'): ?> bg-purple-100 text-purple-800
+                    <?php elseif ($user['role'] === 'cashier'): ?> bg-blue-100 text-blue-800
+                    <?php else: ?> bg-gray-100 text-gray-800 <?php endif; ?>">
+                    <?php if ($user['role'] === 'superadmin'): ?>
+                        <i class="fa-solid fa-crown mr-1"></i>
+                    <?php elseif ($user['role'] === 'admin'): ?>
+                        <i class="fa-solid fa-user-shield mr-1"></i>
+                    <?php elseif ($user['role'] === 'manager'): ?>
+                        <i class="fa-solid fa-user-tie mr-1"></i>
+                    <?php elseif ($user['role'] === 'cashier'): ?>
+                        <i class="fa-solid fa-cash-register mr-1"></i>
+                    <?php else: ?>
+                        <i class="fa-solid fa-user mr-1"></i>
+                    <?php endif; ?>
+                    <?= htmlspecialchars($user['role']) ?>
+                </span>
             </div>
 
-            <h1><i class="fa-solid fa-user"></i> User Profile</h1>
-
-            <div class="profile-details">
-                <div class="img">
-                    <img src="<?= htmlspecialchars($user['image'] ?: 'https://via.placeholder.com/80') ?>" 
-                    alt="Profile picture of <?= htmlspecialchars($user['username']) ?>">
+            <div class="flex items-start gap-6">
+                <div class="flex-shrink-0">
+                    <img src="<?= htmlspecialchars($user['image'] ?: 'https://via.placeholder.com/120') ?>" 
+                         alt="Profile picture of <?= htmlspecialchars($user['username']) ?>" 
+                         class="w-28 h-28 rounded-full object-cover border-4 border-gray-100 shadow-sm">
                 </div>
-                
-                <div class="email_role">
-                    <div class="profile-item">
+                <div class="flex-1">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4"><?= htmlspecialchars($user['username']) ?></h2>
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
-                            <!-- <label>Username</label> -->
-                            <span style="font-weight: bold; font-size:32px;"><?= htmlspecialchars($user['username']) ?></span>
+                            <label class="text-sm font-medium text-gray-600">Email</label>
+                            <p class="text-gray-800 text-base"><?= htmlspecialchars($user['email']) ?></p>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-600">User ID</label>
+                            <p class="text-gray-800 text-base"><?= htmlspecialchars($user['user_id']) ?></p>
                         </div>
                     </div>
-                    <div class="profile-item">
-                        <div>
-                            <label>Email</label>
-                            <span style="flex-direction: column; display:flex;"><?= htmlspecialchars($user['email']) ?></span>
-                        </div>
-                    </div>
+                </div>
+            </div>
 
-                    <div class="profile-item">
-                        <div>
-                            <label>Role</label>
-                            <span class="role-badge <?= htmlspecialchars($user['role']) ?>">
-                                <?php if ($user['role'] === 'superadmin'): ?>
-                                    <i class="fa-solid fa-crown"></i>
-                                <?php elseif ($user['role'] === 'admin'): ?>
-                                    <i class="fa-solid fa-user-shield"></i>
-                                <?php elseif ($user['role'] === 'manager'): ?>
-                                    <i class="fa-solid fa-user-tie"></i>
-                                <?php elseif ($user['role'] === 'cashier'): ?>
-                                    <i class="fa-solid fa-cash-register"></i>
-                                <?php else: ?>
-                                    <i class="fa-solid fa-user"></i>
-                                <?php endif; ?>
-                                <?= htmlspecialchars($user['role']) ?>
-                            </span>
-                        </div>
-                    </div>
+            <div class="flex justify-end gap-3 mt-8">
+                <button class="btn px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
+                        onclick="window.location.href='/user_account/change_password/<?= htmlspecialchars($user['user_id']) ?>'">
+                    <i class="fa-solid fa-key mr-2"></i> Change Password
+                </button>
+                <button class="btn px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700"
+                        onclick="window.location.href='/user_account/edit/<?= htmlspecialchars($user['user_id']) ?>'">
+                    <i class="fa-solid fa-edit mr-2"></i> Edit Profile
+                </button>
+                <button class="btn px-4 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700"
+                        onclick="window.location.href='/user_account'">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back
+                </button>
+                <button class="btn px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 <?= is_null($nextUserId) ? 'opacity-50 cursor-not-allowed' : '' ?>"
+                        onclick="window.location.href='/user_account/view/<?= $nextUserId ?>'"
+                        <?= is_null($nextUserId) ? 'disabled' : '' ?>>
+                    <i class="fa-solid fa-arrow-right mr-2"></i> Next
+                </button>
             </div>
         </div>
+    </main>
 
-            <div class="actions">
-            <button class="nav-btn" onclick="window.location.href='/user_account/change_password/<?= htmlspecialchars($user['user_id']) ?>'">Change Password</button>
-                <button class="edit-btn" onclick="window.location.href='/user_account/edit/<?= htmlspecialchars($user['user_id']) ?>'">Edit Profile</button>
-                <button class="back-btn" onclick="window.location.href='/user_account'">Back</button>
-                <button class="nav-btn" onclick="window.location.href='/user_account/view/<?= $nextUserId ?>'" <?= is_null($nextUserId) ? 'disabled' : '' ?>>Next</button>
-            </div>
-        </div>
-    </div>
+    <script>
+        // Add smooth scroll for sidebar links
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                window.location.href = href;
+            });
+        });
+    </script>
 </body>
 </html>
