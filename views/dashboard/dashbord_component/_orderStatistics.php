@@ -1,9 +1,8 @@
-<div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
-    <div class="card h-100">
+<div class="col-md-6 col-lg-4 mb-4">
+    <div class="card shadow-sm h-100 border-0 rounded-4 bg-glass">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
             <div class="card-title mb-0">
-                <h5 class="m-0 me-2">Order Statistics</h5>
-                <small class="text-muted">42.82k Total Sales</small>
+                <h5 class="m-0 me-2">Category</h5>
             </div>
             <div class="dropdown">
                 <button
@@ -15,78 +14,46 @@
                     aria-expanded="false">
                     <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                    <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" href="/product_list">View Details</a>
+                    <a class="dropdown-item" href="#" onclick="handleRefresh(event)">Refresh</a>
                 </div>
             </div>
         </div>
+
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex flex-column align-items-center gap-1">
-                    <h2 class="mb-2">8,258</h2>
-                    <span>Total Orders</span>
-                </div>
-                <div id="orderStatisticsChart"></div>
+            <div class="text-center mb-4">
+                <h2 id="totalProducts" class="display-6 fw-bold text-primary"><?= number_format($totalProducts ?? 0, 0) ?></h2>
+                <small class="text-muted">Total Products in Stock</small>
             </div>
-            <ul class="p-0 m-0">
-                <li class="d-flex mb-4 pb-1">
-                    <div class="avatar flex-shrink-0 me-3">
-                        <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-mobile-alt"></i></span>
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                        <div class="me-2">
-                            <h6 class="mb-0">Electronic</h6>
-                            <small class="text-muted">Mobile, Earbuds, TV</small>
-                        </div>
-                        <div class="user-progress">
-                            <small class="fw-semibold">82.5k</small>
-                        </div>
-                    </div>
-                </li>
-                <li class="d-flex mb-4 pb-1">
-                    <div class="avatar flex-shrink-0 me-3">
-                        <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                        <div class="me-2">
-                            <h6 class="mb-0">Fashion</h6>
-                            <small class="text-muted">T-shirt, Jeans, Shoes</small>
-                        </div>
-                        <div class="user-progress">
-                            <small class="fw-semibold">23.8k</small>
-                        </div>
-                    </div>
-                </li>
-                <li class="d-flex mb-4 pb-1">
-                    <div class="avatar flex-shrink-0 me-3">
-                        <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                        <div class="me-2">
-                            <h6 class="mb-0">Decor</h6>
-                            <small class="text-muted">Fine Art, Dining</small>
-                        </div>
-                        <div class="user-progress">
-                            <small class="fw-semibold">849k</small>
-                        </div>
-                    </div>
-                </li>
-                <li class="d-flex">
-                    <div class="avatar flex-shrink-0 me-3">
-                        <span class="avatar-initial rounded bg-label-secondary"><i class="bx bx-football"></i></span>
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                        <div class="me-2">
-                            <h6 class="mb-0">Sports</h6>
-                            <small class="text-muted">Football, Cricket Kit</small>
-                        </div>
-                        <div class="user-progress">
-                            <small class="fw-semibold">99</small>
-                        </div>
-                    </div>
-                </li>
+
+            <ul class="list-unstyled" id="categoryList">
+                <?php if (!empty($categories)): ?>
+                    <?php foreach ($categories as $category): ?>
+                        <?php
+                        $percentage = $totalProducts > 0 ? ($category['total_quantity'] / $totalProducts) * 100 : 0;
+                        $progressClass = $category['total_quantity'] > 0 ? 'bg-success' : 'bg-secondary';
+                        $quantityClass = $category['total_quantity'] > 0 ? 'text-success' : 'text-muted';
+                        $percentageFormatted = number_format($percentage, 1);
+                        ?>
+                        <li class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0"><?= htmlspecialchars($category['name']) ?></h6>
+                                <div class="text-end">
+                                    <small class="fw-semibold <?= $quantityClass ?>" data-bs-toggle="tooltip" title="<?= $percentageFormatted ?>%">
+                                        <?= number_format($category['total_quantity'], 0) ?>
+                                    </small>
+                                    <small class="text-muted ms-2"><?= $percentageFormatted ?>%</small>
+                                </div>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar <?= $progressClass ?>" role="progressbar" style="width: <?= $percentage ?>%;" aria-valuenow="<?= $percentage ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li class="text-center text-muted py-3">No categories found</li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

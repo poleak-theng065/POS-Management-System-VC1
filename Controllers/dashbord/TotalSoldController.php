@@ -15,17 +15,17 @@ class TotalSoldController extends BaseController
     {
         $totalQuantitySold = $this->totalSoldModel->getTotalQuantitySold();
         $totalProfit = $this->totalSoldModel->getTotalProfitForCurrentMonth();
-        $totalCostPrice = $this->totalSoldModel->getTotalCostPriceForCurrentMonth();
+        $totalExpenses = $this->totalSoldModel->getTotalCostPriceForCurrentMonth();
 
         // Log for debugging
         error_log("Total Quantity Sold in TotalSoldController: " . $totalQuantitySold);
         error_log("Total Profit in TotalSoldController: " . $totalProfit);
-        error_log("Total Cost Price in TotalSoldController: " . $totalCostPrice);
+        error_log("Total Expenses in TotalSoldController: " . $totalExpenses);
 
         return [
             "totalQuantitySold" => $totalQuantitySold,
             "totalProfit" => $totalProfit,
-            "totalCostPrice" => $totalCostPrice
+            "totalExpenses" => $totalExpenses
         ];
     }
 
@@ -33,5 +33,19 @@ class TotalSoldController extends BaseController
     {
         $data = $this->getTotalSoldData();
         $this->view("dashboard/dashboard_component/_totalSold", $data);
+    }
+
+    public function getUpdatedData()
+    {
+        $data = $this->getTotalSoldData();
+        $response = [
+            'success' => true,
+            'totalProfit' => $data['totalProfit'],
+            'totalExpenses' => $data['totalExpenses']
+        ];
+
+        error_log("getUpdatedData Response: " . print_r($response, true));
+        header('Content-Type: application/json');
+        echo json_encode($response);
     }
 }
