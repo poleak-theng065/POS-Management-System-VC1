@@ -52,7 +52,7 @@
 
 <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
     <div class="card">
-        <div class="card-header">
+        <div class="">
             <h5 class="m-0 me-2">Revenue Report</h5>
         </div>
         <div class="card-body px-0">

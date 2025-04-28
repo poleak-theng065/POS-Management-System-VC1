@@ -1,6 +1,6 @@
 <div class="col-md-6 col-lg-4 mb-4">
     <div class="card shadow-sm h-100 border-0 rounded-4 bg-glass">
-        <div class="card-header d-flex align-items-center justify-content-between pb-0">
+        <div class="d-flex align-items-center justify-content-between pb-0">
             <div class="card-title mb-0">
                 <h5 class="m-0 me-2">Category</h5>
             </div>

@@ -54,11 +54,10 @@ class SoldProductModel
         try {
             // Query to get each sale item along with individual quantities and the total sum of all quantities sold
             $stmt = $this->query("
-                SELECT 
+                SELECT  
                     sale_items.sale_item_id, 
                     sale_items.product_id, 
                     sale_items.quantity, 
-                    sale_items.sale_date, 
                     sale_items.discount, 
                     sale_items.total_price, 
                     products.barcode,

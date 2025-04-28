@@ -99,7 +99,7 @@
 
 <div class="col-md-6 col-lg-4 order-1 mb-4">
     <div class="card h-100">
-        <div class="card-header">
+        <div class="">
             <ul class="nav nav-pills" role="tablist">
                 <li class="nav-item">
                     <button

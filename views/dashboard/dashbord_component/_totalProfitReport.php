@@ -67,7 +67,7 @@
     <div class="row">
         <div class="col-12 mb-4">
             <div class="card">
-                <div class="card-header">
+                <div class="">
                     <h5 class="m-0 me-2">Profit Report</h5>
                 </div>
                 <div class="card-body px-0">

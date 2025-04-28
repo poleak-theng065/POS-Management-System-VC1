@@ -1,7 +1,7 @@
 <!-- Stock Products Card -->
 <div class="col-md-6 col-lg-4 order-2 mb-3 animate-fade-in">
     <div class="card h-100 border-0">
-        <div class="card-header d-flex align-items-center justify-content-between bg-light border-bottom-0">
+        <div class="d-flex align-items-center justify-content-between bg-light border-bottom-0">
             <h5 class="card-title m-0 me-2 text-dark">Stock Products</h5>
             <div class="dropdown">
                 <button
