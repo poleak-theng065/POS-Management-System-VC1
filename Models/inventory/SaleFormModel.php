@@ -97,8 +97,9 @@ class SaleFormModel
             
             $saleId = $this->db->lastInsertId();
             
-            // 2. Insert all sale items
+            // 2. Insert all sale items and reduce product quantities
             foreach ($saleData['items'] as $item) {
+                // Insert sale item
                 $this->db->query(
                     "INSERT INTO sale_items (sale_id, product_id, quantity, unit_price, discount)
                     VALUES (?, ?, ?, ?, ?)",
@@ -110,6 +111,19 @@ class SaleFormModel
                         $item['discount']
                     ]
                 );
+    
+                // Directly reduce product quantity here
+                $stmt = $this->db->query(
+                    "UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_id = ?",
+                    [
+                        $item['quantity'],
+                        $item['product_id']
+                    ]
+                );
+    
+                if ($stmt === false) {
+                    throw new Exception("Failed to reduce product quantity for product ID: " . $item['product_id']);
+                }
             }
             
             $this->db->commit();
@@ -120,6 +134,7 @@ class SaleFormModel
             return ['success' => false, 'message' => $e->getMessage()];
         }
     }
+    
 
     public function getUnitPriceByBarcode($barcode)
     {

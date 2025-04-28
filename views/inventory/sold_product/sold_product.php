@@ -43,19 +43,19 @@
     }
 
     .table {
-        border-collapse: collapse; /* Ensure borders are not doubled */
+        border-collapse: collapse;
     }
 
     .table th,
     .table td {
         vertical-align: middle;
         text-align: left;
-        border-bottom: 1px solid #dee2e6 !important; /* Add bottom border to all cells */
-        padding: 12px; /* Adjust padding to match screenshot */
+        border-bottom: 1px solid #dee2e6 !important;
+        padding: 12px;
     }
 
     .table th {
-        border-bottom: 2px solid #dee2e6 !important; /* Thicker border for header */
+        border-bottom: 2px solid #dee2e6 !important;
         text-transform: uppercase;
         color: #6c757d;
         font-weight: 600;
@@ -65,11 +65,11 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        border: none; /* Remove border from flex container */
+        border: none;
     }
 
     .table td.name-column > * {
-        border-bottom: none; /* Ensure child elements don't inherit border */
+        border-bottom: none;
     }
 
     .clickable-row {
@@ -161,7 +161,7 @@
                 $<?= number_format($totalProfit, 2) ?>
             </div>
             <div class="orders text-dark" style="font-size: 0.9rem;">
-                The total profit for this month in sales.
+                The total profit from all sales.
             </div>
             <a href="/arrived_product" class="view-icon position-absolute top-0 end-0 p-2" data-bs-toggle="tooltip" title="View Details">
                 <i class="fas fa-eye"></i>
@@ -304,6 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showProductDetails(saleItem) {
         // Populate the modal with the sale item details
         document.getElementById('modal-name').textContent = saleItem.name || 'N/A';
+        // Fix the typo: getElementOf -> getElementById
         document.getElementById('barcode').textContent = saleItem.barcode || 'N/A';
         document.getElementById('brand').textContent = saleItem.brand || 'N/A';
         document.getElementById('quantity').textContent = saleItem.quantity || '0';
@@ -317,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
         img.alt = 'Product Image';
         img.style.maxWidth = '100%';
         img.style.height = 'auto';
-        img.style.borderRadius = '10px'; // Rounded corners like in the image
+        img.style.borderRadius = '10px';
         imageContainer.appendChild(img);
 
         // Show the modal
