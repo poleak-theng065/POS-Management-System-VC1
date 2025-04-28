@@ -139,7 +139,7 @@ $route->delete("/arrived_product/delete/{id}", [ArrivedProductController::class,
 /**
  * Sale Receipt Routes
  */
-$route->get("/sale_receipt", [SaleReceiptController::class, 'orderNewProduct']);
+$route->get("/sale_receipt", [SaleReceiptController::class, 'getSales']);
 $route->get("/sale_receipt/create", [SaleReceiptController::class, 'create']);
 $route->post("/sale_receipt/store", [SaleReceiptController::class, 'store']);
 $route->get("/sale_receipt/edit/{id}", [SaleReceiptController::class, 'edit']);
