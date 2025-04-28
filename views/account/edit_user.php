@@ -67,7 +67,7 @@
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 24px;
-            max-width: 500px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -96,8 +96,8 @@
             font-size: 24px;
             color: #2c3e50;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            /* align-items: center; */
+            /* justify-content: center; */
             gap: 8px;
         }
 
@@ -128,6 +128,7 @@
             background: #f8f9fa;
             color: #2c3e50;
             transition: border-color 0.2s;
+            width: 100%;
         }
 
         .form-group input:focus,
@@ -299,12 +300,12 @@
    
     <div class="main-content">
         <div class="container">
-            <div class="breadcrumb">
+            <!-- <div class="breadcrumb">
                 <a href="/dashboard">Dashboard</a> > 
                 <a href="/user_account">User Account</a> > 
                 <span>Edit</span> > 
                 <span><?= htmlspecialchars($user['user_id']) ?></span>
-            </div>
+            </div> -->
 
             <h1><i class="fa-solid fa-user"></i> Edit User</h1>
 
@@ -331,7 +332,7 @@
                 <div class="form-group">
                     <label for="role">Role:</label>
                     <select id="role" name="role">
-                        <?php foreach (['admin', 'cashier', 'employee', 'manager', 'superadmin'] as $role): ?>
+                        <?php foreach (['admin', 'cashier', 'employee'] as $role): ?>
                             <option value="<?= $role ?>" <?= $user['role'] === $role ? 'selected' : '' ?>><?= ucfirst($role) ?></option>
                         <?php endforeach; ?>
                     </select>

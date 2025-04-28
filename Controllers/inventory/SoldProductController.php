@@ -1,5 +1,4 @@
 <?php
-
 require_once("Models/inventory/SoldProductModel.php");
 
 class SoldProductController extends BaseController
@@ -8,46 +7,39 @@ class SoldProductController extends BaseController
 
     public function __construct()
     {
-        $this->sales = new SoldProductModel();  // Instantiate the SoldProductModel class
+        $this->sales = new SoldProductModel();
     }
 
-    // This method is for showing the page with a list of sold products (without data)
     public function soldProduct()
     {
         $this->view('inventory/sold_product/sold_product');
     }
 
-    // This method fetches products and sold items from the model and passes them to the view
     public function index()
     {
-        // Get the products and sale items from the model
         $products = $this->sales->getProducts();
         $saleItems = $this->sales->getSaleItems();
-        $totalProfit = $this->sales->getTotalProfitForCurrentMonth();
+        $totalProfit = $this->sales->getTotalProfit();
 
-        // Calculate total quantity of all sold products (sum across all sale items)
         $totalQuantitySold = 0;
         foreach ($saleItems as $saleItem) {
-            $totalQuantitySold += $saleItem['quantity'];  // Summing the quantity of each sale item
+            $totalQuantitySold += $saleItem['quantity'];
         }
 
-        // Handle errors when fetching products or sale items
         if ($products === false || $saleItems === false) {
             error_log("Failed to fetch data in SoldProductController::index");
             $products = $products === false ? [] : $products;
             $saleItems = $saleItems === false ? [] : $saleItems;
         }
 
-        // Pass the necessary data to the view
         $this->view("inventory/sold_product/sold_product", [
             "products" => $products,
             "saleItems" => $saleItems,
             "totalProfit" => $totalProfit,
-            "totalQuantitySold" => $totalQuantitySold  // Pass total quantity to the view
+            "totalQuantitySold" => $totalQuantitySold
         ]);
     }
 
-    // Fetch unit price by barcode via AJAX
     public function getUnitPrice($barcode)
     {
         $unitPrice = $this->sales->getUnitPriceByBarcode($barcode);

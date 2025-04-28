@@ -683,7 +683,6 @@
                 </div>
             </div>
 
-
             <!-- Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -724,8 +723,6 @@ function showProductDetails(event, row) {
 }
 
 </script>
-
-
 
 
 <!-- Filter  -->
@@ -795,7 +792,7 @@ function showProductDetails(event, row) {
         var deleteUrl = this.getAttribute('data-delete-url');
         window.location.href = deleteUrl; // Redirect to the delete URL
     });
-    </script>
+</script>
 
 
 <!-- Export excel and pdf -->
