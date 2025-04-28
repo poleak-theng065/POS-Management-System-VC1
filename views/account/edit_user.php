@@ -332,7 +332,7 @@
                 <div class="form-group">
                     <label for="role">Role:</label>
                     <select id="role" name="role">
-                        <?php foreach (['admin', 'cashier', 'employee', 'manager', 'superadmin'] as $role): ?>
+                        <?php foreach (['admin', 'cashier', 'employee'] as $role): ?>
                             <option value="<?= $role ?>" <?= $user['role'] === $role ? 'selected' : '' ?>><?= ucfirst($role) ?></option>
                         <?php endforeach; ?>
                     </select>

@@ -349,12 +349,8 @@
                                 <td>
                                     <div class="role-column">
                                         <span class="role-badge">
-                                            <?php if ($user['role'] === 'superadmin'): ?>
-                                                <i class="fa-solid fa-crown"></i>
-                                            <?php elseif ($user['role'] === 'admin'): ?>
+                                            <?php if ($user['role'] === 'admin'): ?>
                                                 <i class="fa-solid fa-user-shield"></i>
-                                            <?php elseif ($user['role'] === 'manager'): ?>
-                                                <i class="fa-solid fa-user-tie"></i>
                                             <?php elseif ($user['role'] === 'cashier'): ?>
                                                 <i class="fa-solid fa-cash-register"></i>
                                             <?php else: ?>
