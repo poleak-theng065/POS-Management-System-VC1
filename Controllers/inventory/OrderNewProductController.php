@@ -106,7 +106,6 @@ class OrderNewProductController extends BaseController {
     }
 
 
-
     public function delete($id)
     {
         $this->newOrders->deleteOrderNew($id);
