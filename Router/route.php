@@ -1,5 +1,4 @@
 <?php
-
 // Core Dependencies
 require_once "Router.php";
 require_once "Controllers/BaseController.php";
@@ -9,7 +8,12 @@ require_once "Database/Database.php";
 
 // Dashboard Controller
 require_once "Controllers/dashbord/DashboardController.php";
-
+require_once "Controllers/dashbord/TotalSoldController.php";
+require_once "Controllers/dashbord/ExpenseOverviewController.php";
+require_once "Controllers/dashbord/TotalRevenueController.php";
+require_once "Controllers/dashbord/TotalProfitReportController.php";
+require_once "Controllers/dashbord/OrderStatisticsController.php";
+require_once "Controllers/dashbord/TransactionsController.php"; // Add this line
 
 // Inventory Controllers
 require_once "Controllers/inventory/ProductListController.php";
@@ -28,11 +32,6 @@ require_once "Controllers/auth/LoginController.php";
 require_once "Controllers/auth/CreateAccountController.php";
 require_once "Controllers/auth/UserAccountController.php";
 require_once "Controllers/auth/ChangePasswordController.php";
-
-
-
-
-
 
 $route = new Router();
 
@@ -53,33 +52,28 @@ $route->post("/create-account/store", [CreateAccountController::class, 'store'])
 $route->post("/user-account/update", [UserAccountController::class, 'update']);
 $route->post("/user-account/update", [UserAccountController::class, 'update_user']);
 $route->post("/user-account/delete", [UserAccountController::class, 'delete_user']);
-// Add these lines:
 $route->get("/user_account/edit/{id}", [UserAccountController::class, 'edit_user_form']);
 $route->get("/user_account/view/{id}", [UserAccountController::class, 'view_user']);
 $route->post("/user-account/delete", [UserAccountController::class, 'delete_user']);
-
-
-
-// In your router (e.g., Router.php)
-
 $route->get('/user_account/change_password/{id}', [ChangePasswordController::class, 'change_password_page']);
 $route->post('/account/change_password', [ChangePasswordController::class, 'update_password']);
 
 /**
  * Dashboard Routes
  */
-// $route->get("/", [DashboardController::class, 'dashboard']);
-
-require_once "Controllers/dashbord/DashboardController.php";
-require_once "Controllers/dashbord/TotalSoldController.php";
-
-
-// Define routes
 $route->get("/", [DashboardController::class, 'dashboard']);
+$route->get("/_totalSold", [TotalSoldController::class, 'getUpdatedData']);
+$route->get("/_orderStatistics", [OrderStatisticsController::class, 'getOrderStatisticsData']);
+$route->get("/total-revenue", [TotalRevenueController::class, 'index']);
+$route->get("/total-revenue/get-updated-data", [TotalRevenueController::class, 'getUpdatedData']);
+$route->get("/total-profit-report", [TotalProfitReportController::class, 'index']);
+$route->get("/total-profit-report/get-updated-data", [TotalProfitReportController::class, 'getUpdatedData']);
 
-// Route for sold products
-$route->get("/_totalSold", [DashboardController::class, 'soldProduct']);
-
+/**
+ * Expense Overview Routes
+ */
+$route->get("/expense-overview", [ExpenseOverviewController::class, 'index']);
+$route->get("/expense-overview/get-updated-data", [ExpenseOverviewController::class, 'getUpdatedData']);
 
 /**
  * Category Routes

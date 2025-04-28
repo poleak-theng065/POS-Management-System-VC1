@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <!-- Total Sold, Total Profit, and Total Cost Price -->
+        <!-- Total Sold and Total Cost Price -->
         <?php include_once 'dashbord_component/_totalSold.php'; ?>
 
         <!-- Total Revenue -->
