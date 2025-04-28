@@ -113,8 +113,6 @@ class OrderNewProductModel {
         }
 
 
-    
-    
     public function deleteOrderNew($id)
     {
         try {

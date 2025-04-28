@@ -99,7 +99,7 @@ $route->get("/product_list/create", [ProductListController::class, 'create']);
 $route->get("/product_list/edit/{id}", [ProductListController::class, 'edit']);
 $route->post("/product_list/update/{id}", [ProductListController::class, 'update']);
 $route->post("/product_list/store", [ProductListController::class, 'store']);
-$route->get("/product_list/destroy/{id}", [ProductListController::class, 'destroy']);
+$route->post("/product_list/destroy/{id}", [ProductListController::class, 'destroy']);
 
 /**
  * Sold Product Routes
@@ -124,8 +124,8 @@ $route->get("/return_product", [ReturnProductController::class, 'returnProduct']
 $route->get("/return_product/create", [ReturnProductController::class, 'create']);
 $route->post("/return_product/store", [ReturnProductController::class, 'store']);
 $route->get("/return_product/edit/{id}", [ReturnProductController::class, 'edit']);
-$route->put("/return_product/update/{id}", [ReturnProductController::class, 'update']);
-$route->delete("/return_product/delete/{id}", [ReturnProductController::class, 'delete']);
+$route->post("/return_product/update/{id}", [ReturnProductController::class, 'update']);
+$route->get("/return_product/delete/{id}", [ReturnProductController::class, 'delete']);
 $route->post("/return_product/upload", [ReturnProductController::class, 'upload']);
 
 /**
@@ -133,7 +133,7 @@ $route->post("/return_product/upload", [ReturnProductController::class, 'upload'
  */
 $route->get("/arrived_product", [ArrivedProductController::class, 'arrivedProduct']);
 $route->get("/arrived_product/edit/{id}", [ArrivedProductController::class, 'edit']);
-$route->put("/arrived_product/update/{id}", [ArrivedProductController::class, 'update']);
+$route->post("/arrived_product/update/{id}", [ArrivedProductController::class, 'update']);
 $route->delete("/arrived_product/delete/{id}", [ArrivedProductController::class, 'delete']);
 
 /**
@@ -153,8 +153,8 @@ $route->get("/order_new_product", [OrderNewProductController::class, 'orderNewPr
 $route->get("/order_new_product/create", [OrderNewProductController::class, 'create']);
 $route->post("/order_new_product/store", [OrderNewProductController::class, 'store']);
 $route->get("/order_new_product/edit/{id}", [OrderNewProductController::class, 'edit']);
-$route->put("/order_new_product/update/{id}", [OrderNewProductController::class, 'update']);
-$route->delete("/order_new_product/delete/{id}", [OrderNewProductController::class, 'delete']);
+$route->post("/order_new_product/update/{id}", [OrderNewProductController::class, 'update']);
+$route->get("/order_new_product/delete/{id}", [OrderNewProductController::class, 'delete']);
 
 /**
  * Sale Form Routes
