@@ -77,100 +77,64 @@ class SaleFormModel
         }
     }
 
-    public function createSaleItem($productId, $quantity, $saleDate, $discount)
-    {
+    public function createSale($saleData) {
+        $this->db->beginTransaction();
+        
         try {
-            // Log the input parameters
-            error_log("createSaleItem called with productId: $productId, quantity: $quantity, saleDate: $saleDate, discount: $discount");
-
-            // Validate inputs
-            $productId = (int)$productId;
-            $quantity = (int)$quantity;
-            $discount = (float)$discount;
-
-            if ($productId <= 0) {
-                throw new Exception("Invalid product ID: $productId");
-            }
-            if ($quantity <= 0) {
-                throw new Exception("Quantity must be greater than 0: $quantity");
-            }
-            if ($discount < 0) {
-                throw new Exception("Discount cannot be negative: $discount");
-            }
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $saleDate)) {
-                throw new Exception("Invalid sale date format: $saleDate. Expected YYYY-MM-DD.");
-            }
-            if ($discount > 999.99) {
-                throw new Exception("Discount exceeds maximum value of 999.99 for DECIMAL(5,2): $discount");
-            }
-
-            // Fetch product details (unit_price, stock_quantity)
-            $stmt = $this->query(
-                "SELECT unit_price, stock_quantity FROM products WHERE product_id = ? LIMIT 1",
-                [$productId]
+            // 1. Insert sale header
+            $this->db->query(
+                "INSERT INTO sales (total_amount, total_discount, payment_method, customer_name, phone_number, address) 
+                VALUES (?, ?, ?, ?, ?, ?)",
+                [
+                    $saleData['total_amount'],
+                    $saleData['total_discount'],
+                    $saleData['payment_method'],
+                    $saleData['customer_name'] ?? null,
+                    $saleData['phone_number'] ?? null,
+                    $saleData['address'] ?? null
+                ]
             );
-            if ($stmt === false) {
-                throw new Exception("Failed to fetch product details for product_id: $productId");
+            
+            $saleId = $this->db->lastInsertId();
+            
+            // 2. Insert all sale items and reduce product quantities
+            foreach ($saleData['items'] as $item) {
+                // Insert sale item
+                $this->db->query(
+                    "INSERT INTO sale_items (sale_id, product_id, quantity, unit_price, discount)
+                    VALUES (?, ?, ?, ?, ?)",
+                    [
+                        $saleId,
+                        $item['product_id'],
+                        $item['quantity'],
+                        $item['unit_price'],
+                        $item['discount']
+                    ]
+                );
+    
+                // Directly reduce product quantity here
+                $stmt = $this->db->query(
+                    "UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_id = ?",
+                    [
+                        $item['quantity'],
+                        $item['product_id']
+                    ]
+                );
+    
+                if ($stmt === false) {
+                    throw new Exception("Failed to reduce product quantity for product ID: " . $item['product_id']);
+                }
             }
-            $product = $stmt->fetch(PDO::FETCH_ASSOC);
-            if (!$product) {
-                throw new Exception("Product not found for product_id: $productId");
-            }
-            error_log("Product fetched: " . json_encode($product));
-
-            $unitPrice = floatval($product['unit_price']);
-            $currentStock = (int)$product['stock_quantity'];
-
-            // Check if stock is available
-            if ($currentStock < $quantity) {
-                throw new Exception("Not enough stock available. Current stock: $currentStock, requested: $quantity");
-            }
-
-            // Calculate total price
-            $totalPrice = ($unitPrice * $quantity) - $discount;
-            if ($totalPrice < 0) {
-                throw new Exception("Total price cannot be negative: $totalPrice");
-            }
-            if ($totalPrice > 99999999.99) {
-                throw new Exception("Total price exceeds maximum value of 99999999.99 for DECIMAL(10,2): $totalPrice");
-            }
-            error_log("Total price calculated: $totalPrice");
-
-            // Start transaction
-            $this->db->beginTransaction();
-
-            // Insert the sale item
-            $insertSaleStmt = $this->query(
-                "INSERT INTO sale_items (product_id, quantity, sale_date, discount, total_price)
-                VALUES (?, ?, ?, ?, ?)",
-                [$productId, $quantity, $saleDate, $discount, $totalPrice]
-            );
-            if ($insertSaleStmt === false) {
-                throw new Exception("Failed to insert sale item.");
-            }
-
-            // Reduce product quantity in stock
-            $updateStockStmt = $this->query(
-                "UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_id = ?",
-                [$quantity, $productId]
-            );
-            if ($updateStockStmt === false) {
-                throw new Exception("Failed to update product stock.");
-            }
-
-            // Commit transaction
+            
             $this->db->commit();
-
-            error_log("Sale item created successfully and stock updated.");
-
-            return true;
+            return ['success' => true, 'sale_id' => $saleId];
+            
         } catch (Exception $e) {
-            // Rollback if there's an error
             $this->db->rollBack();
-            error_log("Error creating sale item: " . $e->getMessage());
-            return $e->getMessage();
+            return ['success' => false, 'message' => $e->getMessage()];
         }
     }
+    
 
     public function getUnitPriceByBarcode($barcode)
     {
