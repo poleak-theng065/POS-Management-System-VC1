@@ -213,7 +213,7 @@
                             <td><?= htmlspecialchars($saleItem['barcode']) ?></td>
                             <td class="name-column">
                                 <div class="product-image-container">
-                                    <img src="<?= !empty($saleItem['image_path']) ? 'assets/img/upload/' . htmlspecialchars($saleItem['image_path']) : '/path/to/default/image.png' ?>"
+                                    <img src="<?= !empty($saleItem['image_path']) ? '/assets/img/upload/' . htmlspecialchars($saleItem['image_path']) : '/assets/img/default.png' ?>"
                                         alt="Product Image" class="product-image">
                                 </div>
                                 <span><?= htmlspecialchars($saleItem['name']) ?></span>
@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showProductDetails(saleItem) {
         // Populate the modal with the sale item details
         document.getElementById('modal-name').textContent = saleItem.name || 'N/A';
-        document.getElementOf('barcode').textContent = saleItem.barcode || 'N/A';
+        document.getElementById('barcode').textContent = saleItem.barcode || 'N/A';
         document.getElementById('brand').textContent = saleItem.brand || 'N/A';
         document.getElementById('quantity').textContent = saleItem.quantity || '0';
         document.getElementById('discount').textContent = saleItem.discount || '0.00';
@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const imageContainer = document.getElementById('modal-image-container');
         imageContainer.innerHTML = ''; // Clear previous image
         const img = document.createElement('img');
-        img.src = saleItem.image_path ? 'assets/img/upload/' + saleItem.image_path : '/path/to/default/image.png';
+        img.src = saleItem.image_path ? '/assets/img/upload/' + saleItem.image_path : '/assets/img/default.png';
         img.alt = 'Product Image';
         img.style.maxWidth = '100%';
         img.style.height = 'auto';
@@ -343,5 +343,9 @@ document.addEventListener('DOMContentLoaded', function () {
             showProductDetails(saleItem);
         });
     });
+
+    // Initialize tooltips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 });
 </script>
