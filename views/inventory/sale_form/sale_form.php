@@ -56,7 +56,7 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-end conducts mt-4">
+                        <div class="d-flex justify-content-end mt-4">
                             <button type="submit" class="btn btn-primary" id="addSaleBtn">
                                 <i class="bi bi-cart-plus me-2"></i> Add Sale
                             </button>
@@ -76,18 +76,7 @@
                             <div class="d-flex align-items-end">
                                 <div class="me-2 flex-grow-1 d-flex flex-column">
                                     <label for="barcode" class="form-label">Barcode</label>
-                                    <select name="product_id" id="barcode" class="form-control" style="height: 38px;" required>
-                                        <option value="">Select a Product</option>
-                                        <?php foreach ($products as $product): ?>
-                                            <option value="<?= htmlspecialchars($product['product_id']) ?>"
-                                                data-unit-price="<?= htmlspecialchars($product['unit_price']) ?>"
-                                                data-name="<?= htmlspecialchars($product['name']) ?>"
-                                                data-brand="<?= htmlspecialchars($product['brand']) ?>"
-                                                data-image-path="<?= !empty($product['image_path']) ? 'assets/img/upload/' . $product['image_path'] : '/path/to/default/image.png' ?>">
-                                                <?= htmlspecialchars($product['barcode']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <input type="text" name="product_id" id="barcode" class="form-control" placeholder="Scan or enter barcode" required>
                                 </div>
                                 <button class="btn btn-success px-4 py-2" type="button" id="saveProductBtn">
                                     <i class="bi bi-save me-2"></i> Save
@@ -98,11 +87,11 @@
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="name">Product Name</label>
-                                <input type="text" class="form-control" id="name" required>
+                                <input type="text" class="form-control" id="name" required readonly>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="unit_price" class="form-label">Unit Price ($)</label>
-                                <input type="text" class="form-control" id="unit_price" required>
+                                <input type="text" class="form-control" id="unit_price" required readonly>
                             </div>
                         </div>
                         <div class="row">
@@ -129,177 +118,109 @@
                             <i class="bi bi-house-door fs-4 text-danger me-2"></i>
                             <input type="text" class="form-control" id="address" placeholder="Enter Customer Address">
                         </div>
+                        <div class="mb-3">
+                            <label for="payment_method" class="form-label">Payment Method</label>
+                            <select class="form-select" id="payment_method" name="payment_method">
+                                <option value="cash">Cash</option>
+                                <option value="credit_card">Credit Card</option>
+                                <option value="mobile_payment">Mobile Payment</option>
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
 
+            <!-- Previous PHP/HTML code remains the same until the JavaScript section -->
             <script>
                 let productList = [];
+                const productsData = <?= json_encode($products) ?>;
+                
+                // Create barcode to product mapping
+                const productMap = {};
+                productsData.forEach(product => {
+                    productMap[product.barcode] = {
+                        product_id: product.product_id,
+                        name: product.name,
+                        brand: product.brand,
+                        unit_price: product.unit_price,
+                        image_path: product.image_path ? 'assets/img/upload/' + product.image_path : '/path/to/default/image.png'
+                    };
+                });
 
+                // Auto-focus barcode input on page load
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('barcode').focus();
+                });
+
+                // Handle barcode input changes
+                document.getElementById('barcode').addEventListener('input', function() {
+                    const barcode = this.value.trim();
+                    const product = productMap[barcode];
+                    
+                    if (product) {
+                        document.getElementById('unit_price').value = parseFloat(product.unit_price).toFixed(2);
+                        document.getElementById('name').value = product.name;
+                    } else {
+                        document.getElementById('unit_price').value = "";
+                        document.getElementById('name').value = "";
+                    }
+                });
+
+                // Handle Enter key in barcode field
+                document.getElementById('barcode').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        document.getElementById('saveProductBtn').click();
+                    }
+                });
+
+                // Save product button handler
                 document.getElementById('saveProductBtn').addEventListener('click', function() {
-                    const barcodeSelect = document.getElementById('barcode');
-                    const selectedOption = barcodeSelect.options[barcodeSelect.selectedIndex];
-                    const discountInput = document.getElementById('discount').value;
+                    const barcodeInput = document.getElementById('barcode');
+                    const barcode = barcodeInput.value.trim();
+                    const discountInput = parseFloat(document.getElementById('discount').value) || 0;
 
-                    if (!selectedOption.value) {
-                        alert("Please select a product.");
+                    if (!barcode) {
+                        alert("Please enter a barcode.");
                         return;
                     }
 
-                    const imagePath = selectedOption.getAttribute('data-image-path');
-                    const basePath = "../../../"; // Adjust based on directory structure
-                    const fullImagePath = basePath + imagePath;
+                    const product = productMap[barcode];
+                    if (!product) {
+                        alert("Product not found for this barcode.");
+                        return;
+                    }
+
+                    const basePath = "../../../";
+                    const fullImagePath = basePath + product.image_path;
 
                     const newProduct = {
-                        barcode: selectedOption.value,
-                        name: selectedOption.getAttribute('data-name'),
+                        barcode: product.product_id,
+                        name: product.name,
                         imageUrl: fullImagePath,
                         quantity: 1,
-                        price: parseFloat(selectedOption.getAttribute('data-unit-price')),
-                        discount: parseFloat(discountInput) || 0
+                        price: parseFloat(product.unit_price),
+                        discount: discountInput
                     };
 
-                    // Check if product already exists by barcode
-                    const existingProductIndex = productList.findIndex(p => p.barcode === newProduct.barcode);
-                    if (existingProductIndex !== -1) {
-                        // Same product, increase quantity
-                        productList[existingProductIndex].quantity += 1;
-                        // Scroll to the updated product
-                        updateProductListUI(productList, existingProductIndex);
+                    // Check if product exists - UPDATED SECTION
+                    const existingIndex = productList.findIndex(p => p.barcode === newProduct.barcode);
+                    if (existingIndex !== -1) {
+                        productList[existingIndex].quantity += 1;
+                        // Keep discount as per-unit value
+                        productList[existingIndex].discount = discountInput; 
                     } else {
-                        // Different product, add new
                         productList.push(newProduct);
-                        // Scroll to the newly added product
-                        updateProductListUI(productList, productList.length - 1);
                     }
+                    updateProductListUI(productList, existingIndex !== -1 ? existingIndex : productList.length - 1);
+
+                    // Reset for next entry
+                    barcodeInput.value = '';
+                    barcodeInput.focus();
+                    document.getElementById('discount').value = '0.00';
                 });
 
-                document.getElementById('addSaleBtn').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (productList.length === 0) {
-                        alert("Please save at least one product first.");
-                        return;
-                    }
-
-                    const customerName = document.getElementById('customer_name').value;
-                    const phoneNumber = document.getElementById('phone_number').value;
-                    const address = document.getElementById('address').value;
-                    const saleDate = document.getElementById('sale_date').value;
-
-                    // Calculate totals for receipt
-                    let totalDiscount = 0;
-                    let totalPrice = 0;
-                    productList.forEach(product => {
-                        totalDiscount += product.discount * product.quantity;
-                        totalPrice += (product.price - product.discount) * product.quantity;
-                    });
-
-                    // Prepare data for AJAX
-                    const saleData = {
-                        products: productList.map(p => ({
-                            product_id: p.barcode, // Using barcode as product_id
-                            quantity: p.quantity,
-                            sale_date: saleDate,
-                            discount: p.discount
-                        })),
-                        customer_name: customerName,
-                        phone_number: phoneNumber,
-                        address: address
-                    };
-
-                    // Send data to server via AJAX
-                    fetch('/sale_form/store', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(saleData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Generate receipt after successful save
-                            const receiptWindow = window.open('', '_blank');
-                            receiptWindow.document.write(`
-                                <html>
-                                <head>
-                                    <title>Sale Receipt</title>
-                                    <style>
-                                        @media print {
-                                            .no-print { display: none; }
-                                        }
-                                        body { 
-                                            font-family: Arial, sans-serif; 
-                                            padding: 20px; 
-                                            margin: 0;
-                                        }
-                                        .receipt { 
-                                            max-width: 400px; 
-                                            margin: 0 auto; 
-                                            border: 1px solid #000; 
-                                            padding: 20px; 
-                                        }
-                                        h2 { text-align: center; margin-bottom: 20px; }
-                                        .details { margin: 10px 0; }
-                                        .details p { margin: 5px 0; }
-                                        hr { margin: 15px 0; }
-                                        .print-btn { 
-                                            text-align: center; 
-                                            margin-top: 20px; 
-                                        }
-                                        table { width: 100%; border-collapse: collapse; }
-                                        th, td { padding: 5px; text-align: left; }
-                                    </style>
-                                </head>
-                                <body onload="window.print()">
-                                    <div class="receipt">
-                                        <h2>Sale Receipt</h2>
-                                        <div class="details">
-                                            <p><strong>Date:</strong> ${saleDate}</p>
-                                            <p><strong>Customer:</strong> ${customerName || 'N/A'}</p>
-                                            <p><strong>Phone:</strong> ${phoneNumber || 'N/A'}</p>
-                                            <p><strong>Address:</strong> ${address || 'N/A'}</p>
-                                            <hr>
-                                            <table>
-                                                <tr><th>Product</th><th>Qty</th><th>Price</th><th>Disc</th><th>Total</th></tr>
-                                                ${productList.map(p => `
-                                                    <tr>
-                                                        <td>${p.name}</td>
-                                                        <td>${p.quantity}</td>
-                                                        <td>$${p.price.toFixed(2)}</td>
-                                                        <td>$${p.discount.toFixed(2)}</td>
-                                                        <td>$${(p.price - p.discount).toFixed(2)}</td>
-                                                    </tr>
-                                                `).join('')}
-                                            </table>
-                                            <hr>
-                                            <p><strong>Total Discount:</strong> $${totalDiscount.toFixed(2)}</p>
-                                            <p><strong>Total Amount:</strong> $${totalPrice.toFixed(2)}</p>
-                                        </div>
-                                    </div>
-                                    <div class="print-btn no-print">
-                                        <button onclick="window.print()">Print Receipt</button>
-                                        <button onclick="window.close()">Close</button>
-                                    </div>
-                                </body>
-                                </html>
-                            `);
-                            receiptWindow.document.close();
-
-                            // Clear the product list after successful save
-                            productList = [];
-                            updateProductListUI(productList);
-                        } else {
-                            alert("Failed to save sale: " + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert("An error occurred while saving the sale.");
-                    });
-                });
-
-                // Update the updateProductListUI function
+                // Update product list UI
                 function updateProductListUI(products, scrollToIndex) {
                     const productListElement = document.getElementById('productList');
                     productListElement.innerHTML = '';
@@ -326,14 +247,15 @@
                                 </p>
                                 <p class="mb-0" style="font-size: 0.9em; color: #555;">
                                     <strong>Quantity:</strong> <span class="text-dark">${product.quantity}</span> | 
-                                    <strong>Price:</strong> <span class="text-success fw-bold">$${productTotal.toFixed(2)}</span>
+                                    <strong>Price:</strong> $${product.price.toFixed(2)} | 
+                                    <strong>Disc:</strong> $${product.discount.toFixed(2)} | 
+                                    <strong>Total:</strong> <span class="text-success fw-bold">$${productTotal.toFixed(2)}</span>
                                 </p>
                             </div>
                         `;
 
                         productListElement.appendChild(productDiv);
 
-                        // Scroll to the specific product if it's one that was just added or updated
                         if (index === scrollToIndex) {
                             productDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
                         }
@@ -345,19 +267,206 @@
                         `$${totalPrice.toFixed(2)} <i class="bi bi-cash-stack fs-3 text-success me-2"></i>`;
                 }
 
-
-
-                document.getElementById('barcode').addEventListener('change', function() {
-                    const selectedOption = this.options[this.selectedIndex];
-                    if (!selectedOption.value) {
-                        document.getElementById('unit_price').value = "";
-                        document.getElementById('name').value = "";
+                // Handle sale submission - FINAL WORKING VERSION
+                document.getElementById('addSaleBtn').addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    
+                    // Validate products
+                    if (productList.length === 0) {
+                        alert("Please add at least one product");
                         return;
                     }
 
-                    document.getElementById('unit_price').value = parseFloat(selectedOption.getAttribute('data-unit-price')).toFixed(2);
-                    document.getElementById('name').value = selectedOption.getAttribute('data-name');
+                    // Calculate totals
+                    const totals = productList.reduce((acc, product) => {
+                        acc.subtotal += (product.price * product.quantity);
+                        acc.discount += (product.discount * product.quantity);
+                        return acc;
+                    }, { subtotal: 0, discount: 0 });
+
+                    // Prepare sale data
+                    const saleData = {
+                        payment_method: document.getElementById('payment_method').value || 'cash',
+                        customer_name: document.getElementById('customer_name').value || '',
+                        phone_number: document.getElementById('phone_number').value || '',
+                        address: document.getElementById('address').value || '',
+                        total_amount: totals.subtotal - totals.discount,
+                        total_discount: totals.discount,
+                        items: productList.map(item => ({
+                            product_id: item.barcode,
+                            quantity: item.quantity,
+                            unit_price: item.price,
+                            discount: item.discount
+                        }))
+                    };
+
+                    try {
+                        console.log("Sending sale data:", saleData);
+                        
+                        const response = await fetch('/sale_form/store', {
+                            method: 'POST',
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify(saleData)
+                        });
+
+                        // First get the response text
+                        const responseText = await response.text();
+                        
+                        // Try to parse as JSON
+                        let result;
+                        try {
+                            result = JSON.parse(responseText);
+                        } catch  {
+                            // If parsing fails, log the response text for debugging
+                            throw new Error(`Server returned invalid JSON: ${responseText.substring(0, 100)}`);
+                        }
+
+                        console.log("Response data:", result);
+                        
+                        if (!response.ok) {
+                            throw new Error(result.message || `Server returned status ${response.status}`);
+                        }
+
+                        if (!result.success) {
+                            throw new Error(result.message || "Unknown error occurred");
+                        }
+
+                        // Success case
+                        generateReceipt(
+                            new Date().toLocaleString(),
+                            saleData.customer_name,
+                            saleData.phone_number,
+                            saleData.address,
+                            productList,
+                            totals.discount,
+                            totals.subtotal - totals.discount
+                        );
+                        
+                        // Reset form
+                        productList = [];
+                        updateProductListUI(productList);
+                        document.getElementById('customer_name').value = '';
+                        document.getElementById('phone_number').value = '';
+                        document.getElementById('address').value = '';
+                        
+                        alert(`Sale #${result.sale_id} completed successfully!`);
+                        
+                    } catch (error) {
+                        console.error('Full error details:', error);
+                        alert('Sale failed: ' + error.message);
+                    }
                 });
+
+                // Generate receipt (updated function with all required parameters)
+                function generateReceipt(date, customer, phone, address, products, totalDiscount, totalPrice) {
+                    const receiptWindow = window.open('', '_blank');
+                    
+                    // Build products table rows
+                    const productRows = products.map(p => `
+                        <tr>
+                            <td>${p.name}</td>
+                            <td>${p.quantity}</td>
+                            <td>$${p.price.toFixed(2)}</td>
+                            <td>$${p.discount.toFixed(2)}</td>
+                            <td>$${(p.price * p.quantity - p.discount).toFixed(2)}</td>
+                        </tr>
+                    `).join('');
+                    
+                    receiptWindow.document.write(`
+                        <html>
+                        <head>
+                            <title>Sale Receipt</title>
+                            <style>
+                                @media print { 
+                                    .no-print { display: none; } 
+                                    body { font-size: 12px; }
+                                }
+                                body { 
+                                    font-family: Arial, sans-serif; 
+                                    padding: 20px; 
+                                    margin: 0;
+                                }
+                                .receipt { 
+                                    max-width: 400px; 
+                                    margin: 0 auto; 
+                                    border: 1px solid #000; 
+                                    padding: 20px; 
+                                }
+                                h2 { 
+                                    text-align: center; 
+                                    margin-bottom: 20px; 
+                                    font-size: 1.5em;
+                                }
+                                .details { margin: 10px 0; }
+                                .details p { margin: 5px 0; }
+                                hr { margin: 15px 0; border-top: 1px dashed #000; }
+                                table { 
+                                    width: 100%; 
+                                    border-collapse: collapse;
+                                    font-size: 0.9em;
+                                }
+                                th, td { 
+                                    padding: 5px; 
+                                    text-align: left;
+                                    border-bottom: 1px solid #ddd;
+                                }
+                                th {
+                                    background-color: #f2f2f2;
+                                }
+                                .text-right {
+                                    text-align: right;
+                                }
+                                .total-row {
+                                    font-weight: bold;
+                                }
+                            </style>
+                        </head>
+                        <body onload="window.print()">
+                            <div class="receipt">
+                                <h2>Sale Receipt</h2>
+                                <div class="details">
+                                    <p><strong>Date:</strong> ${date}</p>
+                                    <p><strong>Customer:</strong> ${customer || 'N/A'}</p>
+                                    <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+                                    <hr>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Qty</th>
+                                                <th>Price</th>
+                                                <th>Disc</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${productRows}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="total-row">
+                                                <td colspan="4" class="text-right">Total Discount:</td>
+                                                <td>$${totalDiscount.toFixed(2)}</td>
+                                            </tr>
+                                            <tr class="total-row">
+                                                <td colspan="4" class="text-right">Grand Total:</td>
+                                                <td>$${totalPrice.toFixed(2)}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="no-print" style="text-align:center;margin-top:20px;">
+                                <button onclick="window.print()" style="padding:8px 16px;background:#4CAF50;color:white;border:none;border-radius:4px;margin-right:10px;">Print</button>
+                                <button onclick="window.close()" style="padding:8px 16px;background:#f44336;color:white;border:none;border-radius:4px;">Close</button>
+                            </div>
+                        </body>
+                        </html>
+                    `);
+                    receiptWindow.document.close();
+                }
             </script>
         </div>
     </div>

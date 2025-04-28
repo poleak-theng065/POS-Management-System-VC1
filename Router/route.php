@@ -155,7 +155,7 @@ $route->delete("/order_new_product/delete/{id}", [OrderNewProductController::cla
  */
 $route->get("/sale_form", [SaleFormController::class, 'index']);
 $route->get("/sale_form/create", [SaleFormController::class, 'create']);
-$route->post("/sale_form/store", [SaleFormController::class, 'store']);
+$route->post("/sale_form/store", [SaleFormController::class, 'handleSale']);
 
 // Execute the routing
 $route->route();
