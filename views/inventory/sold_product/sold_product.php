@@ -304,8 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showProductDetails(saleItem) {
         // Populate the modal with the sale item details
         document.getElementById('modal-name').textContent = saleItem.name || 'N/A';
-        // Fix the typo: getElementOf -> getElementById
-        document.getElementById('barcode').textContent = saleItem.barcode || 'N/A';
+        document.getElementOf('barcode').textContent = saleItem.barcode || 'N/A';
         document.getElementById('brand').textContent = saleItem.brand || 'N/A';
         document.getElementById('quantity').textContent = saleItem.quantity || '0';
         document.getElementById('discount').textContent = saleItem.discount || '0.00';
