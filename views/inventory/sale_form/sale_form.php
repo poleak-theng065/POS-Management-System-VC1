@@ -34,7 +34,7 @@
 
                     <!-- Order Form -->
                     <form id="newOrderForm" action="/sale_form/store" method="post">
-                        <div id="productList" class="mb-4" style="max-height: 250px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+                        <div id="productList" class="mb-4" style="height: 250px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
                         </div>
 
                         <div class="row mt-4">
@@ -378,60 +378,171 @@
                     receiptWindow.document.write(`
                         <html>
                         <head>
-                            <title>Sale Receipt</title>
+                            <title>Digital Invoice</title>
                             <style>
                                 @media print { 
                                     .no-print { display: none; } 
                                     body { font-size: 12px; }
                                 }
                                 body { 
-                                    font-family: Arial, sans-serif; 
-                                    padding: 20px; 
+                                    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; 
+                                    padding: 0;
                                     margin: 0;
+                                    background-color: #f8f9fa;
+                                    color: #333;
                                 }
-                                .receipt { 
-                                    max-width: 400px; 
-                                    margin: 0 auto; 
-                                    border: 1px solid #000; 
-                                    padding: 20px; 
+                                .invoice-container { 
+                                    max-width: 500px; 
+                                    margin: 20px auto; 
+                                    background: white;
+                                    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                                    border-radius: 8px;
+                                    overflow: hidden;
                                 }
-                                h2 { 
-                                    text-align: center; 
-                                    margin-bottom: 20px; 
-                                    font-size: 1.5em;
+                                .invoice-header {
+                                    background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+                                    color: white;
+                                    padding: 25px;
+                                    text-align: center;
                                 }
-                                .details { margin: 10px 0; }
-                                .details p { margin: 5px 0; }
-                                hr { margin: 15px 0; border-top: 1px dashed #000; }
-                                table { 
-                                    width: 100%; 
-                                    border-collapse: collapse;
+                                .invoice-header h1 {
+                                    margin: 0;
+                                    font-size: 1.8em;
+                                    font-weight: 600;
+                                }
+                                .invoice-header p {
+                                    margin: 5px 0 0;
+                                    opacity: 0.9;
                                     font-size: 0.9em;
                                 }
-                                th, td { 
-                                    padding: 5px; 
-                                    text-align: left;
-                                    border-bottom: 1px solid #ddd;
+                                .invoice-body {
+                                    padding: 25px;
+                                }
+                                .invoice-info {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    flex-direction: column;
+                                    margin-bottom: 20px;
+                                    flex-wrap: wrap;
+                                }
+                                .info-block {
+                                    margin-bottom: 15px;
+                                    display: flex;
+                                    flex-direction: row;
+                                    gap: 5px;
+                                }
+                                .info-block h3 {
+                                    margin: 0 0 5px;
+                                    font-size: 1em;
+                                    color: #666;
+                                }
+                                .info-block p {
+                                    margin: 0;
+                                    font-weight: 500;
+                                }
+                                .divider {
+                                    height: 1px;
+                                    background: linear-gradient(to right, transparent, #ddd, transparent);
+                                    margin: 20px 0;
+                                }
+                                table {
+                                    width: 100%; 
+                                    border-collapse: collapse;
+                                    font-size: 0.95em;
                                 }
                                 th {
-                                    background-color: #f2f2f2;
+                                    text-align: left;
+                                    padding: 12px 8px;
+                                    background-color: #f5f7ff;
+                                    color: #555;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    font-size: 0.8em;
+                                    letter-spacing: 0.5px;
+                                }
+                                td {
+                                    padding: 12px 8px;
+                                    border-bottom: 1px solid #eee;
                                 }
                                 .text-right {
                                     text-align: right;
                                 }
                                 .total-row {
                                     font-weight: bold;
+                                    background-color: #f9f9f9;
+                                }
+                                .total-row td {
+                                    border-bottom: none;
+                                    padding-top: 15px;
+                                    padding-bottom: 15px;
+                                }
+                                .grand-total {
+                                    font-size: 1.1em;
+                                    color: #000DFF;
+                                }
+                                .footer {
+                                    text-align: center;
+                                    padding: 15px;
+                                    color: #777;
+                                    font-size: 0.85em;
+                                    background-color: #f8f9fa;
+                                    border-top: 1px solid #eee;
+                                }
+                                .no-print {
+                                    text-align: center;
+                                    margin: 20px auto;
+                                    max-width: 500px;
+                                }
+                                button {
+                                    padding: 10px 20px;
+                                    border: none;
+                                    border-radius: 6px;
+                                    font-weight: 500;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                    margin: 0 5px;
+                                }
+                                .print-btn {
+                                    background: #4CAF50;
+                                    color: white;
+                                }
+                                .print-btn:hover {
+                                    background: #3e8e41;
+                                }
+                                .close-btn {
+                                    background: #f44336;
+                                    color: white;
+                                }
+                                .close-btn:hover {
+                                    background: #d32f2f;
                                 }
                             </style>
                         </head>
-                        <body onload="window.print()">
-                            <div class="receipt">
-                                <h2>Sale Receipt</h2>
-                                <div class="details">
-                                    <p><strong>Date:</strong> ${date}</p>
-                                    <p><strong>Customer:</strong> ${customer || 'N/A'}</p>
-                                    <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
-                                    <hr>
+                        <body>
+                            <div class="invoice-container">
+                                <div class="invoice-header">
+                                    <h1>HENG HENG</h1>
+                                    <p>Phnom Penh, Cambodia | +855 123 456 789</p>
+                                </div>
+                                
+                                <div class="invoice-body">
+                                    <div class="invoice-info">
+                                        <div class="info-block">
+                                            <h3>Invoice Date: </h3>
+                                            <p>${date}</p>
+                                        </div>
+                                        <div class="info-block">
+                                            <h3>Customer: </h3>
+                                            <p>${customer || 'Walk-in Customer'}</p>
+                                        </div>
+                                        <div class="info-block">
+                                            <h3>Phone: </h3>
+                                            <p>${phone || 'N/A'}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="divider"></div>
+                                    
                                     <table>
                                         <thead>
                                             <tr>
@@ -439,7 +550,7 @@
                                                 <th>Qty</th>
                                                 <th>Price</th>
                                                 <th>Disc</th>
-                                                <th>Total</th>
+                                                <th class=>Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -447,23 +558,33 @@
                                         </tbody>
                                         <tfoot>
                                             <tr class="total-row">
-                                                <td colspan="4" class="text-right">Total Discount:</td>
-                                                <td>$${totalDiscount.toFixed(2)}</td>
+                                                <td colspan="4">Subtotal</td>
+                                                <td class="text-right">$${(totalPrice + totalDiscount).toFixed(2)}</td>
                                             </tr>
                                             <tr class="total-row">
-                                                <td colspan="4" class="text-right">Grand Total:</td>
-                                                <td>$${totalPrice.toFixed(2)}</td>
+                                                <td colspan="4">Total Discount</td>
+                                                <td class="text-right">-$${totalDiscount.toFixed(2)}</td>
+                                            </tr>
+                                            <tr class="total-row grand-total">
+                                                <td colspan="4">Amount Due</td>
+                                                <td class="text-right">$${totalPrice.toFixed(2)}</td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </div>
+                                
+                                <div class="footer">
+                                    Thank you for your business! | Terms & Conditions Apply
+                                </div>
                             </div>
-                            <div class="no-print" style="text-align:center;margin-top:20px;">
-                                <button onclick="window.print()" style="padding:8px 16px;background:#4CAF50;color:white;border:none;border-radius:4px;margin-right:10px;">Print</button>
-                                <button onclick="window.close()" style="padding:8px 16px;background:#f44336;color:white;border:none;border-radius:4px;">Close</button>
+                            
+                            <div class="no-print">
+                                <button onclick="window.print()" class="print-btn">Print Invoice</button>
+                                <button onclick="window.close()" class="close-btn">Close Window</button>
                             </div>
                         </body>
                         </html>
+                        
                     `);
                     receiptWindow.document.close();
                 }
