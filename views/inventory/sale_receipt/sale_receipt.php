@@ -222,19 +222,18 @@
             }
 
             // Calculate totals
-            const subtotal = saleData.products.reduce((sum, product) => {
-                return sum + (parseFloat(product.total_price) || 0);
-            }, 0);
 
             const totalDiscount = saleData.products.reduce((sum, product) => {
                 return sum + (parseFloat(product.discount) || 0);
             }, 0);
 
+            const subtotal = saleData.total_amount + totalDiscount;
+
             // Generate product rows
             const productRows = saleData.products.map(product => {
                 const unitPrice = parseFloat(product.unit_price) || 0;
                 const discount = parseFloat(product.discount) || 0;
-                const totalPrice = parseFloat(product.total_price) || 0;
+                const totalPrice = unitPrice - discount;
                 
                 return `
                     <tr>
