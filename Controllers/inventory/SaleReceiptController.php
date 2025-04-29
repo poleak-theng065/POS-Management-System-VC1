@@ -4,150 +4,56 @@ require_once("Models/inventory/SaleReceiptModel.php");
 
 class SaleReceiptController extends BaseController
 {
-    private $newOrders;
+    private $saleModel;
 
     public function __construct()
     {
-        $this->newOrders = new SaleReceiptModel();
+        $this->saleModel = new SaleReceiptModel();
     }
 
-    public function orderNewProduct()
-    {
-        $result = $this->newOrders->getOrderNewProduct();
+    public function getSales() {
+        try {
+            // Fetch sales data from the model
+            $groupedSales = $this->saleModel->fetchSales();
+            
+            // Calculate totals based on the model's return structure
+            $totalRevenue = 0;
+            $totalItemsSold = 0;
+            
+            foreach ($groupedSales as $sale) {
+                $totalRevenue += $sale['total_amount'];
+                $totalItemsSold += count($sale['products']);
+            }
 
-    // Ensure the result is always an array
-        if (!is_array($result)) {
-            $result = []; // Set an empty array if null
+            // Prepare data for the view
+            $data = [
+                'sales' => $groupedSales,
+                'page_title' => 'Sales Receipts',
+                'current_date' => date('Y-m-d'),
+                'total_sales' => count($groupedSales), // Number of sales transactions
+                'total_items' => $totalItemsSold,     // Total products sold across all transactions
+                'total_revenue' => $totalRevenue,
+                'average_sale' => count($groupedSales) > 0 ? $totalRevenue / count($groupedSales) : 0
+            ];
+
+            // Load the view with the sales data
+            $this->view('inventory/sale_receipt/sale_receipt', $data);
+
+        } catch (PDOException $e) {
+            // Handle database-related errors
+            error_log("Database error in getSales: " . $e->getMessage());
+            $this->view('error/database_error', [
+                'error_message' => 'Failed to retrieve sales data. Please try again later.',
+                'page_title' => 'Database Error'
+            ]);
+
+        } catch (Exception $e) {
+            // Handle any other general errors
+            error_log("Error in getSales: " . $e->getMessage());
+            $this->view('error/general_error', [
+                'error_message' => 'An unexpected error occurred. Please try again later.',
+                'page_title' => 'Application Error'
+            ]);
         }
-
-    // Debugging to check if data is available
-        if (empty($result)) {
-            error_log("Warning: No sale receipt data found.");
-        }
-
-    // Check if the view file exists
-        $viewPath = 'inventory/sale_receipt/sale_receipt';
-        if (!file_exists("views/$viewPath.php")) {
-         die("Error: View file '$viewPath.php' not found.");
-        }
-
-        $this->view($viewPath, ['saleReceipt' => $result]); // Pass the corrected data
-    }
-
-
-    public function store()
-    {
-        // Ensure request method is POST
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            die("Invalid request method.");
-        }
-
-        // Sanitize and retrieve input data
-        $productName = $_POST['productname'] ?? null;
-        $barCode = $_POST['barcode'] ?? null;
-        $brand = $_POST['brand'] ?? null;
-        $expectedDelivery = $_POST['expectedDelivery'] ?? null;
-        $orderDate = $_POST['orderDate'] ?? null;
-        $status = $_POST['status'] ?? null;
-
-        $category = $_POST['category'] ?? null;
-        $model = $_POST['model'] ?? null;
-        $supplier = $_POST['supplier'] ?? null;
-        $productStatus = $_POST['productStatus'] ?? null;
-
-        $basePriceUSD = $_POST['basePriceUSD'] ?? null;
-        $basePriceKHR = $_POST['basePriceKHR'] ?? null;
-        $quantity = $_POST['quantity'] ?? null;
-        $exchangeRate = $_POST['exchangeRate'] ?? null;
-        $totalPriceUSD = $_POST['totalPriceUSD'] ?? null;
-        $totalPriceKHR = $_POST['totalPriceKHR'] ?? null;
-
-        $this->newOrders->addNewOrder(
-            $productName,
-            $barCode,
-            $brand,
-            $expectedDelivery,
-            $orderDate,
-            $status,
-            $category,
-            $model,
-            $supplier,
-            $productStatus,
-            $basePriceUSD,
-            $basePriceKHR,
-            $quantity,
-            $exchangeRate,
-            $totalPriceUSD,
-            $totalPriceKHR
-        );
-
-        $this->redirect('/sale_receipt');
-    }
-
-    public function edit($id)
-    {
-        $result = $this->newOrders->getOrderNewProductById($id);
-        if (!$result) {
-            die("Error: Sale receipt not found.");
-        }
-
-        $this->view("inventory/sale_receipt/edit", ['saleReceipt' => $result]);
-    }
-
-    public function update($id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            die("Invalid request method.");
-        }
-
-        $productName = $_POST['productName'] ?? null;
-        $barCode = $_POST['barcode'] ?? null;
-        $brand = $_POST['brand'] ?? null;
-        $expectedDelivery = $_POST['expectedDelivery'] ?? null;
-        $orderDate = $_POST['orderDate'] ?? null;
-        $status = $_POST['status'] ?? null;
-
-        $category = $_POST['category'] ?? null;
-        $model = $_POST['model'] ?? null;
-        $supplier = $_POST['supplier'] ?? null;
-        $productStatus = $_POST['productStatus'] ?? null;
-
-        $basePriceUSD = $_POST['basePriceUSD'] ?? null;
-        $basePriceKHR = $_POST['basePriceKHR'] ?? null;
-        $quantity = $_POST['quantity'] ?? null;
-        $exchangeRate = $_POST['exchangeRate'] ?? null;
-        $totalPriceUSD = $_POST['totalPriceUSD'] ?? null;
-        $totalPriceKHR = $_POST['totalPriceKHR'] ?? null;
-
-        $this->newOrders->updateNewOrder(
-            $id,
-            $productName,
-            $barCode,
-            $brand,
-            $expectedDelivery,
-            $orderDate,
-            $status,
-            $category,
-            $model,
-            $supplier,
-            $productStatus,
-            $basePriceUSD,
-            $basePriceKHR,
-            $quantity,
-            $exchangeRate,
-            $totalPriceUSD,
-            $totalPriceKHR
-        );
-
-        $this->redirect('/sale_receipt');
-    }
-
-    public function delete($id)
-    {
-        if (!$this->newOrders->deleteOrderNew($id)) {
-            die("Error: Failed to delete the sale receipt.");
-        }
-
-        $this->redirect('/sale_receipt');
     }
 }
