@@ -510,8 +510,6 @@
                                 data-order-date="<?= htmlspecialchars($newOrder['order_date']) ?>" 
                                 data-expected-delivery="<?= htmlspecialchars($newOrder['expected_delivery']) ?>" 
                                 data-supplier="<?= htmlspecialchars($newOrder['supplier']) ?>"
-
-                               
                                 data-brand="<?= htmlspecialchars($newOrder['brand']) ?>"
                                 data-category="<?= htmlspecialchars($newOrder['category']) ?>"
                                 data-model="<?= htmlspecialchars($newOrder['model']) ?>"

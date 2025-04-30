@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Brand <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="brand" placeholder="Brand Name" required>
+                            <input type="text" class="form-control" name="brand" placeholder="Enter Brand Name (e.g., Apple, Samsung)" required>
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Order Date <span class="text-danger">*</span></label>
@@ -75,21 +75,14 @@
 
                         <div class="col-md-4 mb-4">
                             <label class="form-label">Model<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="model" placeholder="Enter model name">
+                            <input type="text" class="form-control" name="model" placeholder="Enter Model Name (e.g., iPhone 14, Galaxy S23)">
                         </div>
 
                         <div class="col-md-4 mb-4">
-                            <label class="form-label">Vendor<span class="text-danger">*</span></label>
-                            <select class="form-select" name="supplier">
-                                <option selected>Select Vendor</option>
-                                <option>Apple</option>
-                                <option>Samsung</option>
-                                <option>Oppo</option>
-                                <option>Vivo</option>
-                                <option>Huawei</option>
-                                <option>Realme</option>
-                            </select>
+                            <label class="form-label">Supplier<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="supplier" placeholder="Enter Supplier Name (e.g., Samsung, Apple)" required>
                         </div>
+
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-4">
