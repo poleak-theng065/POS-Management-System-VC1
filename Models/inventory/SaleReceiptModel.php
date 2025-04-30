@@ -7,110 +7,63 @@ class SaleReceiptModel {
         $this->db = new Database("localhost", "pos-system", "root", "");
     }
 
-    public function getOrderNewProduct() {
-
-        $result = $this->db->query("SELECT * FROM order_products");
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function addNewOrder($productName, $barCode, $brand, $expectedDelivery, $orderDate, $status, 
-    $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, $exchangeRate, $totalPriceUSD , $totalPriceKHR)
-    {
-        try {
-            $this->db->query(
-                "INSERT INTO order_products (product_name, barcode, brand, expected_delivery, order_date, status, 
-                category, model, supplier, product_status, base_price_usd, base_price_kh, quantity, exchange_rate, total_price_usd, total_price_kh)
-                VALUES (:product_name, :barcode, :brand, :expected_delivery, :order_date, :status,
-                :category, :model, :supplier, :product_status, :base_price_usd, :base_price_kh,
-                :quantity, :exchange_rate, :total_price_usd, :total_price_kh)",
-                [
-                    ':product_name' => $productName,
-                    ':barcode' => $barCode,
-                    ':brand' => $brand,
-                    ':expected_delivery' => $expectedDelivery,
-                    ':order_date' => $orderDate,
-                    ':status' => $status,
-                    ':category' => $category,
-                    ':model' => $model,
-                    ':supplier' => $supplier,
-                    ':product_status' => $productStatus,
-                    ':base_price_usd' => $basePriceUSD,
-                    ':base_price_kh' => $basePriceKHR,
-                    ':quantity' => $quantity,
-                    ':exchange_rate' => $exchangeRate,
-                    ':total_price_usd' => $totalPriceUSD,
-                    ':total_price_kh' => $totalPriceKHR
-                ]);
-        } catch (PDOException $e) {
-            // Handle error (log it, show a friendly message, etc.)
-            echo 'Error: ' . $e->getMessage();
-        }
-    }
-
-
-
-    public function getOrderNewProductById($id) {
-
-        $result = $this->db->query("SELECT * FROM order_products WHERE id = :id", [':id' => $id]);
-        return $result->fetch(PDO::FETCH_ASSOC);
-    }
-    
-
-    public function updateNewOrder($id, $productName, $barCode, $brand, $expectedDelivery, $orderDate,
-    $status, $category, $model, $supplier, $productStatus, $basePriceUSD, $basePriceKHR, $quantity, 
-    $exchangeRate, $totalPriceUSD, $totalPriceKHR) 
-    {
-        try {
-            // SQL query to update an order
-            $sql = "UPDATE order_products 
-                    SET product_name = :product_name, barcode = :barcode, brand = :brand, expected_delivery = :expected_delivery,
-                        order_date = :order_date, status = :status, 
-                        category = :category, model = :model, supplier = :supplier, product_status = :product_status, 
-                        base_price_usd = :base_price_usd, base_price_kh = :base_price_kh, 
-                        quantity = :quantity, exchange_rate = :exchange_rate, 
-                        total_price_usd = :total_price_usd, total_price_kh = :total_price_kh 
-                    WHERE id = :id";
+    public function fetchSales() {
+        // Explicitly select only needed fields with proper table prefixes
+        $query = "SELECT 
+                    sales.sale_id,
+                    sales.customer_name,
+                    sales.sale_date,
+                    sales.sale_time,
+                    sales.total_amount,
+                    sales.phone_number,
+                    sales.total_discount,
+                    sale_items.sale_item_id,
+                    sale_items.product_id,
+                    sale_items.quantity,
+                    sale_items.unit_price,
+                    sale_items.discount,
+                    sale_items.total_price,
+                    products.name as product_name,
+                    products.description,
+                    products.barcode
+                  FROM sales 
+                  JOIN sale_items ON sales.sale_id = sale_items.sale_id
+                  JOIN products ON sale_items.product_id = products.product_id
+                  ORDER BY sales.sale_date DESC, sales.sale_time DESC";
+                  
+        $result = $this->db->query($query);
+        $rows = $result->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Group items by sale with proper data typing
+        $groupedSales = [];
+        foreach ($rows as $row) {
+            $saleId = $row['sale_id'];
             
-            // Parameters to bind to the SQL query
-            $params = [
-                ':id' => $id,
-                ':product_name' => $productName,
-                ':barcode' => $barCode,
-                ':brand' => $brand,
-                ':expected_delivery' => $expectedDelivery,
-                ':order_date' => $orderDate,
-                ':status' => $status,
-                ':category' => $category,
-                ':model' => $model,
-                ':supplier' => $supplier,
-                ':product_status' => $productStatus,
-                ':base_price_usd' => $basePriceUSD,
-                ':base_price_kh' => $basePriceKHR,
-                ':quantity' => $quantity,
-                ':exchange_rate' => $exchangeRate,
-                ':total_price_usd' => $totalPriceUSD,
-                ':total_price_kh' => $totalPriceKHR,
+            if (!isset($groupedSales[$saleId])) {
+                $groupedSales[$saleId] = [
+                    'sale_id' => (int)$row['sale_id'],
+                    'customer_name' => $row['customer_name'] ?? 'Walk-in Customer',
+                    'sale_date' => $row['sale_date'],
+                    'sale_time' => $row['sale_time'],
+                    'total_amount' => (float)$row['total_amount'],
+                    'total_discount' => (float)$row['total_discount'],
+                    'phone_number' => $row['phone_number'] ?? null,
+                    'products' => []
+                ];
+            }
+            
+            // Convert all numeric values explicitly
+            $groupedSales[$saleId]['products'][] = [
+                'product_id' => (int)$row['product_id'],
+                'name' => $row['product_name'],
+                'quantity' => (int)$row['quantity'],
+                'unit_price' => (float)$row['unit_price'], // Now properly as decimal
+                'total_price' => (float)$row['total_price'],
+                'discount' => (float)$row['discount'],
+                'barcode' => $row['barcode'] ?? null
             ];
-
-            // Execute the query using the Database class's query method
-            $this->db->query($sql, $params);
-        } catch (PDOException $e) {
-            // Log or display the error message more clearly
-            echo "Error updating order: " . $e->getMessage();
-            // Optionally log to a file or redirect to an error page
         }
+        
+        return $groupedSales;
     }
-
-    
-    
-    public function deleteOrderNew($id)
-    {
-        try {
-            $this->db->query("DELETE FROM order_products WHERE id = :id", [':id' => $id]);
-        } catch (PDOException $e) {
-            echo "Error deleting product: " . $e->getMessage();
-        }
-    }
-    
-
 }

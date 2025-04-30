@@ -19,8 +19,10 @@ class Database
         try {
             $this->db = new PDO($dsn, $username, $password);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            error_log("Database connection successful to: $dbname");
         } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+            error_log("Connection failed: " . $e->getMessage());
+            die("Connection failed: " . $e->getMessage());
         }
     }
 
@@ -62,7 +64,28 @@ class Database
         return $this->db->rollBack();
     }
 
-    public function lastInsertId() {
+    public function lastInsertId()
+    {
         return $this->db->lastInsertId();
+    }
+
+    /**
+     * Fetches a single row from the result set.
+     *
+     * @return array|null The fetched row as an associative array, or null if no row is found.
+     */
+    public function single($stmt)
+    {
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Fetches all rows from the result set.
+     *
+     * @return array The fetched rows as an array of associative arrays.
+     */
+    public function resultSet($stmt)
+    {
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

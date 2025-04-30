@@ -42,7 +42,7 @@ class SoldProductModel
             if ($stmt === false) {
                 throw new Exception("Failed to fetch products.");
             }
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $this->db->resultSet($stmt);
         } catch (Exception $e) {
             error_log("Error fetching products: " . $e->getMessage());
             return [];
@@ -52,134 +52,36 @@ class SoldProductModel
     public function getSaleItems()
     {
         try {
-            // Query to get each sale item along with individual quantities and the total sum of all quantities sold
             $stmt = $this->query("
-                SELECT 
-                    sale_items.sale_item_id, 
+                SELECT  
+                    MIN(sale_items.sale_item_id) AS sale_item_id, 
                     sale_items.product_id, 
-                    sale_items.quantity, 
-                    sale_items.sale_date, 
-                    sale_items.discount, 
-                    sale_items.total_price, 
+                    SUM(sale_items.quantity) AS quantity, 
+                    SUM(sale_items.discount) AS discount, 
+                    SUM(sale_items.total_price) AS total_price, 
                     products.barcode,
                     products.name,
                     products.brand,
                     products.image_path,
                     products.unit_price,
                     products.cost_price,
-                    ((products.unit_price - products.cost_price) * sale_items.quantity - sale_items.discount) AS profit,
-                    -- Total sum of all quantities sold
-                    (SELECT SUM(quantity) FROM sale_items) AS total_quantity_sold 
+                    SUM((COALESCE(products.unit_price, 0) - COALESCE(products.cost_price, 0)) * sale_items.quantity - sale_items.discount) AS profit
                 FROM sale_items
                 LEFT JOIN products ON sale_items.product_id = products.product_id
-                ORDER BY sale_items.sale_item_id DESC
+                GROUP BY products.barcode, products.name, sale_items.product_id, products.brand, products.image_path, products.unit_price, products.cost_price
+                ORDER BY MIN(sale_items.sale_item_id) DESC
             ");
 
             if ($stmt === false) {
                 throw new Exception("Failed to fetch sale items.");
             }
 
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $saleItems = $this->db->resultSet($stmt);
+            error_log("Sale items fetched: " . json_encode($saleItems));
+            return $saleItems;
         } catch (Exception $e) {
             error_log("Error fetching sale items: " . $e->getMessage());
             return [];
-        }
-    }
-
-
-
-    public function createSaleItem($productId, $quantity, $saleDate, $discount)
-    {
-        try {
-            // Log the input parameters
-            error_log("createSaleItem called with productId: $productId, quantity: $quantity, saleDate: $saleDate, discount: $discount");
-
-            // Validate inputs
-            $productId = (int)$productId;
-            $quantity = (int)$quantity;
-            $discount = (float)$discount;
-
-            if ($productId <= 0) {
-                throw new Exception("Invalid product ID: $productId");
-            }
-            if ($quantity <= 0) {
-                throw new Exception("Quantity must be greater than 0: $quantity");
-            }
-            if ($discount < 0) {
-                throw new Exception("Discount cannot be negative: $discount");
-            }
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $saleDate)) {
-                throw new Exception("Invalid sale date format: $saleDate. Expected YYYY-MM-DD.");
-            }
-            if ($discount > 999.99) {
-                throw new Exception("Discount exceeds maximum value of 999.99 for DECIMAL(5,2): $discount");
-            }
-
-            // Fetch product details (unit_price, stock_quantity)
-            $stmt = $this->query(
-                "SELECT unit_price, stock_quantity FROM products WHERE product_id = ? LIMIT 1",
-                [$productId]
-            );
-            if ($stmt === false) {
-                throw new Exception("Failed to fetch product details for product_id: $productId");
-            }
-            $product = $stmt->fetch(PDO::FETCH_ASSOC);
-            if (!$product) {
-                throw new Exception("Product not found for product_id: $productId");
-            }
-            error_log("Product fetched: " . json_encode($product));
-
-            $unitPrice = floatval($product['unit_price']);
-            $currentStock = (int)$product['stock_quantity'];
-
-            // Check if stock is available
-            if ($currentStock < $quantity) {
-                throw new Exception("Not enough stock available. Current stock: $currentStock, requested: $quantity");
-            }
-
-            // Calculate total price
-            $totalPrice = ($unitPrice * $quantity) - $discount;
-            if ($totalPrice < 0) {
-                throw new Exception("Total price cannot be negative: $totalPrice");
-            }
-            if ($totalPrice > 99999999.99) {
-                throw new Exception("Total price exceeds maximum value of 99999999.99 for DECIMAL(10,2): $totalPrice");
-            }
-            error_log("Total price calculated: $totalPrice");
-
-            // Start transaction
-            $this->db->beginTransaction();
-
-            // Insert the sale item
-            $insertSaleStmt = $this->query(
-                "INSERT INTO sale_items (product_id, quantity, sale_date, discount, total_price)
-                VALUES (?, ?, ?, ?, ?)",
-                [$productId, $quantity, $saleDate, $discount, $totalPrice]
-            );
-            if ($insertSaleStmt === false) {
-                throw new Exception("Failed to insert sale item.");
-            }
-
-            // Reduce product quantity in stock
-            $updateStockStmt = $this->query(
-                "UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_id = ?",
-                [$quantity, $productId]
-            );
-            if ($updateStockStmt === false) {
-                throw new Exception("Failed to update product stock.");
-            }
-
-            // Commit transaction
-            $this->db->commit();
-
-            error_log("Sale item created successfully and stock updated.");
-
-            return true;
-        } catch (Exception $e) {
-            // Rollback if there's an error
-            $this->db->rollBack();
-            error_log("Error creating sale item: " . $e->getMessage());
-            return $e->getMessage();
         }
     }
 
@@ -193,7 +95,7 @@ class SoldProductModel
             if ($stmt === false) {
                 throw new Exception("Failed to fetch unit price for barcode: $barcode");
             }
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $this->db->single($stmt);
             return $result ? $result['unit_price'] : null;
         } catch (Exception $e) {
             error_log("Error fetching unit price by barcode: " . $e->getMessage());
@@ -201,54 +103,41 @@ class SoldProductModel
         }
     }
 
-    public function getTotalProfitForCurrentMonth()
+    public function getTotalProfit()
     {
         try {
-            // Execute the SQL query to calculate total profit for the current month
-            $stmt = $this->query("
-                SELECT SUM((products.unit_price - products.cost_price) * sale_items.quantity - sale_items.discount) AS total_profit 
+            // Log the raw data before the calculation
+            $rawStmt = $this->query("
+                SELECT 
+                    sale_items.product_id, 
+                    sale_items.quantity, 
+                    sale_items.discount, 
+                    products.unit_price, 
+                    products.cost_price
                 FROM sale_items 
                 LEFT JOIN products ON sale_items.product_id = products.product_id
-                WHERE MONTH(sale_items.sale_date) = MONTH(CURRENT_DATE())
-                AND YEAR(sale_items.sale_date) = YEAR(CURRENT_DATE())
+            ");
+            if ($rawStmt !== false) {
+                $rawData = $this->db->resultSet($rawStmt);
+                error_log("Raw data for profit calculation: " . json_encode($rawData));
+            }
+
+            $stmt = $this->query("
+                SELECT SUM((COALESCE(products.unit_price, 0) - COALESCE(products.cost_price, 0)) * sale_items.quantity - sale_items.discount) AS total_profit 
+                FROM sale_items 
+                LEFT JOIN products ON sale_items.product_id = products.product_id
             ");
 
-            // Check if the query was successful
             if ($stmt === false) {
                 throw new Exception("Failed to calculate total profit.");
             }
 
-            // Fetch the result (total profit)
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // Return the total profit, ensuring it's a float or 0.00 if null
+            $result = $this->db->single($stmt);
+            error_log("Total profit result: " . json_encode($result));
             return ($result && $result['total_profit'] !== null) ? floatval($result['total_profit']) : 0.00;
         } catch (Exception $e) {
-            // Log the error and return a default value (0.00) if an exception occurs
             error_log("Error fetching total profit: " . $e->getMessage());
             return 0.00;
-        }
-    }
-
-    public function getTotalQuantitySold()
-    {
-        try {
-            // Query to calculate the total quantity sold across all sale items
-            $stmt = $this->query("SELECT SUM(quantity) AS total_quantity_sold FROM sale_items");
-
-            if ($stmt === false) {
-                throw new Exception("Failed to calculate total quantity sold.");
-            }
-
-            // Fetch the result (total quantity sold)
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // Return the total quantity sold, ensuring it's 0 if null
-            return ($result && $result['total_quantity_sold'] !== null) ? (int)$result['total_quantity_sold'] : 0;
-        } catch (Exception $e) {
-            // Log the error and return a default value (0) if an exception occurs
-            error_log("Error fetching total quantity sold: " . $e->getMessage());
-            return 0;
         }
     }
 }
