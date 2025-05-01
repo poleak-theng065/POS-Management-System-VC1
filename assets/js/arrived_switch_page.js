@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 1;
-    const entriesPerPage = 10;
+    const entriesPerPage = 25;
 
     const entries = Array.from(document.querySelectorAll('tbody tr.search'));
     const totalEntries = entries.length;

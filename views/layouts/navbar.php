@@ -151,14 +151,6 @@
                 </a>
             </li>
 
-
-
-            <li class="menu-item">
-              <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-cog"></i>
-                <div data-i18n="Basic">Setting</div>
-              </a>
-            </li>
             <li class="menu-item">
               <a href="#" class="menu-link log-out" style="color: red; border: 1px solid; width: 150px; height: 35px;">
                 <i class="menu-icon tf-icons bx bx-log-out-circle"></i>
@@ -321,68 +313,13 @@
                 <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-                    <!-- Light/Dark Mode Toggle -->
-                    <li class="nav-item lh-1 me-3">
-                        <a class="nav-link" href="javascript:void(0);" id="theme-toggle" title="Toggle Light/Dark Mode">
-                            <i class="bx bx-moon fs-4" id="theme-icon"></i> <!-- Default icon for dark mode -->
-                        </a>
-                    </li>
-
-
-                    <!-- Notifications -->
-                    <li class="nav-item lh-1 me-3">
-                        <a class="nav-link" href="javascript:void(0);" title="Notifications">
-                            <i class="bx bx-bell fs-4"></i>
-                            <span class="badge bg-danger badge-notifications">5</span>
-                        </a>
-                    </li>
-
                     <!-- User -->
                     <li class="nav-item navbar-dropdown dropdown-user dropdown">
                         <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <div class="avatar avatar-online">
-                                <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                            <div class="avatar">
+                                <!-- <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" /> -->
                             </div>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0 me-3">
-                                            <div class="avatar avatar-online">
-                                                <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <span class="fw-semibold d-block">John Doe</span>
-                                            <small class="text-muted">Admin</small>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bx bx-user me-2"></i>
-                                    <span class="align-middle">My Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bx bx-cog me-2"></i>
-                                    <span class="align-middle">Settings</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="auth-login-basic.html">
-                                    <i class="bx bx-power-off me-2"></i>
-                                    <span class="align-middle">Log Out</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                     <!--/ User -->
                 </ul>
