@@ -287,7 +287,7 @@
                     // Prepare sale data
                     const saleData = {
                         payment_method: document.getElementById('payment_method').value || 'cash',
-                        customer_name: document.getElementById('customer_name').value || '',
+                        customer_name: document.getElementById('customer_name').value || 'Walk-In-Customer',
                         phone_number: document.getElementById('phone_number').value || '',
                         address: document.getElementById('address').value || '',
                         total_amount: totals.subtotal - totals.discount,
