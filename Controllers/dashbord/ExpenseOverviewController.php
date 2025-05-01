@@ -17,6 +17,14 @@ class ExpenseOverviewController extends BaseController {
         try {
             $currentYear = date('Y');
             $data = $this->getFinancialData($currentYear);
+            
+            // Debug output
+            error_log("Controller index data: " . print_r([
+                'hasIncome' => isset($data['totalIncome']),
+                'hasExpenses' => isset($data['totalExpenses']),
+                'hasProfit' => isset($data['totalProfit'])
+            ], true));
+            
             $this->view('dashbord_component/_expenseOverview', $data);
         } catch (Exception $e) {
             $this->handleError($e->getMessage());
@@ -25,16 +33,21 @@ class ExpenseOverviewController extends BaseController {
 
     public function getUpdatedData() {
         try {
-            // Get year from request or use current year
             $year = $_GET['year'] ?? date('Y');
             
-            // Validate year (must be 4 digits between 2000-2099)
             if (!preg_match('/^20\d{2}$/', $year)) {
                 throw new InvalidArgumentException("Invalid year format");
             }
 
             $data = $this->getFinancialData($year);
             
+            // Debug output
+            error_log("AJAX response data: " . print_r([
+                'income' => $data['totalIncome'],
+                'expenses' => $data['totalExpenses'],
+                'profit' => $data['totalProfit']
+            ], true));
+
             $this->jsonResponse([
                 'success' => true,
                 'monthlyData' => $data['monthlyData'],
@@ -55,40 +68,34 @@ class ExpenseOverviewController extends BaseController {
 
     private function getFinancialData($year) {
         try {
-            // Validate year first
             if (!is_numeric($year)) {
                 throw new InvalidArgumentException("Invalid year format");
             }
             
-            // Set date ranges properly
             $startDate = "$year-01-01";
             $endDate = "$year-12-31";
             
-            // Debug: Log the dates being used
-            error_log("Fetching data for period: $startDate to $endDate");
-            
-            // Get monthly data first
+            // Get all data in one place for consistency
             $monthlyData = $this->expenseModel->getMonthlyData($startDate, $endDate);
             
-            // Calculate current month comparison data
+            // Calculate totals directly from monthly data for consistency
+            $totalIncome = array_reduce($monthlyData, fn($sum, $month) => $sum + $month['income'], 0);
+            $totalExpenses = array_reduce($monthlyData, fn($sum, $month) => $sum + $month['expenses'], 0);
+            $totalProfit = $totalIncome - $totalExpenses;
+
+            // Get comparison data
             $currentMonthStart = date('Y-m-01');
             $currentMonthEnd = date('Y-m-t');
-            
             $previousMonthStart = date('Y-m-01', strtotime('first day of previous month'));
             $previousMonthEnd = date('Y-m-t', strtotime('last day of previous month'));
-    
+
             $comparisonData = $this->expenseModel->getComparisonData(
                 $currentMonthStart, 
                 $currentMonthEnd,
                 $previousMonthStart,
                 $previousMonthEnd
             );
-            
-            // Calculate totals from monthly data
-            $totalIncome = array_sum(array_column($monthlyData, 'income'));
-            $totalExpenses = array_sum(array_column($monthlyData, 'expenses'));
-            $totalProfit = $totalIncome - $totalExpenses;
-    
+
             return [
                 'monthlyData' => $monthlyData,
                 'totalIncome' => $totalIncome,

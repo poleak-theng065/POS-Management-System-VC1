@@ -263,7 +263,7 @@
                         <div>
                             <small class="text-muted d-block">Total Expenses</small>
                             <div class="d-flex align-items-center">
-                            <h6 class="mb-0 me-1" id="totalExpenses">$<?php echo number_format($data['totalExpenses'] ?? 0, 0); ?></h6>
+                                <h6 class="mb-0 me-1" id="totalExpenses">$3.5K</h6>
                             </div>
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                         <div>
                             <small class="text-muted d-block">Total Profit</small>
                             <div class="d-flex align-items-center">
-                                <h6 class="mb-0 me-1" id="totalProfit">$<?php echo number_format($data['totalProfit'] ?? 0, 0); ?></h6>
+                                <h6 class="mb-0 me-1" id="totalProfit">$9.8K</h6>
                             </div>
                         </div>
                     </div>
@@ -552,14 +552,17 @@
                 };
             });
 
-            // Recalculate totals if they seem inconsistent
-            const calculatedIncome = data.monthlyData.reduce((sum, month) => sum + month.income, 0);
-            const calculatedExpenses = data.monthlyData.reduce((sum, month) => sum + month.expenses, 0);
-            const calculatedProfit = calculatedIncome - calculatedExpenses;
+            // Always calculate totals from monthly data
+            data.totalIncome = data.monthlyData.reduce((sum, month) => sum + month.income, 0);
+            data.totalExpenses = data.monthlyData.reduce((sum, month) => sum + month.expenses, 0);
+            data.totalProfit = data.totalIncome - data.totalExpenses;
 
-            data.totalIncome = data.totalIncome !== undefined ? data.totalIncome : calculatedIncome;
-            data.totalExpenses = data.totalExpenses !== undefined ? data.totalExpenses : calculatedExpenses;
-            data.totalProfit = data.totalProfit !== undefined ? data.totalProfit : calculatedProfit;
+            // Log for debugging
+            console.log('Calculated totals:', {
+                income: data.totalIncome,
+                expenses: data.totalExpenses,
+                profit: data.totalProfit
+            });
 
             return data;
         }
@@ -664,23 +667,19 @@
         // Main update function
         function updateDashboard(rawData) {
             try {
-                // Process and validate the data first
                 const data = processData(rawData);
                 
-                console.log('Processed data:', {
-                    monthlyData: data.monthlyData,
-                    totals: {
-                        income: data.totalIncome,
-                        expenses: data.totalExpenses,
-                        profit: data.totalProfit
-                    },
-                    comparisons: data.comparisonData
-                });
-
                 // Update summary values
                 document.getElementById('totalIncome').textContent = formatFinancialValue(data.totalIncome);
                 document.getElementById('totalExpenses').textContent = formatFinancialValue(data.totalExpenses);
                 document.getElementById('totalProfit').textContent = formatFinancialValue(data.totalProfit);
+
+                // Log for debugging
+                console.log('Updated totals:', {
+                    income: data.totalIncome,
+                    expenses: data.totalExpenses,
+                    profit: data.totalProfit
+                });
 
                 // Update comparison texts
                 document.getElementById('incomeComparisonText').textContent = 
