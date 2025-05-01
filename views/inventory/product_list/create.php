@@ -13,9 +13,9 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="image">Product Image</label>
-                    <input type="file" class="form-control" id="name" name="image" required>
+                    <input type="file" class="form-control" id="image" name="image" required>
+                    <!-- Fixed duplicate id "name" to "image" -->
                 </div>
-                
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -34,22 +34,24 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="status">Status</label>
-                    <select class="form-control" id="status" name="status">
+                    <select class="form-control" id="status" name="status" required>
                         <option value="">Select Status</option>
                         <option value="new">New</option>
                         <option value="first-hand">First Hand</option>
                         <option value="second-hand">Second Hand</option>
                     </select>
+                    <!-- Added required attribute -->
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="stock_quantity">Stock Quantity</label>
-                    <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" placeholder="Enter stock quantity" required>
+                    <input type="number" min="0" class="form-control" id="stock_quantity" name="stock_quantity" placeholder="Enter stock quantity" required>
+                    <!-- Added min="0" to prevent negative numbers -->
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="category_id" class="form-label">Category</label>
-                    <select name="category_id" class="form-control" required>
+                    <select name="category_id" class="form-control" id="category_id" required>
                         <option value="">Select a Category</option>
                         <?php if (!empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>
@@ -61,16 +63,19 @@
                             <option value="" disabled>No categories available</option>
                         <?php endif; ?>
                     </select>
+                    <!-- Added id="category_id" -->
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="unit_price">Unit Price</label>
-                    <input type="number" step="0.01" class="form-control" id="unit_price" name="unit_price" placeholder="Enter unit price" required>
+                    <input type="number" step="0.01" min="0" class="form-control" id="unit_price" name="unit_price" placeholder="Enter unit price" required>
+                    <!-- Added min="0" -->
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="cost_price">Cost Price</label>
-                    <input type="number" step="0.01" class="form-control" id="cost_price" name="cost_price" placeholder="Enter cost price" required>
+                    <input type="number" step="0.01" min="0" class="form-control" id="cost_price" name="cost_price" placeholder="Enter cost price" required>
+                    <!-- Added min="0" -->
                 </div>
             </div>
             <div class="mb-3">
@@ -79,7 +84,8 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Add Product</button>
-                <a href="/product_list" type="button" class="btn btn-secondary">Discard</a>
+                <a href="/product_list" class="btn btn-secondary">Discard</a>
+                <!-- Removed type="button" as it's not needed for anchor tag -->
             </div>
         </form>
     </div>

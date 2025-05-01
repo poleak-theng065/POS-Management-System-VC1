@@ -116,6 +116,9 @@ class ProductListController extends BaseController
                 'stock_quantity' => isset($_POST['stock_quantity']) ? intval($_POST['stock_quantity']) : null,
                 'category_id' => isset($_POST['category_id']) ? intval($_POST['category_id']) : null,
                 'description' => isset($_POST['description']) ? trim(htmlspecialchars($_POST['description'])) : null,
+                'cost_price' => isset($_POST['cost_price']) ? floatval($_POST['cost_price']) : null,
+                'unit_price' => isset($_POST['unit_price']) ? floatval($_POST['unit_price']) : null,
+                'status' => isset($_POST['status']) ? trim(htmlspecialchars($_POST['status'])) : null
             ];
 
             foreach ($data as $key => $value) {

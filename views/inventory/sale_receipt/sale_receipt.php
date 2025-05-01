@@ -77,7 +77,6 @@
                         <th class="sortable">Date <span>↕</span></th>
                         <th class="sortable">Time <span>↕</span></th>
                         <th class="sortable">Total <span>↕</span></th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="salesTableBody">
@@ -107,31 +106,6 @@
                                 <td><?= $saleDate ?></td>
                                 <td><?= $saleTime ?></td>
                                 <td>$<?= $totalAmount ?></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link text-muted p-0 m-1" type="button" 
-                                            id="dropdownMenuButton<?= $sale['sale_id'] ?>" 
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical fs-5"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $sale['sale_id'] ?>">
-                                            <li><a class="dropdown-item text-primary view-sale" 
-                                                href="/sales/view/<?= $sale['sale_id'] ?>">
-                                                <i class="bi bi-eye fs-5 me-2"></i>View
-                                            </a></li>
-                                            <li><a class="dropdown-item text-warning" 
-                                                href="/sales/edit/<?= $sale['sale_id'] ?>">
-                                                <i class="bi bi-pencil-square fs-5 me-2"></i>Edit
-                                            </a></li>
-                                            <li><a class="dropdown-item text-danger deleteSaleBtn"
-                                                data-id="<?= $sale['sale_id'] ?>"
-                                                data-name="<?= $customerName ?>"
-                                                data-bs-toggle="modal" data-bs-target="#deleteSaleModal">
-                                                <i class="bi bi-trash fs-5 me-2"></i>Delete
-                                            </a></li>
-                                        </ul>
-                                    </div>
-                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
