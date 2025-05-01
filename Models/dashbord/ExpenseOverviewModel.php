@@ -6,7 +6,7 @@ class ExpenseOverviewModel {
 
     public function __construct() {
         try {
-            $this->db = new Database('localhost', 'pos-system', 'root', '');
+            $this->db = new Database('localhost', 'pos-system', 'root', 'PassWord@123!');
             // Test connection
             $stmt = $this->db->query("SELECT 1");
             $this->db->single($stmt);

@@ -6,7 +6,7 @@ class TotalProfitReportModel {
 
     public function __construct() {
         try {
-            $this->db = new Database('localhost', 'pos-system', 'root', '');
+            $this->db = new Database('localhost', 'pos-system', 'root', 'PassWord@123!');
             $stmt = $this->db->query("SELECT 1");
             $result = $this->db->single($stmt);
             error_log("Database connection test in TotalProfitReportModel: " . print_r($result, true));

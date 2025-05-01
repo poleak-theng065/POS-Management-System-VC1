@@ -9,7 +9,7 @@ class LowStockProductModel
         $host = "localhost";
         $dbname = "pos-system";
         $username = "root";
-        $password = "";
+        $password = "PassWord@123!";
 
         $this->pdo = new Database($host, $dbname, $username, $password);
     }

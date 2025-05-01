@@ -7,7 +7,7 @@ class CreateUserModels {
     public function __construct() {
         try {
             // Use environment variables or config file in production
-            $this->db = new Database("localhost", "pos-system", "root", "");
+            $this->db = new Database("localhost", "pos-system", "root", "PassWord@123!");
             $this->db->query("SELECT 1");
             error_log("Database connection test successful");
         } catch (PDOException $e) {

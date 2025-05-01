@@ -9,7 +9,7 @@ class TransactionsModel {
         $host = "localhost";
         $dbname = "pos-system";
         $username = "root";
-        $password = "";
+        $password = "PassWord@123!";
 
         try {
             $this->db = new Database($host, $dbname, $username, $password);
