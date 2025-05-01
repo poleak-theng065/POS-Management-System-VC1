@@ -136,20 +136,20 @@
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Account</span></li>
             <!-- Cards -->
-            <li class="menu-item">
+            <!-- <li class="menu-item">
                 <a href="/create_account" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-user-plus"></i> 
                     <div data-i18n="Basic">Create Account</div>
                 </a>
-            </li>
+            </li> -->
 
             <!-- User account  -->
-            <li class="menu-item">
+            <!-- <li class="menu-item">
                 <a href="/user_account" class="menu-link">
                   <i class="bx bx-user"></i>
                   <div data-i18n="Basic" style= "margin-left: 20px;">User Account</div>
                 </a>
-            </li>
+            </li> -->
 
             <li class="menu-item">
               <a href="#" class="menu-link log-out" style="color: red; border: 1px solid; width: 150px; height: 35px;">
